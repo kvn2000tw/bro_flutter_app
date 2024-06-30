@@ -1,16 +1,19 @@
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import 'transport_orders_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TransportOrdersWidget extends StatefulWidget {
-  const TransportOrdersWidget({super.key});
+  TransportOrdersWidget({super.key,
+  required this.info,
+  });
 
+  late TransportOrdersInfo info;
   @override
   State<TransportOrdersWidget> createState() => _TransportOrdersWidgetState();
 }
@@ -45,6 +48,18 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
   final String ArrowRightIcon = 'assets/images/arrow-right.svg';
   @override
   Widget build(BuildContext context) {
+
+    _model.textController1?.value = TextEditingValue(
+      text:widget.info.initial_odometer.toString()
+    );
+
+    _model.textController2?.value = TextEditingValue(
+      text:widget.info.final_odometer.toString()
+    );
+
+    _model.textController3?.value = TextEditingValue(
+      text:widget.info.note
+    );
     return Padding(
             padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
             child: Container(
@@ -80,7 +95,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  'TO-2406-0001',
+                                  widget.info.custom_id,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -105,16 +120,19 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                             ),
                             child: Align(
                               alignment: AlignmentDirectional(0, 0),
+                              child: DecoratedBox(
+                                decoration: const BoxDecoration(color: Colors.yellow),
                               child: Text(
-                                '等待請求回覆',
+                                TransportOrdersStatus[widget.info.status],
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       letterSpacing: 0,
+                                      
                                     ),
                               ),
-                            ),
+                            )),
                           ),
                         ),
                       ],
@@ -154,7 +172,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                         shape: BoxShape.rectangle,
                                       ),
                                       child: Text(
-                                        '金盛元興業股份有限公司',
+                                        widget.info.manufacturer,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -173,7 +191,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                             .secondaryBackground,
                                       ),
                                       child: Text(
-                                        '台中市南屯區工業區二十路6號',
+                                       widget.info.address_from,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -224,7 +242,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                         shape: BoxShape.rectangle,
                                       ),
                                       child: Text(
-                                        '金盛元興業股份有限公司',
+                                        widget.info.organization,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -243,7 +261,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                             .secondaryBackground,
                                       ),
                                       child: Text(
-                                        '台中市南屯區工業區二十路6號',
+                                        widget.info.address_to,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -315,6 +333,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
+                                        readOnly: true,
                                         controller: _model.textController1,
                                         focusNode: _model.textFieldFocusNode1,
                                         autofocus: false,
@@ -426,6 +445,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
+                                         readOnly: true,
                                         controller: _model.textController2,
                                         focusNode: _model.textFieldFocusNode2,
                                         autofocus: false,
@@ -537,6 +557,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
+                                         readOnly: true,
                                         controller: _model.textController3,
                                         focusNode: _model.textFieldFocusNode3,
                                         autofocus: false,

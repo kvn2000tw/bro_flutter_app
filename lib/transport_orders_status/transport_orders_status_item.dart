@@ -10,8 +10,11 @@ import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
 class TransportOrdersStatusItem extends StatefulWidget {
-  const TransportOrdersStatusItem({super.key});
+   TransportOrdersStatusItem({super.key,
+  
+  required this.info});
 
+  late Map<String,dynamic> info;
   @override
   State<TransportOrdersStatusItem> createState() =>
       _TransportOrdersStatusState();
@@ -32,6 +35,13 @@ class _TransportOrdersStatusState
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersStatusItemModel());
+
+    _model.textController1 ??= TextEditingController();
+    _model.textFieldFocusNode1 ??= FocusNode();
+
+    _model.textController2 ??= TextEditingController();
+    _model.textFieldFocusNode2 ??= FocusNode();
+
   }
 
   @override
@@ -42,7 +52,18 @@ class _TransportOrdersStatusState
   
   @override
   Widget build(BuildContext context) {
-     return               Padding(
+
+    _model.textController1?.value = TextEditingValue(
+      text:widget.info["name"]
+      
+    );
+    _model.textController2?.value = TextEditingValue(
+      text:widget.info["note"]??''
+      
+    );
+
+     return                    
+              Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                 child: Container(
                   width: double.infinity,
@@ -119,25 +140,71 @@ class _TransportOrdersStatusState
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
                                 ),
-                                child:DropdownButton(
-                                items:<DropdownMenuItem>[
-                                  DropdownMenuItem(
-                                    child:Text('123'),
-                                    value:0
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      8, 0, 8, 0),
+                                  child: TextFormField(
+                                    controller: _model.textController1,
+                                    focusNode: _model.textFieldFocusNode1,
+                                    autofocus: false,
+                                    readOnly: true,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                     
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0,
+                                          ),
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0,
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: FlutterFlowTheme.of(context)
+                                              .error,
+                                          width: 2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0,
+                                        ),
+                                    validator: _model.textController1Validator
+                                        .asValidator(context),
                                   ),
-                                  DropdownMenuItem(
-                                    child:Text('456'),
-                                    value:1
-                                  ),
-                                   DropdownMenuItem(
-                                     child:Text('789'),
-                                    value:2
-                                  ),
-                                ],
-                                 value:0,
-                                 onChanged: (value) {
-                                   
-                                 },
                                 ),
                               ),
                             ],
@@ -250,8 +317,8 @@ class _TransportOrdersStatusState
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       8, 0, 8, 0),
                                   child: TextFormField(
-                                    controller: _model.textController,
-                                    focusNode: _model.textFieldFocusNode,
+                                    controller: _model.textController2,
+                                    focusNode: _model.textFieldFocusNode2,
                                     autofocus: false,
                                     obscureText: false,
                                     decoration: InputDecoration(
@@ -268,7 +335,7 @@ class _TransportOrdersStatusState
                                             fontFamily: 'Readex Pro',
                                             letterSpacing: 0,
                                           ),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
                                               .alternate,
@@ -276,7 +343,7 @@ class _TransportOrdersStatusState
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      focusedBorder: UnderlineInputBorder(
+                                      focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
@@ -284,7 +351,7 @@ class _TransportOrdersStatusState
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      errorBorder: UnderlineInputBorder(
+                                      errorBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
                                               .error,
@@ -292,7 +359,7 @@ class _TransportOrdersStatusState
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      focusedErrorBorder: UnderlineInputBorder(
+                                      focusedErrorBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: FlutterFlowTheme.of(context)
                                               .error,
@@ -307,7 +374,7 @@ class _TransportOrdersStatusState
                                           fontFamily: 'Readex Pro',
                                           letterSpacing: 0,
                                         ),
-                                    validator: _model.textControllerValidator
+                                    validator: _model.textController2Validator
                                         .asValidator(context),
                                   ),
                                 ),

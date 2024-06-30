@@ -1,3 +1,6 @@
+import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -9,8 +12,11 @@ import 'transport_orders_detail_item_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TransportOrdersDetailItemWidget extends StatefulWidget {
-  const TransportOrdersDetailItemWidget({super.key});
+   TransportOrdersDetailItemWidget({super.key,
+  
+  required this.lot});
 
+  late Map<String,dynamic> lot; 
   @override
   State<TransportOrdersDetailItemWidget> createState() => _TransportOrdersDetailItemWidgetState();
 }
@@ -44,10 +50,21 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
   }
 
   final String CheckIcon = 'assets/images/check-circle.svg';
+  final String ExclamationIcon = 'assets/images/exclamation-circle.svg';
+ 
   @override
   Widget build(BuildContext context) {
-    return                   
-             Padding(
+   
+    final status = widget.lot['status'] == lot_status.PASSED.value ? CheckIcon : ExclamationIcon;
+    final color =  widget.lot['status'] == lot_status.PASSED.value ? Colors.green : Colors.red;
+    return           
+    InkWell(
+        onTap: (){
+          print("alarm clicked");
+          Data.lot_barcode = widget.lot['barcode'];
+           Navigator.pushNamed(context,'/transport-orders-status');
+        },        
+          child:   Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                 child: Container(
                   width: double.infinity,
@@ -76,7 +93,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  'MF-001-2406-0061-RP-001',
+                                  widget.lot['barcode'],
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -94,10 +111,10 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child:SvgPicture.asset(
-                            CheckIcon,
+                            status,
                             height: 24,
                             width: 24,
-                            colorFilter: ColorFilter.mode(Colors.green, BlendMode.srcIn)
+                            colorFilter: ColorFilter.mode(color, BlendMode.srcIn)
                               )),
                             ),
                           ],
@@ -118,7 +135,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  '容器：太空包',
+                                  '容器：${widget.lot['container']}',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -148,7 +165,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  '體積：100*100*160',
+                                  '體積：${widget.lot['volume']}',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -178,7 +195,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  '重量：300.0 kg',
+                                  '重量：${widget.lot['weight']} kg',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -208,7 +225,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                                 child: Text(
-                                  '產品描述：6/27中工載運6包旅穴鈻削太空包',
+                                  '產品描述：${widget.lot['description']}',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -226,6 +243,6 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
                     ],
                   ),
                 ),
-              );
+              ));
   }
 }

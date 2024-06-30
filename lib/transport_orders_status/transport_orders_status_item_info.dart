@@ -2,6 +2,8 @@
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
+import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info_model.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_model.dart';
@@ -11,8 +13,10 @@ import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
 class TransportOrdersStatusItemInfo extends StatefulWidget {
-  const TransportOrdersStatusItemInfo({super.key});
+   TransportOrdersStatusItemInfo({super.key,
+  required this.info});
 
+  late TransportOrdersLotStatus info;
   @override
   State<TransportOrdersStatusItemInfo> createState() =>
       _TransportOrdersStatusState();
@@ -43,6 +47,11 @@ class _TransportOrdersStatusState
   
   @override
   Widget build(BuildContext context) {
+    List<Widget> list = [];
+    for(var i = 0; i < widget.info.attachments.length; i++){
+        list.add(TransportOrdersAttachWidget(attach:widget.info.attachments[i]));
+    }
+
      return        
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -453,7 +462,7 @@ class _TransportOrdersStatusState
                       ),
                       Container(
                         width: double.infinity,
-                        height: 200,
+                        height: 120,
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
@@ -482,19 +491,15 @@ class _TransportOrdersStatusState
                             ),
                             Container(
                               width: double.infinity,
-                              height: 160,
+                              height: 80,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/878/600',
-                                  width: 300,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                ),
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                children: list,
                               ),
                             ),
                           ],

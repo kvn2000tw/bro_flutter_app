@@ -1,4 +1,9 @@
 
+
+
+import 'dart:io';
+
+import 'package:bro_flutter_app/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bro_flutter_app/runing_page.dart';
@@ -15,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState
     extends State<HomePage> {
   int _selectedIndex = 0;
+  bool isLoad = true;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
@@ -35,6 +41,32 @@ class _HomePageState
   final String ListIcon = 'assets/images/list-bullet.svg';
   final String CogIcon = 'assets/images/cog.svg';
 
+  _getTransportCurrent()async{
+    print('_getTransportCurrent');
+    final response = await Service.getTransportCurrent();
+    
+    if(response.statusCode == HttpStatus.ok){
+      setState(() {
+       isLoad = false;
+      });
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedIndex = 0;
+    isLoad = true;
+
+    _getTransportCurrent();
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
      return Scaffold(
@@ -46,10 +78,10 @@ class _HomePageState
           title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
-      body: Center(
+      body: isLoad == false ? Center(
         child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+      ):Container(),
+      bottomNavigationBar: isLoad == true? null : BottomNavigationBar(
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

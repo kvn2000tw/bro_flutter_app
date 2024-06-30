@@ -1,4 +1,5 @@
 
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 
 
@@ -33,7 +34,9 @@ class _Page1WidgetState extends State<RuningPage>
   Widget build(BuildContext context) {
     
     return TransportOrdersInfoWidget(
-      title:'執行中的運輸單',hasAction:true
+      title:'執行中的運輸單',hasAction:true,
+      info:Data.current
+
     );
    
   }

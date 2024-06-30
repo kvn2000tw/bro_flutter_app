@@ -1,4 +1,5 @@
 import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_item_widget.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -11,8 +12,11 @@ import 'transport_orders_detail_list_model.dart';
 
 
 class TransportOrdersDetailListWidget extends StatefulWidget {
-  const TransportOrdersDetailListWidget({super.key});
+  TransportOrdersDetailListWidget({super.key,
+  
+  required this.info});
 
+  late TransportOrdersInfo info;
   @override
   State<TransportOrdersDetailListWidget> createState() => _TransportOrdersDetailListWidgetState();
 }
@@ -36,6 +40,11 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
   
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> list = [];
+    for(var i = 0; i < widget.info.lots.length; i++){
+        list.add(TransportOrdersDetailItemWidget(lot:widget.info.lots[i]));
+    }
     return 
  Column(
             mainAxisSize: MainAxisSize.max,
@@ -63,7 +72,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: Text(
-                          '總重量:1800.0 kg',
+                          '總重量:${widget.info.lots_meta["total_weight"]} kg',
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
@@ -76,7 +85,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: Text(
-                          '總數量:6',
+                          '總數量:${widget.info.lots_meta["total_item"]}',
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
@@ -95,15 +104,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children: [
-                    TransportOrdersDetailItemWidget(),
-                    TransportOrdersDetailItemWidget(),
-                    TransportOrdersDetailItemWidget(),
-                    TransportOrdersDetailItemWidget(),
-                    TransportOrdersDetailItemWidget(),
-                    TransportOrdersDetailItemWidget()
-
-                  ],
+                  children: list,
                 ),
               ),
             ]);

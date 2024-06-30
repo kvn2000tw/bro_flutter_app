@@ -39,10 +39,11 @@ class _TransportOrdersInfoState
           title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
-      body: Center(
+      body:null, 
+      /*Center(
         child: TransportOrdersInfoWidget(
           title:'運輸單資訊'),
-      ),
+      ),*/
      
     );
   }

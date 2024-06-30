@@ -1,6 +1,8 @@
+import 'package:bro_flutter_app/transport_orders/transport_orders_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_list_widget.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_widget.dart';
 import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_list_widget.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_header.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -17,8 +19,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TransportOrdersInfoWidget extends StatefulWidget {
   TransportOrdersInfoWidget( {super.key,
   required this.title ,
-  this.hasAction
+  required this.info,
+  this.hasAction,
+  
   });
+  late TransportOrdersInfo info;
   late String title;
   bool? hasAction;
   @override
@@ -37,6 +42,7 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
   @override
   void initState() {
     super.initState();
+
     _model = createModel(context, () => TransportOrdersInfoModel());
 
     _model.tabBarController = TabController(
@@ -98,18 +104,9 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
                       child: TabBarView(
                         controller: _model.tabBarController,
                         children: [
-                          const TransportOrdersWidget(),
-                          const TransportOrdersDetailListWidget(),
-                          Text(
-                            'Tab View 3',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 32,
-                                  letterSpacing: 0,
-                                ),
-                          ),
+                          TransportOrdersWidget(info:widget.info),
+                          TransportOrdersDetailListWidget(info:widget.info),
+                          TransportOrdersAttachsWidget(attachs:widget.info.attachs),
                         ],
                       ),
                     ),

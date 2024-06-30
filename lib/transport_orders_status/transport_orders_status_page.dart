@@ -1,6 +1,10 @@
 
+import 'dart:io';
+
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info.dart';
@@ -20,6 +24,7 @@ class TransportOrdersStatusPage extends StatefulWidget {
 class _TransportOrdersStatusState
     extends State<TransportOrdersStatusPage> {
   int _selectedIndex = 0;
+  bool isLoad = true;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
@@ -32,8 +37,37 @@ class _TransportOrdersStatusState
     });
   }
 
+  _getLotStatus()async{
+    final response = await Service.getLotStatus(Data.lot_barcode);
+
+    if(response.statusCode == HttpStatus.ok){
+     setState(() {
+      isLoad = false;
+    });
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    isLoad = true;
+    _getLotStatus();
+  }
+
+  @override
+  void dispose() {
+   
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> list = [];
+    for(var i = 0; i < Data.lotStatus.checkables.length; i++){
+        list.add(TransportOrdersStatusItem(info:Data.lotStatus.checkables[i]));
+        
+    }
+
+    list.add(TransportOrdersStatusItemInfo(info:Data.lotStatus));
      return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -43,7 +77,7 @@ class _TransportOrdersStatusState
           title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
-      body:  Column(
+      body:  isLoad == true ? Container():Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -55,18 +89,38 @@ class _TransportOrdersStatusState
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          'https://picsum.photos/seed/547/600',
-                          width: 24,
-                          height: 24,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                     InkWell(
+        onTap: (){
+         
+           Navigator.pop(context);
+         
+          
+        },     child:
+                     Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: Image.asset(
+              'assets/images/iconLeftArrow_3x.png',
+            ).image,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            'assets/images/iconLeftArrow_3x.png',
+            width: 50,
+            height: 50,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    )),
                     Expanded(
                       child: Container(
                         width: 100,
@@ -103,12 +157,7 @@ class _TransportOrdersStatusState
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children: [
-                    TransportOrdersStatusItem(),
-                    TransportOrdersStatusItem(),
-                    TransportOrdersStatusItemInfo(),
-              
-                  ],
+                  children: list,
                 ),
               ),
               Padding(
@@ -151,4 +200,5 @@ class _TransportOrdersStatusState
     );
   }
 }
+
 

@@ -1,5 +1,7 @@
-import 'dart:convert';
+
 import 'dart:io';
+
+import '../service.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import 'login_admin_model.dart';
 
-import 'package:dio/dio.dart';
 class LoginAdminWidget extends StatefulWidget {
   const LoginAdminWidget({Key? key}) : super(key: key);
 
@@ -17,7 +18,7 @@ class LoginAdminWidget extends StatefulWidget {
 }
 
 class _LoginAdminWidgetState extends State<LoginAdminWidget> {
-  final dio = Dio();
+
   late LoginAdminModel _model;
   bool _loading = false;
   String _text = "";
@@ -44,7 +45,7 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   Widget build(BuildContext context) {
     return
  
- Column(
+      Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -325,8 +326,8 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
                       child: FFButtonWidget(
                         onPressed: () {
                           print('Button pressed ...');
-                          Navigator.pushNamed(context,'/home');
-                          //request();
+                          //Navigator.pushNamed(context,'/home');
+                          request();
                         },
                         text: '登入',
                         options: FFButtonOptions(
@@ -363,25 +364,12 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
       _text = "正在请求...";
     });
     try {
-       String url = "https://recycle-server.realco2tech.com/api/app/admin/account/login";
-        // Or create `Dio` with a `BaseOptions` instance.
-        final options = BaseOptions(
-        baseUrl: url,
-        connectTimeout: Duration(seconds: 5),
-        receiveTimeout: Duration(seconds: 3),
-        headers:{
-           "Accept": "application/json",
-            "Content-Type": "application/json",
-          },
-        );
-        final dio = Dio(options);
-     
-      Response response;
-      final data = {"client_id": "992dc968-cd56-4c45-b3ea-cdc5e900a241", "client_secret":"b3olcQpSiQ7ccSsnEb3Nw38My1jykS4JDoFV0Tk4", "deviceAddress":"cT-EI8A3QcSr46krZn6w5N:APA91bF1cpxy2bxuP3MBBW130dG55EH1mZsWlB_AWZvprXD3jbrkRS5G0y7knP3YfMY260iJ9XWFKFQzEaOscFTZc6nIA4UQaNvwUq_5ZYo0YzlLlnqVmsdkklKABjDD_u17o1BYUUmK","deviceSystemInfo": {"deviceModel": "Shadow", "deviceName": "unknown", "osVersion": "14", "platform": "android", "uniqueId": "ae79c7ea4a3241df"}, "deviceType": 0, "grant_type": "password", "organization_vat": "90282846", "password": "12345678", "platform": 1, "username": "driver@lce-alloy.com"};
-
-      response = await dio.post(url, data: data);
-    
-      print(response.data.toString());
+      var response = await Service.login();
+      print('login');
+      if(response.statusCode == HttpStatus.ok){
+        print('login1');
+        Navigator.pushNamed(context,'/home');
+      }
     
     } catch (e) {
       _text = "请求失败：$e";

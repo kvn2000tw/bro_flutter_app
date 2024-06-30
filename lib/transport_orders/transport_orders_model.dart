@@ -25,7 +25,10 @@ class TransportOrdersModel extends FlutterFlowModel {
   var textFieldFocusNode1 = FocusNode();
   var textFieldFocusNode2 = FocusNode();
   var textFieldFocusNode3 = FocusNode();
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+
+    
+  }
 
   void dispose() {
     unfocusNode.dispose();
