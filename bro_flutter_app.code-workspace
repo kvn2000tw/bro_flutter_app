@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../softphone1-n"
+		},
+		{
+			"path": "../oms_api"
+		},
+		{
+			"path": "../pineapple"
+		},
+		{
+			"path": "../oms_web"
+		},
+		{
+			"path": "../../../Downloads/flutter_in_action_2-main"
+		},
+		{
+			"path": "../invest"
+		},
+		{
+			"path": "../bro-nuc-scr-app-package"
+		},
+		{
+			"path": "../server-bro-nuc-scr-dev"
+		}
+	],
+	"settings": {}
+}
