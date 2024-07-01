@@ -15,10 +15,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TransportOrdersInfoHeader extends StatefulWidget {
   TransportOrdersInfoHeader({super.key,
   required this.title,
-  this.hasAction,
+  this.hasReturn,
+  this.hasAction, 
   });
 
   late String title;
+  bool? hasReturn;
   bool? hasAction;
   @override
   State<TransportOrdersInfoHeader> createState() => _TransportOrdersInfoHeaderState();
@@ -47,6 +49,7 @@ class _TransportOrdersInfoHeaderState extends State<TransportOrdersInfoHeader>
 
   @override
   Widget build(BuildContext context) {
+   
     return 
                 Container(
                 width: double.infinity,
@@ -58,6 +61,28 @@ class _TransportOrdersInfoHeaderState extends State<TransportOrdersInfoHeader>
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+  widget.hasReturn == null ? Container() : InkWell(
+        onTap: (){
+         
+           Navigator.pop(context);
+
+        },                     // Generated code for this Container Widget...
+child:Container(
+  width: 50,
+  height: 50,
+  decoration: BoxDecoration(
+    color: FlutterFlowTheme.of(context).secondaryBackground,
+  ),
+  child: ClipRRect(
+    borderRadius: BorderRadius.circular(8),
+    child: Image.asset(
+      'assets/images/iconLeftArrow_3x.png',
+      width: 300,
+      height: 200,
+      fit: BoxFit.cover,
+    ),
+  ),
+)),
                     Expanded(
                       child: Container(
                         width: 100,

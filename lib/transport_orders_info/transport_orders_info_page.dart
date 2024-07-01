@@ -1,4 +1,8 @@
 
+import 'dart:io';
+
+import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,18 +19,32 @@ class TransportOrdersInfoPage extends StatefulWidget {
 
 class _TransportOrdersInfoState
     extends State<TransportOrdersInfoPage> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    
-  ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    bool isLoad = true;
+  _getTransportSelect()async{
+    final respons = await Service.getTransportSelect();
+
+    if(respons.statusCode == HttpStatus.ok){
+
+      setState(() {
+        isLoad = false;
+      });
+    }
+
   }
+  @override
+  void initState() {
+    super.initState();
+    isLoad = true;
+    _getTransportSelect();
+  }
+
+  @override
+  void dispose() {
+   
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +57,14 @@ class _TransportOrdersInfoState
           title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
-      body:null, 
-      /*Center(
+      body:isLoad == true ? Container() : 
+      Center(
         child: TransportOrdersInfoWidget(
-          title:'運輸單資訊'),
-      ),*/
+          title:'運輸單資訊',
+          hasAction:true,
+          hasReturn:true,
+          info:Data.transport),
+      ),
      
     );
   }

@@ -1,4 +1,7 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -11,7 +14,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 //import 'transport_orders_list_model.dart';
 
 class TransportOrdersItemWidget extends StatefulWidget {
-  const TransportOrdersItemWidget({super.key});
+   TransportOrdersItemWidget({super.key,
+  required this.info});
+
+  late TransportOrdersInfo info;
 
   @override
   State<TransportOrdersItemWidget> createState() => _TransportOrdersItemWidgetState();
@@ -83,7 +89,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        'TO-2406-0003',
+                                        widget.info.custom_id,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -111,15 +117,18 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
   alignment: AlignmentDirectional(0, 0),
   child: Padding(
     padding: EdgeInsets.all(10),
+    child:DecoratedBox(
+      decoration:  BoxDecoration(color:TransportOrdersStatusColor[widget.info.status]),
     child: Text(
-      '派車運輸',
+      TransportOrdersStatus[widget.info.status],
       style: FlutterFlowTheme.of(context).bodyMedium.override(
             fontFamily: 'Readex Pro',
             letterSpacing: 0,
+            fontSize: 13,
           ),
     ),
   ),
-),
+)),
 
                             ),
                           ],
@@ -168,7 +177,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        '金盛元興業股份有限公司',
+                                        widget.info.manufacturer,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -225,7 +234,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        '台中市南屯區工業區二十路搜索號',
+                                        widget.info.address_from,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -282,7 +291,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        '600 kg',
+                                        '${widget.info.total_weight} kg',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -339,7 +348,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        '2 件物料',
+                                        '${widget.info.total_item} 件物料',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -426,6 +435,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                           child: FFButtonWidget(
                             onPressed: () {
                               print('Button pressed ...');
+                              Data.transport_id = widget.info.id;
                               Navigator.pushNamed(context,'/transport-orders-info');
                             },
                             text: '查看',

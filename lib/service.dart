@@ -68,6 +68,37 @@ class Service{
       return response;
   }
 
+  static getTransportSelect()async {
+    
+    String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/${Data.transport_id}";
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      response = await dio.get(url);
+
+      if(response.statusCode == HttpStatus.ok){
+         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print(fromJsonMap);
+        Data.setTransportSelect(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+
+      return response;
+  }
+
   static getLotStatus(String barcode)async{
     String url = 'https://recycle-server.realco2tech.com/api/app/admin/lots/barcode/${barcode}';
     // Or create `Dio` with a `BaseOptions` instance.
@@ -90,7 +121,7 @@ class Service{
       if(response.statusCode == HttpStatus.ok){
          Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
          print('getLotStatus');
-        print(fromJsonMap);
+        //print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -98,4 +129,35 @@ class Service{
 
       return response;
   }
+  static GetTransportOrders()async{
+    String url = 'https://recycle-server.realco2tech.com/api/app/admin/transport-orders/index?page=1';
+    // Or create `Dio` with a `BaseOptions` instance.
+    Map<String, List> data = {"filters": [], "sorts": []};
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+      
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      response = await dio.post(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('GetTransportOrders');
+        print(fromJsonMap);
+        Data.setTransportOrdersList(fromJsonMap);
+      }
+
+      return response;
+  }
+  
 }

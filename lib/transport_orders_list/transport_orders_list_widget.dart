@@ -1,4 +1,5 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
@@ -42,6 +43,11 @@ class _TransportOrdersListWidgetState extends State<TransportOrdersListWidget> {
   
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> list = [];
+    for(var i=0;i<Data.ordersList.length;i++){
+      list.add(TransportOrdersItemWidget(info:Data.ordersList[i]));
+    }
     return 
    Column(
             mainAxisSize: MainAxisSize.max,
@@ -184,10 +190,7 @@ class _TransportOrdersListWidgetState extends State<TransportOrdersListWidget> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children: [
-                  TransportOrdersItemWidget(),
-                  TransportOrdersItemWidget(),
-                  TransportOrdersItemWidget()],
+                  children: list,
                 ),
               ),
             ]);

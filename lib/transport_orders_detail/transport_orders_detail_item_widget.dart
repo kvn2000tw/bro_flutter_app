@@ -49,14 +49,28 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
     super.dispose();
   }
 
+  final String SearchIcon = 'assets/images/search.svg';
+
   final String CheckIcon = 'assets/images/check-circle.svg';
   final String ExclamationIcon = 'assets/images/exclamation-circle.svg';
  
   @override
   Widget build(BuildContext context) {
    
-    final status = widget.lot['status'] == lot_status.PASSED.value ? CheckIcon : ExclamationIcon;
-    final color =  widget.lot['status'] == lot_status.PASSED.value ? Colors.green : Colors.red;
+   var status = SearchIcon;
+   var color = Colors.blue;
+   if( widget.lot['status'] == lot_status.PASSED.value){
+      status = CheckIcon;
+      color = Colors.green;
+   }else if(widget.lot['status'] == lot_status.REQUESTED.value){
+      status = SearchIcon;
+      color = Colors.blue;
+   }
+   else if(widget.lot['status'] == lot_status.FAILED.value){
+      status = ExclamationIcon;
+      color = Colors.red;
+   }
+  
     return           
     InkWell(
         onTap: (){

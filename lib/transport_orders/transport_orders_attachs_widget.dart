@@ -69,6 +69,28 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
                   ),
                 ),
               ),
+                            list.length > 0 ? Container() :Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+  child: Container(
+    width: double.infinity,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: Align(
+      alignment: AlignmentDirectional(0, 0),
+      child: Text(
+        '無附件檔案',
+        style: FlutterFlowTheme.of(context).bodyMedium.override(
+              fontFamily: 'Readex Pro',
+              fontSize: 20,
+              letterSpacing: 0,
+              fontWeight: FontWeight.w500,
+            ),
+      ),
+    ),
+  ),
+),
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,

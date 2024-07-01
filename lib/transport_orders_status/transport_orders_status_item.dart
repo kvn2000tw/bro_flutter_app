@@ -150,7 +150,6 @@ class _TransportOrdersStatusState
                                     readOnly: true,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                     
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .labelMedium
                                           .override(
@@ -256,7 +255,7 @@ class _TransportOrdersStatusState
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
                                     child: Text(
-                                      '合格',
+                                      widget.info['value'] == true ? '合格' : '不合格',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -322,7 +321,6 @@ class _TransportOrdersStatusState
                                     autofocus: false,
                                     obscureText: false,
                                     decoration: InputDecoration(
-                                      labelText: 'Label here...',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .labelMedium
                                           .override(

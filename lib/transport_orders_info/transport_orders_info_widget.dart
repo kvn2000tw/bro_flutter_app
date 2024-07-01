@@ -20,11 +20,13 @@ class TransportOrdersInfoWidget extends StatefulWidget {
   TransportOrdersInfoWidget( {super.key,
   required this.title ,
   required this.info,
+  this.hasReturn,
   this.hasAction,
   
   });
   late TransportOrdersInfo info;
   late String title;
+  bool? hasReturn;
   bool? hasAction;
   @override
   State<TransportOrdersInfoWidget> createState() => _TransportOrdersInfoWidgetState();
@@ -65,7 +67,7 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
         Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-             TransportOrdersInfoHeader(title:widget.title,hasAction:widget.hasAction),
+             TransportOrdersInfoHeader(title:widget.title,hasReturn:widget.hasReturn,hasAction:widget.hasAction),
               Expanded(
                 child: Column(
                   children: [

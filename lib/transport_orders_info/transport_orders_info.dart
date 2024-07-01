@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
+
 class TransportOrdersInfo{
   String id='';
   String custom_id='';
@@ -14,7 +16,9 @@ class TransportOrdersInfo{
   List<dynamic> lots=[];
   Map<String,dynamic> lots_meta={};
   List<dynamic> attachs=[];
-  
+  int total_item=0;
+  String total_weight='';
+ 
 }
    
   class TransportOrdersLotStatus{
@@ -31,6 +35,8 @@ class TransportOrdersInfo{
 }
 
 final TransportOrdersStatus=['尚未派車','派車運輸','開始運輸','等待請求回覆','生產廠簽收','生產廠拒絕','開始回程','結束運輸','終止運輸'];
+
+final TransportOrdersStatusColor=[Colors.grey,Colors.yellow,Colors.blue,Colors.yellow,Colors.green,Colors.red,Colors.blue,Colors.grey,Colors.red];
 
 enum lot_status{
   CREATED(value: 0, label: "CREATED"),

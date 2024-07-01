@@ -32,7 +32,14 @@ class _HomePageState
     ),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index)async {
+    if(index == 1){
+      final response = await Service.GetTransportOrders();
+
+      if(response.statusCode == HttpStatus.ok){
+        print('_onItemTapped');
+      }
+    }
     setState(() {
       _selectedIndex = index;
     });

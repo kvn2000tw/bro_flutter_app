@@ -26,17 +26,15 @@ class _TransportOrdersStatusState
     extends State<TransportOrdersStatusItemInfo> {
 
        late TransportOrdersStatusItemInfoModel _model;
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    
-  ];
-
+ 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersStatusItemInfoModel());
+
+    _model.textController1 ??= TextEditingController(text:widget.info.weight);
+    _model.textController2 ??= TextEditingController(text:widget.info.description);
+    _model.textController3 ??= TextEditingController(text:widget.info.note);
   }
 
   @override
@@ -84,7 +82,7 @@ class _TransportOrdersStatusState
                                     fontFamily: 'Readex Pro',
                                     fontSize: 24,
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w500,
                                   ),
                             ),
                           ),
@@ -115,7 +113,7 @@ class _TransportOrdersStatusState
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
@@ -126,14 +124,17 @@ class _TransportOrdersStatusState
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
                               ),
-                              child: Text(
-                                'Hello World',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0,
-                                    ),
+                              child: Align(
+                                alignment: AlignmentDirectional(-1, 0),
+                                child: Text(
+                                  widget.info.name,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0,
+                                      ),
+                                ),
                               ),
                             ),
                           ],
@@ -184,14 +185,17 @@ class _TransportOrdersStatusState
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
                                       ),
-                                      child: Text(
-                                        'Hello World',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0,
-                                            ),
+                                      child: Align(
+                                        alignment: AlignmentDirectional(-1, 0),
+                                        child: Text(
+                                          widget.info.container,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -233,14 +237,17 @@ class _TransportOrdersStatusState
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
                                       ),
-                                      child: Text(
-                                        'Hello World',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0,
-                                            ),
+                                      child: Align(
+                                        alignment: AlignmentDirectional(-1, 0),
+                                        child: Text(
+                                          widget.info.volume,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                letterSpacing: 0,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -275,7 +282,7 @@ class _TransportOrdersStatusState
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
@@ -295,7 +302,6 @@ class _TransportOrdersStatusState
                                   autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Label here...',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -308,7 +314,7 @@ class _TransportOrdersStatusState
                                           fontFamily: 'Readex Pro',
                                           letterSpacing: 0,
                                         ),
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
@@ -380,7 +386,7 @@ class _TransportOrdersStatusState
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
@@ -400,7 +406,6 @@ class _TransportOrdersStatusState
                                   autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Label here...',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -413,7 +418,7 @@ class _TransportOrdersStatusState
                                           fontFamily: 'Readex Pro',
                                           letterSpacing: 0,
                                         ),
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,
@@ -462,7 +467,7 @@ class _TransportOrdersStatusState
                       ),
                       Container(
                         width: double.infinity,
-                        height: 120,
+                        height: 190,
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
@@ -485,13 +490,35 @@ class _TransportOrdersStatusState
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
+                            list.length > 0 ? Container() :Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+  child: Container(
+    width: double.infinity,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: Align(
+      alignment: AlignmentDirectional(0, 0),
+      child: Text(
+        '無附件檔案',
+        style: FlutterFlowTheme.of(context).bodyMedium.override(
+              fontFamily: 'Readex Pro',
+              fontSize: 20,
+              letterSpacing: 0,
+              fontWeight: FontWeight.w500,
+            ),
+      ),
+    ),
+  ),
+),
                             Container(
                               width: double.infinity,
-                              height: 80,
+                              height: 150,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -530,7 +557,7 @@ class _TransportOrdersStatusState
                                       fontFamily: 'Readex Pro',
                                       fontSize: 24,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
@@ -550,7 +577,6 @@ class _TransportOrdersStatusState
                                   autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Label here...',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -563,7 +589,7 @@ class _TransportOrdersStatusState
                                           fontFamily: 'Readex Pro',
                                           letterSpacing: 0,
                                         ),
-                                    enabledBorder: UnderlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
                                             .alternate,

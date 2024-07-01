@@ -121,7 +121,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                             child: Align(
                               alignment: AlignmentDirectional(0, 0),
                               child: DecoratedBox(
-                                decoration: const BoxDecoration(color: Colors.yellow),
+                                decoration:  BoxDecoration(color:TransportOrdersStatusColor[widget.info.status]),
                               child: Text(
                                 TransportOrdersStatus[widget.info.status],
                                 style: FlutterFlowTheme.of(context)

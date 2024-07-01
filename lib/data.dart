@@ -12,8 +12,11 @@ class Token{
 class Data {
   static Token token = Token();
   static TransportOrdersInfo current = TransportOrdersInfo();
+  static TransportOrdersInfo transport = TransportOrdersInfo();
   static TransportOrdersLotStatus lotStatus = TransportOrdersLotStatus();
+  static List<TransportOrdersInfo> ordersList = [];
   static String lot_barcode='';
+  static String transport_id='';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -40,6 +43,23 @@ class Data {
     current.attachs = response['current']['attachments'];
     
   }
+  static setTransportSelect(Map<String,dynamic> response){
+    debugPrint('setTransportCurrent ${response}');
+    transport.id = response['id'];
+    transport.custom_id = response['custom_id'];
+    transport.address_from = response['address_from'];
+    transport.address_to = response['address_to'];
+    transport.manufacturer = response['manufacturer']['name'];
+    transport.organization = response['organization']['name'];
+    transport.note = response['note'] ?? '';
+    transport.initial_odometer = response['initial_odometer'] ?? 0;
+    transport.final_odometer = response['final_odometer'] ?? 0;
+    transport.status = response['status'];
+    transport.lots = response['lots'];
+    transport.lots_meta = response['lots_meta'];
+    transport.attachs = response['attachments']??[];
+    
+  }
 
   static setTransportLotStatus(Map<String,dynamic> response){
     lotStatus.name = response['name'];
@@ -48,7 +68,24 @@ class Data {
     lotStatus.volume = response['volume'];
     lotStatus.weight = response['weight'].toString();
     lotStatus.checkables = response['checkables'];
-    lotStatus.attachments = response['attachments'];
+    lotStatus.attachments = response['attachments']??[];
 
+  }
+
+  static setTransportOrdersList(Map<String,dynamic> response){
+    ordersList.clear();
+    
+    for(var i=0;i<response['items'].length;i++){
+      var item = TransportOrdersInfo();
+      item.id = response['items'][i]['id'];
+      item.custom_id = response['items'][i]['custom_id'];
+      item.status = response['items'][i]['status'];
+      item.address_from = response['items'][i]['address_from'];
+      item.manufacturer = response['items'][i]['manufacturer']['name'];
+      item.total_item = response['items'][i]['lots_meta']['total_item'];
+      item.total_weight = response['items'][i]['lots_meta']['total_weight'].toString();
+
+      ordersList.add(item);
+    }
   }
 }
