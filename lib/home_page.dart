@@ -4,6 +4,7 @@
 import 'dart:io';
 
 import 'package:bro_flutter_app/service.dart';
+import 'package:bro_flutter_app/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bro_flutter_app/runing_page.dart';
@@ -26,10 +27,7 @@ class _HomePageState
   static const List<Widget> _widgetOptions = <Widget>[
     RuningPage(),
     TransportOrdersListWidget(),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    SettingPage()
   ];
 
   void _onItemTapped(int index)async {
