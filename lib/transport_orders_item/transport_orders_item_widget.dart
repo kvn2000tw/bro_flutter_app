@@ -118,13 +118,15 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
   child: Padding(
     padding: EdgeInsets.all(10),
     child:DecoratedBox(
-      decoration:  BoxDecoration(color:TransportOrdersStatusColor[widget.info.status]),
+      decoration:  BoxDecoration(color:TransportOrdersStatusBKColor[widget.info.status]),
     child: Text(
       TransportOrdersStatus[widget.info.status],
       style: FlutterFlowTheme.of(context).bodyMedium.override(
             fontFamily: 'Readex Pro',
             letterSpacing: 0,
             fontSize: 13,
+            fontWeight:FontWeight.w600,
+            color:TransportOrdersStatusColor[widget.info.status]
           ),
     ),
   ),
@@ -405,7 +407,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        ' ',
+                                        widget.info.description,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(

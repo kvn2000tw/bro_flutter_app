@@ -39,14 +39,49 @@ class _SettingPageState extends State<SettingPage> {
    
     super.dispose();
   }
-  
+  _getRole(String role){
+    switch(role){
+          case 'director':
+            return '管理員/廠長';
+        case 'operations_supervisor':
+            return '營運人員';
+        case 'production_manager':
+            return '生管人員';
+        case 'storage_management_personnel':
+            return '倉儲人員';
+        case 'driver':
+            return '運輸人員';
+        default:
+            return '未知';
+    }
+  }
+
+  _goLogout(BuildContext context){
+    Navigator.pushNamed(context,'/');
+  }
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> list = [];
-    for(var i=0;i<Data.ordersList.length;i++){
-      list.add(TransportOrdersItemWidget(info:Data.ordersList[i]));
+    String roles = '';
+    for(var i=0;i<Data.user.roles.length;i++){
+      final role = _getRole(Data.user.roles[i]);
+      roles = '${roles} ${role}';
     }
+
+    Widget widget =  SvgPicture.asset(
+                            UserIcon,
+                            height: 40,
+                            width: 40,
+                      
+                          );
+    if(Data.user.profile_photo_path != '')
+    widget = Image.network(
+      Data.user.profile_photo_path,
+      width: 40,
+      height: 40,
+      fit: BoxFit.contain,
+    );
+
     return 
    Column(
             mainAxisSize: MainAxisSize.max,
@@ -92,12 +127,7 @@ class _SettingPageState extends State<SettingPage> {
                         alignment: AlignmentDirectional(0, 0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: SvgPicture.asset(
-                            UserIcon,
-                            height: 40,
-                            width: 40,
-                      
-                          ),
+                          child: widget,
                         ),
                       ),
                     ),
@@ -122,7 +152,7 @@ class _SettingPageState extends State<SettingPage> {
                               child: Align(
                                 alignment: AlignmentDirectional(-1, 0),
                                 child: Text(
-                                  '林司機',
+                                  Data.user.full_name,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -142,7 +172,7 @@ class _SettingPageState extends State<SettingPage> {
                                     .secondaryBackground,
                               ),
                               child: Text(
-                                '運輸人員',
+                                roles,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -168,7 +198,7 @@ class _SettingPageState extends State<SettingPage> {
                     focusColor: Colors.transparent,
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    onTap: () async {},
+                    onTap: () async { _goLogout(context);},
                     child: Container(
                       width: double.infinity,
                       height: 50,

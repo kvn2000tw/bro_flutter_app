@@ -34,6 +34,7 @@ class Service{
         Data.setToken(fromJsonMap);
       }
     
+      profile();
       return response;
   }
 
@@ -160,4 +161,35 @@ class Service{
       return response;
   }
   
+  static profile()async {
+    
+    String url = "https://recycle-server.realco2tech.com/api/app/admin/account/profile";
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      response = await dio.get(url);
+
+      if(response.statusCode == HttpStatus.ok){
+         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print(fromJsonMap);
+        Data.setProfile(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+
+      return response;
+  }
+
 }

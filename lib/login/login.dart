@@ -15,6 +15,7 @@ class Login extends StatelessWidget {
     return 
      Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading:false,
           toolbarHeight: 80,
           backgroundColor: Colors.blue,
           elevation:10,

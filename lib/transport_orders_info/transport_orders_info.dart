@@ -18,7 +18,7 @@ class TransportOrdersInfo{
   List<dynamic> attachs=[];
   int total_item=0;
   String total_weight='';
- 
+  String description = '';
 }
    
   class TransportOrdersLotStatus{
@@ -34,9 +34,18 @@ class TransportOrdersInfo{
   
 }
 
+class User{
+  String id='';
+  String full_name='';
+  List<dynamic> roles = [];
+  String profile_photo_path = '';
+
+}
 final TransportOrdersStatus=['尚未派車','派車運輸','開始運輸','等待請求回覆','生產廠簽收','生產廠拒絕','開始回程','結束運輸','終止運輸'];
 
-final TransportOrdersStatusColor=[Colors.grey,Colors.yellow,Colors.blue,Colors.yellow,Colors.green,Colors.red,Colors.blue,Colors.grey,Colors.red];
+final TransportOrdersStatusColor=[Colors.grey,Colors.orange,Colors.blue,Colors.orange,Colors.green,Colors.red,Colors.blue,Colors.grey,Colors.red];
+
+final TransportOrdersStatusBKColor=[Color(0xFFF3F4F6),Color(0xFFFEF9C3),Color(0xFFDBEAFE),Color(0xFFFEF9C3),Color(0xFFDCFCE7),Color(0xFFFEE2E2),Color(0xFFDBEAFE),Color(0xFFF3F4F6),Color(0xFFFEE2E2)];
 
 enum lot_status{
   CREATED(value: 0, label: "CREATED"),

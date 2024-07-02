@@ -15,6 +15,7 @@ class Data {
   static TransportOrdersInfo transport = TransportOrdersInfo();
   static TransportOrdersLotStatus lotStatus = TransportOrdersLotStatus();
   static List<TransportOrdersInfo> ordersList = [];
+  static User user = User();
   static String lot_barcode='';
   static String transport_id='';
   static setToken(Map<String,dynamic> response){
@@ -83,9 +84,19 @@ class Data {
       item.address_from = response['items'][i]['address_from'];
       item.manufacturer = response['items'][i]['manufacturer']['name'];
       item.total_item = response['items'][i]['lots_meta']['total_item'];
+      item.description = response['items'][i]['description']??'';
       item.total_weight = response['items'][i]['lots_meta']['total_weight'].toString();
 
       ordersList.add(item);
     }
+  }
+
+  static setProfile(Map<String,dynamic> response){
+
+    user.id = response['user']['id'];
+    user.full_name = response['user']['full_name'];
+    user.roles = response['user']['roles'];
+    user.profile_photo_path = response['user']['profile_photo_path'] ?? '';
+   
   }
 }

@@ -121,7 +121,7 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                             child: Align(
                               alignment: AlignmentDirectional(0, 0),
                               child: DecoratedBox(
-                                decoration:  BoxDecoration(color:TransportOrdersStatusColor[widget.info.status]),
+                                decoration:  BoxDecoration(color:TransportOrdersStatusBKColor[widget.info.status]),
                               child: Text(
                                 TransportOrdersStatus[widget.info.status],
                                 style: FlutterFlowTheme.of(context)
@@ -129,7 +129,8 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       letterSpacing: 0,
-                                      
+                                      fontWeight:FontWeight.w600,
+                                      color:TransportOrdersStatusColor[widget.info.status]
                                     ),
                               ),
                             )),
