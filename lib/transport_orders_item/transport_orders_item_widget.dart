@@ -439,7 +439,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                             onPressed: () async{
                               print('Button pressed ...');
                               Data.transport_id = widget.info.id;
-                              //Navigator.pushNamed(context,'/transport-orders-info');
+                              Navigator.pushNamed(context,'/transport-orders-info');
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();
                             },

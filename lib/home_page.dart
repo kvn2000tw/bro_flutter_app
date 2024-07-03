@@ -11,8 +11,10 @@ import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+   HomePage({super.key,
+  this.item});
 
+  int? item;
   @override
   State<HomePage> createState() =>
       _HomePageState();
@@ -46,6 +48,14 @@ class _HomePageState
   final String ListIcon = 'assets/images/list-bullet.svg';
   final String CogIcon = 'assets/images/cog.svg';
 
+  _goItem()async{
+
+    int item = widget.item ?? 0;
+    
+    if(item > 0)
+       _onItemTapped(item);
+
+  }
   _getTransportCurrent()async{
     print('_getTransportCurrent');
     final response = await Service.getTransportCurrent();
@@ -61,7 +71,7 @@ class _HomePageState
     super.initState();
 
     _selectedIndex = 0;
-    isLoad = true;
+    _goItem();
 
     _getTransportCurrent();
   }

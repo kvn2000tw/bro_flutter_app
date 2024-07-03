@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:bro_flutter_app/data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -25,15 +26,44 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   bool _loading = false;
   String _text = "";
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isAutoLogin = false;
+  _restore()async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final text1 = sharedPreferences.getString("organization_vat") ?? "";
 
+    final text2 = sharedPreferences.getString("username") ?? "";
+    final text3 = sharedPreferences.getString("password") ?? "";
+
+    isAutoLogin = sharedPreferences.getBool("autoLogin") ?? false;
+
+    _model.textController1?.value = TextEditingValue(
+      text:text1
+    );
+    _model.textController2?.value = TextEditingValue(
+      text:text2
+    );
+    _model.textController3?.value = TextEditingValue(
+      text:text3
+    );
+
+    if(isAutoLogin == true){
+      //await request();
+    }
+
+  }
   @override
   void initState() {
     super.initState();
+    isAutoLogin = false;
+
     _model = createModel(context, () => LoginAdminModel());
 
     _model.textController1 ??= TextEditingController();
     _model.textController2 ??= TextEditingController();
     _model.textController3 ??= TextEditingController();
+
+    _restore();
+ 
   }
 
   @override
@@ -46,9 +76,9 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   @override
   Widget build(BuildContext context) {
     return
- 
+
       Column(
-            mainAxisSize: MainAxisSize.max,
+            //mainAxisSize: MainAxisSize.max,
             children: [
               Container(
                 width: double.infinity,
@@ -79,7 +109,9 @@ Padding(
     //focusNode: _model.textFieldFocusNode1,
     autofocus: false,
     obscureText: false,
+    //textInputAction: TextInputAction.done,
     decoration: InputDecoration(
+      //isDense: true,
       labelText: '請輸入公司統一編號',
       labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
             fontFamily: 'Readex Pro',
@@ -135,10 +167,9 @@ Padding(
           letterSpacing: 0,
         ),
     keyboardType: TextInputType.number,
-    validator: _model.textController1Validator.asValidator(context),
+    //validator: _model.textController1Validator.asValidator(context),
   ),
 ),
-
               Container(
                 width: double.infinity,
                 height: 50,
@@ -410,6 +441,8 @@ Future<void> _showMyDialog() async {
 }
   request() async {
     
+     Navigator.pushNamed(context,'/camera');
+     return;
     setState(() {
       _loading = true;
       _text = "正在请求...";
@@ -422,9 +455,16 @@ Future<void> _showMyDialog() async {
       print('login');
       if(ret == true){
         print('login1');
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString("organization_vat",_model.textController1.text);
+        sharedPreferences.setString("username",_model.textController2.text);
+        sharedPreferences.setString("password",_model.textController3.text);
+        sharedPreferences.setBool("autoLogin",true);
+
         Navigator.pushNamed(context,'/home');
       }else {
-        _showMyDialog();
+        if(isAutoLogin == false)
+          _showMyDialog();
       }
     
     } catch (e) {

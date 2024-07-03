@@ -1,14 +1,19 @@
 
+import 'package:bro_flutter_app/camera/take_picture_screen.dart';
 import 'package:bro_flutter_app/home_page.dart';
 import 'package:bro_flutter_app/login/login.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_page.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_page.dart';
 import 'package:flutter/material.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
+import 'package:camera/camera.dart';
 
+late List<CameraDescription> _cameras;
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
   await FlutterFlowTheme.initialize();
+
+  _cameras = await availableCameras();
   runApp(MyApp());
 }
 
@@ -23,11 +28,12 @@ class MyApp extends StatelessWidget {
       //home: Login(),
       initialRoute: "/",
       routes: {
-        "/home" : (context) => const HomePage(),
-        "/transport-orders-info" : (context) => const TransportOrdersInfoPage(),
+        "/home" : (context) =>  HomePage(),
+        "/transport-orders-info" : (context) =>  TransportOrdersInfoPage(),
         //"/transport-orders-info" : (context) => const TransportOrdersStatusPage(),
         "/transport-orders-status" : (context) => const TransportOrdersStatusPage(), 
         "/" :  (context) => Login(),
+        "/camera" :  (context) => TakePictureScreen(camera: _cameras.first),
       },
      
     );

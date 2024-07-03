@@ -9,6 +9,7 @@ class Service{
 
   static login(String code,String user,String passwd) async {
         String url = "https://recycle-server.realco2tech.com/api/app/admin/account/login";
+        print('login ${url}');
         // Or create `Dio` with a `BaseOptions` instance.
         final options = BaseOptions(
         baseUrl: url,
@@ -79,6 +80,7 @@ class Service{
   static getTransportCurrent()async {
     
     String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/current";
+    print('getTransportCurrent ${url}');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -110,6 +112,7 @@ class Service{
   static getTransportSelect()async {
     
     String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/${Data.transport_id}";
+    print('getTransportSelect ${url}');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -140,6 +143,7 @@ class Service{
 
   static getLotStatus(String barcode)async{
     String url = 'https://recycle-server.realco2tech.com/api/app/admin/lots/barcode/${barcode}';
+    print('getLotStatus ${url}');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -170,6 +174,7 @@ class Service{
   }
   static GetTransportOrders()async{
     String url = 'https://recycle-server.realco2tech.com/api/app/admin/transport-orders/index?page=1';
+    print('GetTransportOrders ${url}');
     // Or create `Dio` with a `BaseOptions` instance.
     Map<String, List> data = {"filters": [], "sorts": []};
     final options = BaseOptions(
@@ -202,6 +207,7 @@ class Service{
   static profile()async {
     
     String url = "https://recycle-server.realco2tech.com/api/app/admin/account/profile";
+    print('profile ${url}');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,

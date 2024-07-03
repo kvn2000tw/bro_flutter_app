@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_fonts: 4.0.3
 
-  shared_preferences: 2.0.15
+  shared_preferences: ^2.1.2
   shared_preferences_android: 2.1.0
   shared_preferences_ios: 2.1.1
   shared_preferences_platform_interface: 2.2.0

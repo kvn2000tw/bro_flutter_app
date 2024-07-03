@@ -19,6 +19,8 @@ class Data {
   static String lot_barcode='';
   static String transport_id='';
   static String errorMessage = '';
+  static bool isAutoLogin = false;
+  
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -30,6 +32,10 @@ class Data {
 
   static setTransportCurrent(Map<String,dynamic> response){
     debugPrint('setTransportCurrent ${response}');
+    if(response['current'] == null){
+      current.id = '';
+      return;
+    }
     current.id = response['current']['id'];
     current.custom_id = response['current']['custom_id'];
     current.address_from = response['current']['address_from'];

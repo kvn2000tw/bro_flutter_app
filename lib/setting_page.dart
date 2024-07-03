@@ -1,6 +1,7 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -56,7 +57,14 @@ class _SettingPageState extends State<SettingPage> {
     }
   }
 
-  _goLogout(BuildContext context){
+  _goLogout(BuildContext context)async{
+    
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("organization_vat",'');
+    sharedPreferences.setString("username",'');
+    sharedPreferences.setString("password",'');
+    sharedPreferences.setBool("autoLogin",false);
+
     Navigator.pushNamed(context,'/');
   }
   @override

@@ -10,7 +10,7 @@ import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
 class TransportOrdersInfoPage extends StatefulWidget {
-  const TransportOrdersInfoPage({super.key});
+   TransportOrdersInfoPage({super.key});
 
   @override
   State<TransportOrdersInfoPage> createState() =>
