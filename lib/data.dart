@@ -20,7 +20,8 @@ class Data {
   static String transport_id='';
   static String errorMessage = '';
   static bool isAutoLogin = false;
-  
+  static String presignedUrl = '';
+  static String url_key = '';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -105,5 +106,10 @@ class Data {
     user.roles = response['user']['roles'];
     user.profile_photo_path = response['user']['profile_photo_path'] ?? '';
    
+  }
+
+  static setUploadUrl(Map<String,dynamic> response){
+    presignedUrl = response['presignedUrl'];
+    url_key = response['key'];
   }
 }

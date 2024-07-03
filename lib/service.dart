@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:dio/dio.dart';
 
 class Service{
@@ -235,5 +236,177 @@ class Service{
 
       return response;
   }
+
+  static upload_url(String upload_url)async{
+    String url = "https://recycle-server.realco2tech.com/api/app/media/upload-url";
+    print('profile ${url}');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      DateFormat dateFormat = DateFormat("yyyy-MM-dd_HH-mm-ss");
+      String string = dateFormat.format(DateTime.now());
+      String fileName = '$string.jpg';
+      
+      response = await dio.post(url,data:{"filename": fileName});
+
+      if(response.statusCode == HttpStatus.ok){
+         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print(fromJsonMap);
+        
+        Data.setUploadUrl(fromJsonMap);
+        await upload_file(upload_url,fileName);
+       
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+
+      return response;
+  }
+
+  static upload_file(String uoload_url,String fileName)async{
+final formData = FormData.fromMap({
+  'name': 'dio',
+  'date': DateTime.now().toIso8601String(),
+  'file': await MultipartFile.fromFile(uoload_url, filename: fileName),
+  
+});
+
+    final options = BaseOptions(
+      //baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+         
+            "Content-Type": "image/jpeg",
+         
+          },
+        );
+        final dio = Dio(options);
+    
+        final response = await dio.put(Data.presignedUrl, data: formData);
+        if(response.statusCode == HttpStatus.ok){
+           await upload(fileName);
+        }
+  }
+  static upload(String fileName)async{
+    String url = "https://recycle-server.realco2tech.com/api/app/media/upload";
+    print('profile ${url}');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+    Map<String,dynamic> file = {};
+    file["path"] = Data.url_key;
+    file["filename"] = fileName;
+
+      Map<String,dynamic> data = {"files": []};
+      data["files"].add(file);
+      try{
+      response = await dio.post(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+       started(response.data[0]);
+        
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //return response;
+  }  
+
+  static started(String arttach)async{
+    String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/${Data.transport_id}/started";
+    print('profile ${url}');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Map<String,dynamic> data = {"attachment": "9c6e8f9a-641f-4565-9340-94ca4dc6593a", "lat": 24.7791656, "lng": 121.0024267};
+     
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //return response;
+  }  
 
 }

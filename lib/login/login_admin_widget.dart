@@ -47,7 +47,7 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
     );
 
     if(isAutoLogin == true){
-      //await request();
+      await request();
     }
 
   }
@@ -441,8 +441,8 @@ Future<void> _showMyDialog() async {
 }
   request() async {
     
-     Navigator.pushNamed(context,'/camera');
-     return;
+     //Navigator.pushNamed(context,'/camera');
+     //return;
     setState(() {
       _loading = true;
       _text = "正在请求...";

@@ -72,3 +72,26 @@ enum lot_status{
    
   });
 }
+
+enum transport_status{
+  CREATED(value: 0, label: "CREATED"),
+  DISPATCHED(value: 1, label: "DISPATCHED"),
+  STARTED(value: 2, label: "STARTED"),
+  REQUESTED(value: 3, label: "REQUESTED"),
+  APPROVED(value: 4, label: "APPROVED"),
+
+  REJECTED(value: 5, label: "REJECTED"),
+  RETURNED(value: 6, label: "RETURNED"),
+  FINISHED(value: 7, label: "FINISHED"),
+  TERMINATED(value: 8, label: "TERMINATED");
+  
+
+    final int value;
+    final String label;
+  
+  const transport_status({
+    required this.value,
+    required this.label,
+   
+  });
+}
