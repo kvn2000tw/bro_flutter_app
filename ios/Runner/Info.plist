@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>bro_flutter_app</string>
+	<string>真實碳回收</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -46,9 +46,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>recycle</string>
+	<string>真實碳回收</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>recycle</string>
+	<string>真實碳回收</string>
 
 </dict>
 </plist>
