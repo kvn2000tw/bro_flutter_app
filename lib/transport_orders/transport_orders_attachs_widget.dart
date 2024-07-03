@@ -35,7 +35,6 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
     super.dispose();
   }
 
-  final String ArrowRightIcon = 'assets/images/arrow-right.svg';
   @override
   Widget build(BuildContext context) {
 
@@ -67,9 +66,9 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
                           ),
                     ),
                   ),
-                ),
+                ),  
               ),
-                            list.length > 0 ? Container() :Padding(
+                            list.length == 0 ? Padding(
   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
   child: Container(
     width: double.infinity,
@@ -90,7 +89,7 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
       ),
     ),
   ),
-),
+):
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,

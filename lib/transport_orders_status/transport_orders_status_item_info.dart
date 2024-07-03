@@ -3,6 +3,7 @@ import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
+import 'package:bro_flutter_app/transport_orders/transport_orders_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info_model.dart';
@@ -472,65 +473,7 @@ class _TransportOrdersStatusState
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                '附件',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      fontSize: 24,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                              ),
-                            ),
-                            list.length > 0 ? Container() :Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-  child: Container(
-    width: double.infinity,
-    height: 50,
-    decoration: BoxDecoration(
-      color: FlutterFlowTheme.of(context).secondaryBackground,
-    ),
-    child: Align(
-      alignment: AlignmentDirectional(0, 0),
-      child: Text(
-        '無附件檔案',
-        style: FlutterFlowTheme.of(context).bodyMedium.override(
-              fontFamily: 'Readex Pro',
-              fontSize: 20,
-              letterSpacing: 0,
-              fontWeight: FontWeight.w500,
-            ),
-      ),
-    ),
-  ),
-),
-                            Container(
-                              width: double.infinity,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                children: list,
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: TransportOrdersAttachsWidget(attachs:widget.info.attachments),
                       ),
                       Container(
                         width: double.infinity,

@@ -18,6 +18,7 @@ class Data {
   static User user = User();
   static String lot_barcode='';
   static String transport_id='';
+  static String errorMessage = '';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

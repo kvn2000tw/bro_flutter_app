@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:camera/camera.dart';
 //import 'transport_orders_list_model.dart';
 
 class TransportOrdersItemWidget extends StatefulWidget {
@@ -435,10 +436,12 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                                 .secondaryBackground,
                           ),
                           child: FFButtonWidget(
-                            onPressed: () {
+                            onPressed: () async{
                               print('Button pressed ...');
                               Data.transport_id = widget.info.id;
-                              Navigator.pushNamed(context,'/transport-orders-info');
+                              //Navigator.pushNamed(context,'/transport-orders-info');
+                              //  final picture = await Camera().takePicture();
+                              //  Navigator.of(context).pop();
                             },
                             text: '查看',
                             options: FFButtonOptions(

@@ -1,6 +1,8 @@
 
 import 'dart:io';
 
+import 'package:bro_flutter_app/data.dart';
+
 import '../service.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -70,62 +72,73 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-                child: TextFormField(
-                  controller: _model.textController1,
-                  //focusNode: _model.textFieldFocusNode1,
-                  autofocus: false,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: '請輸入公司統一編號',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0,
-                      ),
-                  validator:
-                      _model.textController1Validator.asValidator(context),
-                ),
+Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+  child: TextFormField(
+    controller: _model.textController1,
+    //focusNode: _model.textFieldFocusNode1,
+    autofocus: false,
+    obscureText: false,
+    decoration: InputDecoration(
+      labelText: '請輸入公司統一編號',
+      labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+      hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).alternate,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).primary,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).error,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).error,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      suffixIcon: _model.textController1!.text.isNotEmpty
+          ? InkWell(
+              onTap: () async {
+                _model.textController1?.clear();
+                setState(() {});
+              },
+              child: Icon(
+                Icons.clear,
+                size: 25,
               ),
+            )
+          : null,
+    ),
+    style: FlutterFlowTheme.of(context).bodyMedium.override(
+          fontFamily: 'Readex Pro',
+          letterSpacing: 0,
+        ),
+    keyboardType: TextInputType.number,
+    validator: _model.textController1Validator.asValidator(context),
+  ),
+),
+
               Container(
                 width: double.infinity,
                 height: 50,
@@ -148,62 +161,72 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-                child: TextFormField(
-                  controller: _model.textController2,
-                  //focusNode: _model.textFieldFocusNode2,
-                  autofocus: false,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: '請輸入信箱',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Readex Pro',
-                        letterSpacing: 0,
-                      ),
-                  validator:
-                      _model.textController2Validator.asValidator(context),
-                ),
+Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+  child: TextFormField(
+    controller: _model.textController2,
+    //focusNode: _model.textFieldFocusNode2,
+    autofocus: false,
+    obscureText: false,
+    decoration: InputDecoration(
+      labelText: '請輸入信箱',
+      labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+      hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).alternate,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).primary,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).error,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).error,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      suffixIcon: _model.textController2!.text.isNotEmpty
+          ? InkWell(
+              onTap: () async {
+                _model.textController2?.clear();
+                setState(() {});
+              },
+              child: Icon(
+                Icons.clear,
+                size: 25,
               ),
+            )
+          : null,
+    ),
+    style: FlutterFlowTheme.of(context).bodyMedium.override(
+          fontFamily: 'Readex Pro',
+          letterSpacing: 0,
+        ),
+    validator: _model.textController2Validator.asValidator(context),
+  ),
+),
+
               Container(
                 width: double.infinity,
                 height: 50,
@@ -293,7 +316,7 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
                           _model.passwordVisibility
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          size: 40,
+                          size: 20,
                         ),
                       ),
                     ),
@@ -358,17 +381,50 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
           );
   }
 
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('登入錯誤'),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(Data.errorMessage),
+              
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
   request() async {
+    
     setState(() {
       _loading = true;
       _text = "正在请求...";
     });
+    final companyCode = _model.textController1.text;
+    final username = _model.textController2.text;
+    final passwd = _model.textController3.text;
     try {
-      var response = await Service.login();
+      var ret = await Service.login(companyCode,username,passwd);
       print('login');
-      if(response.statusCode == HttpStatus.ok){
+      if(ret == true){
         print('login1');
         Navigator.pushNamed(context,'/home');
+      }else {
+        _showMyDialog();
       }
     
     } catch (e) {
