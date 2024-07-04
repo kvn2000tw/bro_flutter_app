@@ -5,6 +5,7 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
+import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
 class TransportOrdersStatusPage extends StatefulWidget {
   const TransportOrdersStatusPage({super.key});
@@ -23,28 +25,70 @@ class TransportOrdersStatusPage extends StatefulWidget {
 
 class _TransportOrdersStatusState
     extends State<TransportOrdersStatusPage> {
-  int _selectedIndex = 0;
-  bool isLoad = true;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    
-  ];
+ 
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  bool canCheck = false;
+  bool canFinish = false;
+  bool isLoad = true;
+  List<RadioGroupController> radio_list = [];
+  List<TextEditingController> text_list = [];
+  List<Widget> list = [];
+  TextEditingController noteController = TextEditingController();
 
   _getLotStatus()async{
     final response = await Service.getLotStatus(Data.lot_barcode);
 
     if(response.statusCode == HttpStatus.ok){
+      
      setState(() {
-      isLoad = false;
+      
+      initLotStatus();
     });
     }
+  }
+  initLotStatus(){
+
+    canCheck = Data.isCurrent && (Data.lotStatus.status == lot_status.DISPATCHED.value);
+    isLoad = false;
+
+    if(canCheck == true){
+        canFinish = true;
+        for(var i = 0; i < Data.lotStatus.checkables.length; i++){
+          if(Data.lotStatus.checkables[i]["value"] == null){
+            canFinish = false;
+            break;
+          }
+        }
+      }
+
+      radio_list = [];
+      text_list = [];
+      noteController = TextEditingController(text:Data.lotStatus.note);
+
+      for(var i = 0; i < Data.lotStatus.checkables.length; i++){
+        var radio = RadioGroupController();
+
+        radio_list.add(radio);
+        text_list.add(TextEditingController(text:Data.lotStatus.checkables[i]['note']));
+        
+      }
+    
+    list = [];
+    for(var i = 0; i < Data.lotStatus.checkables.length; i++){
+       
+        list.add(TransportOrdersStatusItem(info:Data.lotStatus.checkables[i],
+        radio:radio_list[i],
+        value:Data.lotStatus.checkables[i]["value"],
+        textController:text_list[i],
+        canCheck:canCheck
+      ));
+        
+    }
+
+    list.add(TransportOrdersStatusItemInfo(info:Data.lotStatus,
+    textController:noteController
+    ));
+
   }
   @override
   void initState() {
@@ -58,17 +102,113 @@ class _TransportOrdersStatusState
    
     super.dispose();
   }
-  @override
-  Widget build(BuildContext context) {
 
-    List<Widget> list = [];
+Future<void> _showMyDialog(String title,String text) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title:  Text(title),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(text),
+              
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+  saveCheck()async{
+    
     for(var i = 0; i < Data.lotStatus.checkables.length; i++){
-        list.add(TransportOrdersStatusItem(info:Data.lotStatus.checkables[i]));
+       
+      print(radio_list[i].value);
+      print(text_list[i].text);
+      print(noteController.text);
+      if(radio_list[i].value == null){
+        _showMyDialog('檢查錯誤','請點選合格或不合格');
+        return;
+      }
         
     }
 
-    bool canCheck = true;
-    list.add(TransportOrdersStatusItemInfo(info:Data.lotStatus));
+    Map<String,dynamic> data = {};
+    List<Map<String,dynamic>> list = [];
+    for(var i = 0; i < Data.lotStatus.checkables.length; i++){
+      Map<String,dynamic> val = {};
+      val['id'] = Data.lotStatus.checkables[i]['id'];
+      val['value'] = radio_list[i].value == '合格' ? true:false;
+      val['note'] = text_list[i].text;
+      list.add(val);
+    }
+    data["checkable"] = list;
+    data['note'] = noteController.text;
+    bool ret = await Service.updateLot(Data.lotStatus.barcode,data);
+
+    if(ret == true){
+       _showMyDialog('儲存檢查結果','儲存成功');
+     setState(() {
+      
+      initLotStatus();
+    });
+    }
+      
+  }
+Future<void> _takePicture(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('完成檢查？'),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('將儲存物料檢查結果'),
+              Text('需要一張物料狀態的照片'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('上傳物料狀態的照片'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Data.runFunc = 'passed';
+              Navigator.pushNamed(context,'/camera');
+              setState(() {
+      
+                initLotStatus();
+              });
+            },
+          ),
+           TextButton(
+            child: const Text('取消'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+  
+  @override
+  Widget build(BuildContext context) {
+
      return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -161,6 +301,40 @@ class _TransportOrdersStatusState
                   children: list,
                 ),
               ),
+              canFinish == false ? Container():Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+  child: Container(
+    width: double.infinity,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: FFButtonWidget(
+      onPressed: () {
+        print('Button pressed ...');
+        _takePicture(context);
+      },
+      text: '完成檢查',
+      options: FFButtonOptions(
+        height: 40,
+        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+              fontFamily: 'Readex Pro',
+              color: FlutterFlowTheme.of(context).primary,
+              letterSpacing: 0,
+            ),
+        elevation: 3,
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).primary,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+  ),
+),
               canCheck == false ? Container() : Padding(
   padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
   child: Container(
@@ -172,6 +346,7 @@ class _TransportOrdersStatusState
     child: FFButtonWidget(
       onPressed: () {
         print('Button pressed ...');
+        saveCheck();
       },
       text: '儲存檢查結果',
       options: FFButtonOptions(

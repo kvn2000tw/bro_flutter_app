@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:dio/dio.dart';
-
+import 'dart:io' as io;
 class Service{
   //static final dio = Dio();
-
+  static const BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
   static login(String code,String user,String passwd) async {
-        String url = "https://recycle-server.realco2tech.com/api/app/admin/account/login";
-        print('login ${url}');
+        String url = "$BaseUrl/admin/account/login";
+        print('login $url');
         // Or create `Dio` with a `BaseOptions` instance.
         final options = BaseOptions(
         baseUrl: url,
@@ -80,8 +80,8 @@ class Service{
 
   static getTransportCurrent()async {
     
-    String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/current";
-    print('getTransportCurrent ${url}');
+    String url = "$BaseUrl/admin/transport-orders/current";
+    print('getTransportCurrent $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -112,8 +112,8 @@ class Service{
 
   static getTransportSelect()async {
     
-    String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/${Data.transport_id}";
-    print('getTransportSelect ${url}');
+    String url = "$BaseUrl/admin/transport-orders/${Data.transport_id}";
+    print('getTransportSelect $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -143,8 +143,8 @@ class Service{
   }
 
   static getLotStatus(String barcode)async{
-    String url = 'https://recycle-server.realco2tech.com/api/app/admin/lots/barcode/${barcode}';
-    print('getLotStatus ${url}');
+    String url = '$BaseUrl/admin/lots/barcode/${barcode}';
+    print('getLotStatus $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -163,7 +163,7 @@ class Service{
       response = await dio.get(url);
 
       if(response.statusCode == HttpStatus.ok){
-         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
          print('getLotStatus');
         //print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
@@ -174,8 +174,8 @@ class Service{
       return response;
   }
   static GetTransportOrders()async{
-    String url = 'https://recycle-server.realco2tech.com/api/app/admin/transport-orders/index?page=1';
-    print('GetTransportOrders ${url}');
+    String url = '$BaseUrl/admin/transport-orders/index?page=1';
+    print('GetTransportOrders $url');
     // Or create `Dio` with a `BaseOptions` instance.
     Map<String, List> data = {"filters": [], "sorts": []};
     final options = BaseOptions(
@@ -207,8 +207,8 @@ class Service{
   
   static profile()async {
     
-    String url = "https://recycle-server.realco2tech.com/api/app/admin/account/profile";
-    print('profile ${url}');
+    String url = "$BaseUrl/admin/account/profile";
+    print('profile $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -237,9 +237,9 @@ class Service{
       return response;
   }
 
-  static upload_url(String upload_url)async{
-    String url = "https://recycle-server.realco2tech.com/api/app/media/upload-url";
-    print('profile ${url}');
+  static upload_url(String uploadUrl)async{
+    String url = "$BaseUrl/media/upload-url";
+    print('profile $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -262,11 +262,11 @@ class Service{
       response = await dio.post(url,data:{"filename": fileName});
 
       if(response.statusCode == HttpStatus.ok){
-         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print(fromJsonMap);
         
         Data.setUploadUrl(fromJsonMap);
-        await upload_file(upload_url,fileName);
+        await upload_file(uploadUrl,fileName);
        
       }
       //print(response.statusCode.toString()); 
@@ -275,13 +275,7 @@ class Service{
       return response;
   }
 
-  static upload_file(String uoload_url,String fileName)async{
-final formData = FormData.fromMap({
-  'name': 'dio',
-  'date': DateTime.now().toIso8601String(),
-  'file': await MultipartFile.fromFile(uoload_url, filename: fileName),
-  
-});
+  static upload_file(String uoloadUrl,String fileName)async{
 
     final options = BaseOptions(
       //baseUrl: url,
@@ -293,16 +287,27 @@ final formData = FormData.fromMap({
          
           },
         );
+        final bytes = io.File(uoloadUrl).readAsBytesSync();
+
         final dio = Dio(options);
-    
-        final response = await dio.put(Data.presignedUrl, data: formData);
+    final response =  await dio.put(
+  Data.presignedUrl,
+  data: bytes, // Creates a Stream<List<int>>.
+  options: Options(
+    headers: {
+      Headers.contentLengthHeader: bytes.length, // Set the content-length.
+       "Content-Type": "image/jpeg",
+    },
+  ),
+);
+        //final response = await dio.put(Data.presignedUrl, data: formData);
         if(response.statusCode == HttpStatus.ok){
            await upload(fileName);
         }
   }
   static upload(String fileName)async{
-    String url = "https://recycle-server.realco2tech.com/api/app/media/upload";
-    print('profile ${url}');
+    String url = "$BaseUrl/media/upload";
+    print('profile $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -317,19 +322,20 @@ final formData = FormData.fromMap({
         final dio = Dio(options);
      
       Response response;
-    
-    Map<String,dynamic> file = {};
-    file["path"] = Data.url_key;
-    file["filename"] = fileName;
 
-      Map<String,dynamic> data = {"files": []};
-      data["files"].add(file);
+      Map<String,dynamic> data = {"files": [{"path":Data.url_key,"filename":fileName}]};
+      
       try{
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
-       started(response.data[0]);
+       if(Data.runFunc == 'started'){
+        await started(response.data[0]);
+        }
+        else if(Data.runFunc == 'passed'){
+          await passed(response.data[0]);
+
+        }
         
         //Data.setUploadUrl(fromJsonMap);
       }
@@ -358,8 +364,8 @@ final formData = FormData.fromMap({
   }  
 
   static started(String arttach)async{
-    String url = "https://recycle-server.realco2tech.com/api/app/admin/transport-orders/${Data.transport_id}/started";
-    print('profile ${url}');
+    String url = "$BaseUrl/admin/transport-orders/${Data.transport_id}/started";
+    print('profile $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -375,14 +381,15 @@ final formData = FormData.fromMap({
      
       Response response;
     
-      Map<String,dynamic> data = {"attachment": "9c6e8f9a-641f-4565-9340-94ca4dc6593a", "lat": 24.7791656, "lng": 121.0024267};
+      Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
      
       try{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
        
-        
+        await GetTransportOrders();
+        await getTransportCurrent();
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -407,6 +414,113 @@ final formData = FormData.fromMap({
       }
     }
       //return response;
+  }  
+
+  static passed(String arttach)async{
+    String url = "$BaseUrl/admin/lots/barcode/${Data.lot_barcode}/passed";
+    print('profile $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Map<String,dynamic> data = {"attachment": arttach};
+     
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        await getLotStatus(Data.lot_barcode);
+        getTransportCurrent();
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //return response;
+  }  
+
+  static updateLot(String barcode,Map<String,dynamic> data)async{
+    String url = "$BaseUrl/admin/lots/barcode/$barcode";
+    print('profile $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      bool ret = false;
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('updateLot');
+        //print(fromJsonMap);
+        Data.setTransportLotStatus(fromJsonMap);
+        ret = true;
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      return ret;
   }  
 
 }

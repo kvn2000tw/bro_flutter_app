@@ -22,7 +22,9 @@ class TransportOrdersInfo{
 }
    
   class TransportOrdersLotStatus{
-  
+
+  int status = 0; 
+  String barcode = ''; 
   String note = '';
   String description = '';
   String weight = '';

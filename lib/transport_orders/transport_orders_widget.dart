@@ -71,6 +71,7 @@ Future<void> _showMyDialog(BuildContext context) async {
             onPressed: () {
               Navigator.of(context).pop();
               Data.transport_id = widget.info.id;
+              Data.runFunc = 'started';
               Navigator.pushNamed(context,'/camera');
             },
           ),

@@ -23,6 +23,7 @@ class Data {
   static String presignedUrl = '';
   static String url_key = '';
   static bool isCurrent = false;
+  static String runFunc = '';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -73,6 +74,8 @@ class Data {
 
   static setTransportLotStatus(Map<String,dynamic> response){
     lotStatus.name = response['name'];
+    lotStatus.barcode = response['barcode'];
+    lotStatus.status = response['status'];
     lotStatus.container = response['container'];
     lotStatus.note = response['note'] ?? '';
     lotStatus.volume = response['volume'];

@@ -15,9 +15,13 @@ import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widg
 
 class TransportOrdersStatusItemInfo extends StatefulWidget {
    TransportOrdersStatusItemInfo({super.key,
-  required this.info});
+  required this.info,
+  this.textController
+  });
 
   late TransportOrdersLotStatus info;
+  TextEditingController? textController;
+
   @override
   State<TransportOrdersStatusItemInfo> createState() =>
       _TransportOrdersStatusState();
@@ -179,26 +183,32 @@ class _TransportOrdersStatusState
                                             ),
                                       ),
                                     ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                      ),
-                                      child: Align(
-                                        alignment: AlignmentDirectional(-1, 0),
-                                        child: Text(
-                                          widget.info.container,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
+                                   Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+  child: Container(
+    width: double.infinity,
+    height: 40,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+      border: Border.all(
+        color: FlutterFlowTheme.of(context).primaryText,
+      ),
+    ),
+    child:Align(
+  alignment: AlignmentDirectional(-1, 0),
+  child: Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+    child: Text(
+      widget.info.container,
+      style: FlutterFlowTheme.of(context).bodyMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+    ),
+  ),
+),
+  ),
+),
                                   ],
                                 ),
                               ),
@@ -231,27 +241,34 @@ class _TransportOrdersStatusState
                                             ),
                                       ),
                                     ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                      ),
-                                      child: Align(
-                                        alignment: AlignmentDirectional(-1, 0),
-                                        child: Text(
-                                          widget.info.volume,
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Readex Pro',
-                                                letterSpacing: 0,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                               Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+  child: Container(
+    width: double.infinity,
+    height: 40,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+      border: Border.all(
+        color: FlutterFlowTheme.of(context).primaryText,
+      ),
+    ),
+    child: Align(
+  alignment: AlignmentDirectional(-1, 0),
+  child: Padding(
+    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+    child: Text(
+      widget.info.volume,
+      style: FlutterFlowTheme.of(context).bodyMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+    ),
+  ),
+),
+
+  ),
+),
+                                ],
                                 ),
                               ),
                             ),
@@ -402,6 +419,7 @@ class _TransportOrdersStatusState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                                 child: TextFormField(
+                                  readOnly: true,
                                   controller: _model.textController2,
                                   focusNode: _model.textFieldFocusNode2,
                                   autofocus: false,
@@ -427,7 +445,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
@@ -435,7 +453,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    errorBorder: UnderlineInputBorder(
+                                    errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color:
                                             FlutterFlowTheme.of(context).error,
@@ -443,7 +461,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    focusedErrorBorder: UnderlineInputBorder(
+                                    focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color:
                                             FlutterFlowTheme.of(context).error,
@@ -515,7 +533,7 @@ class _TransportOrdersStatusState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                                 child: TextFormField(
-                                  controller: _model.textController3,
+                                  controller: widget.textController,
                                   focusNode: _model.textFieldFocusNode3,
                                   autofocus: false,
                                   obscureText: false,
@@ -540,7 +558,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    focusedBorder: UnderlineInputBorder(
+                                    focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
@@ -548,7 +566,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    errorBorder: UnderlineInputBorder(
+                                    errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color:
                                             FlutterFlowTheme.of(context).error,
@@ -556,7 +574,7 @@ class _TransportOrdersStatusState
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    focusedErrorBorder: UnderlineInputBorder(
+                                    focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color:
                                             FlutterFlowTheme.of(context).error,

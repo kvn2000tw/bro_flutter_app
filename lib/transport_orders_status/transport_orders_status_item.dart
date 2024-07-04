@@ -2,6 +2,7 @@
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
+import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_model.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,18 @@ import 'package:radio_group_v2/widgets/views/radio_group.dart';
 class TransportOrdersStatusItem extends StatefulWidget {
    TransportOrdersStatusItem({super.key,
   
-  required this.info});
+  required this.info,
+  this.radio,
+  this.textController,
+  required this.canCheck,
+  this.value,
+  });
 
   late Map<String,dynamic> info;
+  late RadioGroupController? radio;
+  late bool? value;
+  late TextEditingController? textController;
+  late bool canCheck;
   @override
   State<TransportOrdersStatusItem> createState() =>
       _TransportOrdersStatusState();
@@ -26,9 +36,8 @@ class TransportOrdersStatusItem extends StatefulWidget {
 class _TransportOrdersStatusState
     extends State<TransportOrdersStatusItem> {
 
-       late TransportOrdersStatusItemModel _model;
+    late TransportOrdersStatusItemModel _model;
 
-      RadioGroupController myController = RadioGroupController();
   @override
   void initState() {
     super.initState();
@@ -48,11 +57,14 @@ class _TransportOrdersStatusState
     super.dispose();
   }
   
+  int _convInt(bool val){
+    return val == false ? 0: 1;
+  }
   Widget showCheck(BuildContext context){
     return RadioGroup(
-  controller: myController,
+  controller: widget.radio,
   values: ['不合格', '合格'],
-  //indexOfDefault:,
+  indexOfDefault:widget.value == null ? -1:_convInt(widget.value!),
   orientation: RadioGroupOrientation.horizontal,
   decoration: RadioGroupDecoration(
     spacing: 10.0,
@@ -66,8 +78,7 @@ class _TransportOrdersStatusState
   @override
   Widget build(BuildContext context) {
 
-    var canCheck = true;
-
+    
      return                    
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -99,6 +110,7 @@ class _TransportOrdersStatusState
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0,
+                                    fontSize: 20,
                                   ),
                             ),
                           ),
@@ -260,7 +272,7 @@ class _TransportOrdersStatusState
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
-                                    child:canCheck == true? showCheck(context) : Text(
+                                    child:widget.canCheck == true? showCheck(context) : Text(
                                       widget.info['value'] == true ? '合格' : '不合格',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -322,8 +334,8 @@ class _TransportOrdersStatusState
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       8, 0, 8, 0),
                                   child: TextFormField(
-                                    controller: _model.textController2,
-                                    focusNode: _model.textFieldFocusNode2,
+                                    controller: widget.textController,
+                                    //focusNode: _model.textFieldFocusNode2,
                                     autofocus: false,
                                     obscureText: false,
                                     decoration: InputDecoration(
