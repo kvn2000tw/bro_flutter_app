@@ -3,6 +3,7 @@
 
 import 'dart:io';
 
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/setting_page.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,12 @@ class _HomePageState
   ];
 
   void _onItemTapped(int index)async {
+    if(index == 0){
+      Data.isCurrent = true;
+    }else {
+      Data.isCurrent = false;
+    }
+
     if(index == 1){
       final response = await Service.GetTransportOrders();
 
@@ -71,6 +78,7 @@ class _HomePageState
     super.initState();
 
     _selectedIndex = 0;
+    Data.isCurrent = true;
     _goItem();
 
     _getTransportCurrent();

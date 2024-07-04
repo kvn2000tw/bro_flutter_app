@@ -22,6 +22,7 @@ class Data {
   static bool isAutoLogin = false;
   static String presignedUrl = '';
   static String url_key = '';
+  static bool isCurrent = false;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

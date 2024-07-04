@@ -67,6 +67,7 @@ class _TransportOrdersStatusState
         
     }
 
+    bool canCheck = true;
     list.add(TransportOrdersStatusItemInfo(info:Data.lotStatus));
      return Scaffold(
         appBar: AppBar(
@@ -160,6 +161,39 @@ class _TransportOrdersStatusState
                   children: list,
                 ),
               ),
+              canCheck == false ? Container() : Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+  child: Container(
+    width: double.infinity,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: FFButtonWidget(
+      onPressed: () {
+        print('Button pressed ...');
+      },
+      text: '儲存檢查結果',
+      options: FFButtonOptions(
+        height: 40,
+        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+              fontFamily: 'Readex Pro',
+              color: FlutterFlowTheme.of(context).primary,
+              letterSpacing: 0,
+            ),
+        elevation: 3,
+        borderSide: BorderSide(
+          color: FlutterFlowTheme.of(context).primary,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+  ),
+),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                 child: Container(

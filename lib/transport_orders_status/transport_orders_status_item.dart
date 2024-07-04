@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
+import 'package:radio_group_v2/utils/radio_group_decoration.dart';
+import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
+import 'package:radio_group_v2/widgets/views/radio_group.dart';
 
 class TransportOrdersStatusItem extends StatefulWidget {
    TransportOrdersStatusItem({super.key,
@@ -24,22 +27,17 @@ class _TransportOrdersStatusState
     extends State<TransportOrdersStatusItem> {
 
        late TransportOrdersStatusItemModel _model;
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    
-  ];
 
+      RadioGroupController myController = RadioGroupController();
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersStatusItemModel());
 
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??= TextEditingController(text:widget.info["name"]);
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??= TextEditingController(text:widget.info["note"]??'');
     _model.textFieldFocusNode2 ??= FocusNode();
 
   }
@@ -50,17 +48,25 @@ class _TransportOrdersStatusState
     super.dispose();
   }
   
+  Widget showCheck(BuildContext context){
+    return RadioGroup(
+  controller: myController,
+  values: ['不合格', '合格'],
+  //indexOfDefault:,
+  orientation: RadioGroupOrientation.horizontal,
+  decoration: RadioGroupDecoration(
+    spacing: 10.0,
+    labelStyle: TextStyle(
+      color: Colors.blue,
+    ),
+    activeColor: Colors.blue,
+  ),
+);
+  }
   @override
   Widget build(BuildContext context) {
 
-    _model.textController1?.value = TextEditingValue(
-      text:widget.info["name"]
-      
-    );
-    _model.textController2?.value = TextEditingValue(
-      text:widget.info["note"]??''
-      
-    );
+    var canCheck = true;
 
      return                    
               Padding(
@@ -254,7 +260,7 @@ class _TransportOrdersStatusState
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
-                                    child: Text(
+                                    child:canCheck == true? showCheck(context) : Text(
                                       widget.info['value'] == true ? '合格' : '不合格',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
