@@ -25,14 +25,10 @@ class _HomePageState
     extends State<HomePage> {
   int _selectedIndex = 0;
   bool isLoad = true;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    RuningPage(),
-    TransportOrdersListWidget(),
-    SettingPage()
-  ];
+ 
+  List<Widget> _widgetOptions = [];
 
+  
   void _onItemTapped(int index)async {
     if(index == 0){
       Data.isCurrent = true;
@@ -77,6 +73,12 @@ class _HomePageState
   void initState() {
     super.initState();
 
+  _widgetOptions = <Widget>[
+    RuningPage(onTap:()=>_onItemTapped(1)),
+    TransportOrdersListWidget(),
+    SettingPage()
+  ];
+  
     _selectedIndex = 0;
     Data.isCurrent = true;
     _goItem();

@@ -11,7 +11,11 @@ import 'package:flutter_svg/svg.dart';
 
 
 class RuningPage extends StatefulWidget {
-  const RuningPage({super.key});
+   RuningPage({super.key,
+  
+  required this.onTap});
+
+  late GestureTapCallback onTap;
 
   @override
   State<RuningPage> createState() => _Page1WidgetState();
@@ -35,10 +39,8 @@ class _Page1WidgetState extends State<RuningPage>
   }
 
   _goTransportListPage(){
-    Navigator.push(context, MaterialPageRoute(
-    builder: (context) => HomePage(item: 1),
-      settings: RouteSettings(name: '/page2')
-    ));
+    widget.onTap();
+
   }
   Widget _empty(BuildContext context) {
     return Align(

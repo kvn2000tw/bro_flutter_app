@@ -1,5 +1,9 @@
 import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_item_widget.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/utils/request_button.dart';
+import 'package:bro_flutter_app/utils/return_button.dart';
+import 'package:bro_flutter_app/utils/start_button.dart';
+
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -13,10 +17,15 @@ import 'transport_orders_detail_list_model.dart';
 
 class TransportOrdersDetailListWidget extends StatefulWidget {
   TransportOrdersDetailListWidget({super.key,
-  
+  this.canRequest = false,
+  this.canStart = false,
+  this.canReturn = false,
   required this.info});
 
   late TransportOrdersInfo info;
+  late bool canRequest;
+  late bool canStart;
+  late bool canReturn;
   @override
   State<TransportOrdersDetailListWidget> createState() => _TransportOrdersDetailListWidgetState();
 }
@@ -26,10 +35,11 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool canReturn = false;
   @override
   void initState() {
     super.initState();
-   
+
   }
 
   @override
@@ -107,6 +117,9 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
                   children: list,
                 ),
               ),
+                  StartButton(show:widget.canStart),
+                  RequestButton(show:widget.canRequest),
+                  ReturnButton(show:widget.canReturn)              
             ]);
   }
 }

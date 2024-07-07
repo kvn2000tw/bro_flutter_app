@@ -523,4 +523,115 @@ class Service{
       return ret;
   }  
 
-}
+  static Request()async{
+    String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/requested";
+    print('profile $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+      var data = {"lat": 24.7911418, "lng": 120.9658681};
+      bool ret = false;
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('updateLot');
+        getTransportCurrent();
+        //print(fromJsonMap);
+        //Data.setTransportLotStatus(fromJsonMap);
+        ret = true;
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      return ret;
+  }  
+  static returned()async{
+    String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/returned";
+    print('profile $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+      var data = {"lat": 24.7911418, "lng": 120.9658681};
+      bool ret = false;
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('updateLot');
+        getTransportCurrent();
+        //print(fromJsonMap);
+        //Data.setTransportLotStatus(fromJsonMap);
+        ret = true;
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      return ret;
+  }  
+
+ }

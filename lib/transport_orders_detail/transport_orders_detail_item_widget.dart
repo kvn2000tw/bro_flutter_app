@@ -26,6 +26,8 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  late String status;
+  late Color color;
 
   @override
   void initState() {
@@ -40,6 +42,12 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
 
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
+
+    status = SearchIcon;
+    color = Colors.blue;
+
+    _initStatus(widget.lot['status']);
+
   }
 
   @override
@@ -54,29 +62,34 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
   final String CheckIcon = 'assets/images/check-circle.svg';
   final String ExclamationIcon = 'assets/images/exclamation-circle.svg';
  
-  @override
-  Widget build(BuildContext context) {
-   
-   var status = SearchIcon;
-   var color = Colors.blue;
-   if( widget.lot['status'] == lot_status.PASSED.value){
+  _initStatus(int this_status){
+   if( this_status == lot_status.PASSED.value){
       status = CheckIcon;
       color = Colors.green;
-   }else if(widget.lot['status'] == lot_status.REQUESTED.value){
+   }else if(this_status == lot_status.REQUESTED.value){
       status = SearchIcon;
       color = Colors.blue;
    }
-   else if(widget.lot['status'] == lot_status.FAILED.value){
+   else if(this_status == lot_status.FAILED.value){
       status = ExclamationIcon;
       color = Colors.red;
    }
   
+  }
+  @override
+  Widget build(BuildContext context) {
+   
     return           
     InkWell(
-        onTap: (){
+        onTap: ()async{
           print("alarm clicked");
           Data.lot_barcode = widget.lot['barcode'];
-           Navigator.pushNamed(context,'/transport-orders-status');
+          await Navigator.pushNamed(context,'/transport-orders-status');
+          setState(() {
+
+            _initStatus(Data.lotStatus.status);
+          });
+
         },        
           child:   Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),

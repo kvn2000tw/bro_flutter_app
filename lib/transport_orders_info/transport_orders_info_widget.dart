@@ -1,3 +1,4 @@
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_list_widget.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_widget.dart';
@@ -40,7 +41,9 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
 
   final String CameraIcon = 'assets/images/camera.svg';
   final String QrCodeIcon = 'assets/images/qr-code.svg';
-
+  bool canStart = false;
+  bool canRequest = false;
+  bool canReturn = false;
   @override
   void initState() {
     super.initState();
@@ -52,6 +55,22 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
       length: 3,
       initialIndex: 0,
     )..addListener(() => setState(() {}));
+
+    Data.transport_id = widget.info.id;
+
+    if(widget.info.status == transport_status.DISPATCHED.value){
+      canStart = true;
+    }
+
+    if(widget.info.status == transport_status.STARTED.value || 
+      widget.info.status == transport_status.REJECTED.value){
+      canRequest = true;
+    }
+
+    if(widget.info.status == transport_status.APPROVED.value) 
+    {
+      canReturn = true;
+    }
   }
 
   @override
@@ -106,9 +125,9 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
                       child: TabBarView(
                         controller: _model.tabBarController,
                         children: [
-                          TransportOrdersWidget(info:widget.info),
-                          TransportOrdersDetailListWidget(info:widget.info),
-                          TransportOrdersAttachsWidget(attachs:widget.info.attachs),
+                          TransportOrdersWidget(info:widget.info,canStart:canStart,canRequest:canRequest,canReturn:canReturn),
+                          TransportOrdersDetailListWidget(info:widget.info,canStart:canStart,canRequest:canRequest,canReturn:canReturn,),
+                          TransportOrdersAttachsWidget(attachs:widget.info.attachs,canStart:canStart,canRequest:canRequest,canReturn:canReturn),
                         ],
                       ),
                     ),

@@ -1,5 +1,9 @@
 import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/utils/request_button.dart';
+import 'package:bro_flutter_app/utils/return_button.dart';
+import 'package:bro_flutter_app/utils/start_button.dart';
+
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -12,9 +16,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TransportOrdersAttachsWidget extends StatefulWidget {
   TransportOrdersAttachsWidget({super.key,
   required this.attachs,
+  this.canRequest=false ,
+  this.canReturn=false ,
+  this.canStart=false 
   });
 
   late List<dynamic> attachs;
+  late bool canRequest;
+  late bool canStart;
+  late bool canReturn;
   @override
   State<TransportOrdersAttachsWidget> createState() => _TransportOrdersAttachtState();
 }
@@ -98,6 +108,9 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
                   children: list,
                 ),
               ),
+              StartButton(show:widget.canStart),
+              RequestButton(show:widget.canRequest),
+              ReturnButton(show:widget.canReturn),
             ],
           );
   }

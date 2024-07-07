@@ -184,14 +184,12 @@ Future<void> _takePicture(BuildContext context) async {
         actions: <Widget>[
           TextButton(
             child: const Text('上傳物料狀態的照片'),
-            onPressed: () {
-              Navigator.of(context).pop();
+            onPressed: () async{
+              
               Data.runFunc = 'passed';
-              Navigator.pushNamed(context,'/camera');
-              setState(() {
-      
-                initLotStatus();
-              });
+              await Navigator.pushNamed(context,'/camera');
+              print('abcd');
+              Navigator.of(context).pop();
             },
           ),
            TextButton(
@@ -310,9 +308,14 @@ Future<void> _takePicture(BuildContext context) async {
       color: FlutterFlowTheme.of(context).secondaryBackground,
     ),
     child: FFButtonWidget(
-      onPressed: () {
+      onPressed: () async{
         print('Button pressed ...');
-        _takePicture(context);
+        await _takePicture(context);
+        print('_takePicture');
+        setState(() {
+      
+          initLotStatus();
+        });
       },
       text: '完成檢查',
       options: FFButtonOptions(
