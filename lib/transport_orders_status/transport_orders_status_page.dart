@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bro_flutter_app/runing_page.dart';
 import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
 class TransportOrdersStatusPage extends StatefulWidget {
@@ -166,6 +167,22 @@ Future<void> _showMyDialog(String title,String text) async {
     }
       
   }
+  void showNotification(String title,String body)
+{
+  showSimpleNotification(
+    Text(title,textAlign: TextAlign.center,
+      style: TextStyle(
+      color: Colors.black,
+    ),),
+    subtitle: Text(body,textAlign: TextAlign.center,
+      style: TextStyle(
+      color: Colors.black,
+    ),),
+    background: Colors.cyan.shade700,
+    foreground:Colors.cyan.shade700,
+    duration: Duration(seconds: 2),
+  );     
+}
 Future<void> _takePicture(BuildContext context) async {
   return showDialog<void>(
     context: context,
@@ -311,6 +328,7 @@ Future<void> _takePicture(BuildContext context) async {
       onPressed: () async{
         print('Button pressed ...');
         await _takePicture(context);
+        showNotification('上傳','成功');
         print('_takePicture');
         setState(() {
       

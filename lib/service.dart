@@ -336,7 +336,10 @@ class Service{
           await passed(response.data[0]);
 
         }
-        
+        else if(Data.runFunc == 'finished'){
+          await finished(response.data[0]);
+
+        }        
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -418,7 +421,7 @@ class Service{
 
   static passed(String arttach)async{
     String url = "$BaseUrl/admin/lots/barcode/${Data.lot_barcode}/passed";
-    print('profile $url');
+    print('passed $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -467,7 +470,108 @@ class Service{
     }
       //return response;
   }  
+  static finished(String arttach)async{
+    String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/finished";
+    print('finished $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
 
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+        await getLotStatus(Data.lot_barcode);
+        getTransportCurrent();
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //return response;
+  }  
+
+  static updatEodometer(String arttach)async{
+    String url = "$BaseUrl/admin/transport-orders/${Data.current.id}";
+    print('finished $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Map<String,dynamic> data = {"final_odometer": 1000, "initial_odometer": 500, "note": null};
+
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+       await finished(arttach);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //return response;
+  }  
   static updateLot(String barcode,Map<String,dynamic> data)async{
     String url = "$BaseUrl/admin/lots/barcode/$barcode";
     print('profile $url');
@@ -578,7 +682,7 @@ class Service{
     }
       return ret;
   }  
-  static returned()async{
+  static Returned()async{
     String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/returned";
     print('profile $url');
     // Or create `Dio` with a `BaseOptions` instance.
@@ -633,5 +737,6 @@ class Service{
     }
       return ret;
   }  
+  
 
  }

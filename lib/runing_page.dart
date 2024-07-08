@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
-import 'package:bro_flutter_app/home_page.dart';
+
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
 
 
@@ -29,7 +32,7 @@ class _Page1WidgetState extends State<RuningPage>
   @override
   void initState() {
     super.initState();
-   
+   print('RuningPage');
   }
 
   @override
@@ -147,16 +150,31 @@ class _Page1WidgetState extends State<RuningPage>
               ),
             ));
   }
+
+Future<bool> _getTransportCurrent()async{
+
+  //   var response =  await http.get('https://getProjectList');    
+   final ret = await Service.getTransportCurrent();
+
+   return ret;
+}
+
   @override
   Widget build(BuildContext context) {
     
-    if(Data.current.id == '')
-      return _empty(context);
-    
-    return TransportOrdersInfoWidget(
-      title:'執行中的運輸單',hasAction:true,
-      info:Data.current
+    return FutureBuilder<bool>(
+      future: _getTransportCurrent(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
+        
+        if(Data.current.id == '')
+          return _empty(context);
 
+        return TransportOrdersInfoWidget(
+          title:'執行中的運輸單',hasAction:true,
+          info:Data.current
+
+        );
+      }
     );
    
   }

@@ -1,10 +1,4 @@
-
-
-
-import 'dart:io';
-
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,7 +22,6 @@ class _HomePageState
  
   List<Widget> _widgetOptions = [];
 
-  
   void _onItemTapped(int index)async {
     if(index == 0){
       Data.isCurrent = true;
@@ -36,13 +29,6 @@ class _HomePageState
       Data.isCurrent = false;
     }
 
-    if(index == 1){
-      final response = await Service.GetTransportOrders();
-
-      if(response.statusCode == HttpStatus.ok){
-        print('_onItemTapped');
-      }
-    }
     setState(() {
       _selectedIndex = index;
     });
@@ -52,23 +38,14 @@ class _HomePageState
   final String CogIcon = 'assets/images/cog.svg';
 
   _goItem()async{
-
+   
     int item = widget.item ?? 0;
     
     if(item > 0)
        _onItemTapped(item);
 
   }
-  _getTransportCurrent()async{
-    print('_getTransportCurrent');
-    final response = await Service.getTransportCurrent();
-    
-    if(response.statusCode == HttpStatus.ok){
-      setState(() {
-       isLoad = false;
-      });
-    }
-  }
+  
   @override
   void initState() {
     super.initState();
@@ -82,8 +59,7 @@ class _HomePageState
     _selectedIndex = 0;
     Data.isCurrent = true;
     _goItem();
-
-    _getTransportCurrent();
+    isLoad = false;
   }
 
   @override
@@ -103,9 +79,9 @@ class _HomePageState
           title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
-      body: isLoad == false ? Center(
+      body: isLoad == true ? Container():Center(
         child: _widgetOptions.elementAt(_selectedIndex),
-      ):Container(),
+      ),
       bottomNavigationBar: isLoad == true? null : BottomNavigationBar(
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(

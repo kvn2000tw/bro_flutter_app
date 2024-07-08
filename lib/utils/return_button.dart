@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 
 class ReturnButton extends StatelessWidget {
   
-  ReturnButton({this.show = false})
+  ReturnButton({this.show = false,
+  this.onPressed,})
   {
     
   }
-    bool show = false;
+  bool show = false;
+  VoidCallback? onPressed;
   Future<void> _showMyDialog(BuildContext context) async {
   return showDialog<void>(
     context: context,
@@ -29,11 +31,7 @@ class ReturnButton extends StatelessWidget {
           TextButton(
             child: const Text('確認'),
             onPressed: () async{
-              bool ret = await Service.Request();
-              if(ret == true){
-                
-              }
-             
+              onPressed!();
             },
           ),
            TextButton(

@@ -1,8 +1,11 @@
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
 import 'package:bro_flutter_app/utils/start_button.dart';
+import 'package:dio/dio.dart';
 
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -18,13 +21,21 @@ class TransportOrdersWidget extends StatefulWidget {
   required this.info,
   this.canRequest = false,
   this.canReturn = false,
-  this.canStart = false
+  this.canStart = false,
+  this.canFinish = false,  
+  this.requestPressed,
+  this.returnPressed,
+  this.finishPressed,
   });
 
   late TransportOrdersInfo info;
   late bool canRequest;
   late bool canReturn;
   late bool canStart;
+  late bool canFinish;  
+  final VoidCallback? requestPressed;
+  final VoidCallback? returnPressed;
+  final VoidCallback? finishPressed;  
   @override
   State<TransportOrdersWidget> createState() => _TransportOrdersWidgetState();
 }
@@ -35,6 +46,55 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
 
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('開始運輸？'),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('將紀錄起始里程數並開始運輸'),
+              Text('需要一張開始里程數的照片'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('上傳開始里程數照片'),
+            onPressed: () async{
+              
+              Data.runFunc = 'started';
+              await Navigator.pushNamed(context,'/camera');
+
+              Navigator.of(context).pop();
+              
+            },
+          ),
+           TextButton(
+            child: const Text('取消'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+  _startButton(BuildContext context)async{
+    await _showMyDialog(context);
+    setState(
+      (){
+        widget.info = Data.transport;
+      }
+    );
+
+  }
+
+  
   @override
   void initState() {
     super.initState();
@@ -646,9 +706,10 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                       ),
                     ),
                   ),
-                  StartButton( show:widget.canStart),
-                  ReturnButton(show:widget.canReturn),
-                  RequestButton(show:widget.canRequest),
+                  StartButton( show:widget.canStart,onPressed:()=>_startButton(context)),
+                  ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
+                  RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
+                  FinishButton(show:widget.canFinish,onPressed:widget.finishPressed),
 
                   Align(
                     alignment: AlignmentDirectional(0, 0),

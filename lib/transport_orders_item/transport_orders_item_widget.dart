@@ -2,16 +2,13 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
 
-import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:camera/camera.dart';
+
 //import 'transport_orders_list_model.dart';
 
 class TransportOrdersItemWidget extends StatefulWidget {

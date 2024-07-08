@@ -1,16 +1,16 @@
+
 import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_item_widget.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
-import 'package:bro_flutter_app/utils/start_button.dart';
+
 
 
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+
 
 import 'transport_orders_detail_list_model.dart';
 
@@ -18,14 +18,20 @@ import 'transport_orders_detail_list_model.dart';
 class TransportOrdersDetailListWidget extends StatefulWidget {
   TransportOrdersDetailListWidget({super.key,
   this.canRequest = false,
-  this.canStart = false,
   this.canReturn = false,
+  this.canFinish = false,
+  this.requestPressed,
+  this.returnPressed,
+  this.finishPressed,  
   required this.info});
 
   late TransportOrdersInfo info;
   late bool canRequest;
-  late bool canStart;
   late bool canReturn;
+  late bool canFinish;  
+  final VoidCallback? requestPressed;
+  final VoidCallback? returnPressed;
+  final VoidCallback? finishPressed;  
   @override
   State<TransportOrdersDetailListWidget> createState() => _TransportOrdersDetailListWidgetState();
 }
@@ -47,7 +53,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
 
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
 
@@ -117,9 +123,10 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
                   children: list,
                 ),
               ),
-                  StartButton(show:widget.canStart),
-                  RequestButton(show:widget.canRequest),
-                  ReturnButton(show:widget.canReturn)              
+                 
+              RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
+              ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
+             FinishButton(show:widget.canFinish,onPressed:widget.finishPressed)                   
             ]);
   }
 }

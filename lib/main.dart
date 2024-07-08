@@ -5,6 +5,7 @@ import 'package:bro_flutter_app/login/login.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_page.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_page.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'package:camera/camera.dart';
 
@@ -20,7 +21,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OverlaySupport(
+    child: MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
         "/camera" :  (context) => TakePictureScreen(camera: _cameras.first),
       },
      
-    );
+    ));
   }
 
   void setLocale(String language) {

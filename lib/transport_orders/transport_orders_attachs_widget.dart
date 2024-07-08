@@ -1,5 +1,7 @@
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
 import 'package:bro_flutter_app/utils/start_button.dart';
@@ -18,13 +20,19 @@ class TransportOrdersAttachsWidget extends StatefulWidget {
   required this.attachs,
   this.canRequest=false ,
   this.canReturn=false ,
-  this.canStart=false 
+  this.canFinish=false ,  
+  this.requestPressed,
+  this.returnPressed,
+  this.finishPressed  
   });
 
   late List<dynamic> attachs;
   late bool canRequest;
-  late bool canStart;
   late bool canReturn;
+  late bool canFinish;  
+  final VoidCallback? requestPressed;
+  final VoidCallback? returnPressed;  
+  final VoidCallback? finishPressed;    
   @override
   State<TransportOrdersAttachsWidget> createState() => _TransportOrdersAttachtState();
 }
@@ -44,6 +52,7 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
 
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +117,10 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
                   children: list,
                 ),
               ),
-              StartButton(show:widget.canStart),
-              RequestButton(show:widget.canRequest),
-              ReturnButton(show:widget.canReturn),
+              
+              RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
+              ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
+              FinishButton(show:widget.canFinish,onPressed:widget.finishPressed),
             ],
           );
   }

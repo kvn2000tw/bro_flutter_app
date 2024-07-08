@@ -4,9 +4,9 @@ import 'package:bro_flutter_app/service.dart';
 import 'package:flutter/material.dart';
 
 
-class RequestButton extends StatelessWidget {
+class FinishButton extends StatelessWidget {
   
-  RequestButton({this.show = false,
+  FinishButton({this.show = false,
   this.onPressed,})
   {
     
@@ -26,7 +26,7 @@ class RequestButton extends StatelessWidget {
          onPressed!();
        
       },
-      text: '結算',
+      text: '結束運輸',
       options: FFButtonOptions(
         width: double.infinity,
         height: 40,

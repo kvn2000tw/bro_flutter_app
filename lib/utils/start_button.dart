@@ -7,49 +7,15 @@ import 'package:flutter/material.dart';
 
 class StartButton extends StatelessWidget {
   
-  StartButton({this.show = false})
+  StartButton({this.show = false,
+  this.onPressed,
+  })
   {
     
   }
   
   bool show = false;
-Future<void> _showMyDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('開始運輸？'),
-        content:  SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('將紀錄起始里程數並開始運輸'),
-              Text('需要一張開始里程數的照片'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('上傳開始里程數照片'),
-            onPressed: () async{
-              
-              Data.runFunc = 'started';
-              await Navigator.pushNamed(context,'/camera');
-
-              Navigator.of(context).pop();
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
+  VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
  return show == false ? Container():Align(
@@ -59,8 +25,8 @@ Future<void> _showMyDialog(BuildContext context) async {
     child: FFButtonWidget(
       onPressed: () async{
         print('Button pressed ...');
-        await _showMyDialog(context);
-    
+        //await _showMyDialog(context);
+        onPressed!();
       },
       text: '開始運輸',
       options: FFButtonOptions(

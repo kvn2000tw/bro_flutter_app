@@ -1,14 +1,14 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'transport_orders_list_model.dart';
@@ -41,8 +41,25 @@ class _TransportOrdersListWidgetState extends State<TransportOrdersListWidget> {
     super.dispose();
   }
   
+  Future<bool> _getTransportOrders()async{
+
+  //   var response =  await http.get('https://getProjectList');    
+    final response = await Service.GetTransportOrders();
+
+   return true;
+}
   @override
   Widget build(BuildContext context) {
+        return FutureBuilder<bool>(
+      future: _getTransportOrders(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
+        
+        return builder(context);
+      }
+    );
+  }
+  
+  Widget builder(BuildContext context) {
 
     List<Widget> list = [];
     for(var i=0;i<Data.ordersList.length;i++){
