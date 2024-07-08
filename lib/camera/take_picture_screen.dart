@@ -179,8 +179,10 @@ class DisplayPictureScreen extends StatelessWidget {
                             print('Button pressed ...');
                             print(imagePath);
                             await Service.upload_url(imagePath);
-                            Navigator.of(context).pop();
-                            Navigator.of(context).pop();
+                            if (context.mounted){
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            }
                             
                           },
                           text: '確定',

@@ -337,7 +337,7 @@ class Service{
 
         }
         else if(Data.runFunc == 'finished'){
-          await finished(response.data[0]);
+          await updatEodometer(response.data[0]);
 
         }        
         //Data.setUploadUrl(fromJsonMap);
@@ -653,7 +653,7 @@ class Service{
        
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print('updateLot');
-        getTransportCurrent();
+        await getTransportCurrent();
         //print(fromJsonMap);
         //Data.setTransportLotStatus(fromJsonMap);
         ret = true;
@@ -708,7 +708,7 @@ class Service{
        
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print('updateLot');
-        getTransportCurrent();
+        await getTransportCurrent();
         //print(fromJsonMap);
         //Data.setTransportLotStatus(fromJsonMap);
         ret = true;

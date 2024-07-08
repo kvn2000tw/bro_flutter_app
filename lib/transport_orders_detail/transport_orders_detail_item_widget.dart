@@ -14,8 +14,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class TransportOrdersDetailItemWidget extends StatefulWidget {
    TransportOrdersDetailItemWidget({super.key,
   
-  required this.lot});
+  required this.lot,
+  required this.index});
 
+  late int index;
   late Map<String,dynamic> lot; 
   @override
   State<TransportOrdersDetailItemWidget> createState() => _TransportOrdersDetailItemWidgetState();
@@ -46,7 +48,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
     status = SearchIcon;
     color = Colors.blue;
 
-    _initStatus(widget.lot['status']);
+    _initStatus();
 
   }
 
@@ -62,7 +64,9 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
   final String CheckIcon = 'assets/images/check-circle.svg';
   final String ExclamationIcon = 'assets/images/exclamation-circle.svg';
  
-  _initStatus(int this_status){
+  _initStatus(){
+    int this_status = Data.transport_info.lots[widget.index]['status'];
+    status = SearchIcon;
    if( this_status == lot_status.PASSED.value){
       status = CheckIcon;
       color = Colors.green;
@@ -87,7 +91,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
           await Navigator.pushNamed(context,'/transport-orders-status');
           setState(() {
 
-            _initStatus(Data.lotStatus.status);
+            _initStatus();
           });
 
         },        

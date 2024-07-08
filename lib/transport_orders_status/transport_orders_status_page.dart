@@ -6,13 +6,10 @@ import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
+
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item.dart';
 import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bro_flutter_app/runing_page.dart';
-import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
@@ -52,6 +49,8 @@ class _TransportOrdersStatusState
     canCheck = Data.isCurrent && (Data.lotStatus.status == lot_status.DISPATCHED.value);
     isLoad = false;
 
+    canFinish = false;
+    
     if(canCheck == true){
         canFinish = true;
         for(var i = 0; i < Data.lotStatus.checkables.length; i++){
@@ -159,7 +158,8 @@ Future<void> _showMyDialog(String title,String text) async {
     bool ret = await Service.updateLot(Data.lotStatus.barcode,data);
 
     if(ret == true){
-       _showMyDialog('儲存檢查結果','儲存成功');
+      showNotification('儲存檢查結果','儲存成功');
+      
      setState(() {
       
       initLotStatus();
@@ -206,7 +206,9 @@ Future<void> _takePicture(BuildContext context) async {
               Data.runFunc = 'passed';
               await Navigator.pushNamed(context,'/camera');
               print('abcd');
-              Navigator.of(context).pop();
+              if (context.mounted){
+                Navigator.of(context).pop();
+              }
             },
           ),
            TextButton(

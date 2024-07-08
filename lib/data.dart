@@ -13,6 +13,7 @@ class Data {
   static Token token = Token();
   static TransportOrdersInfo current = TransportOrdersInfo();
   static TransportOrdersInfo transport = TransportOrdersInfo();
+  static TransportOrdersInfo transport_info = TransportOrdersInfo();
   static TransportOrdersLotStatus lotStatus = TransportOrdersLotStatus();
   static List<TransportOrdersInfo> ordersList = [];
   static User user = User();
@@ -37,6 +38,7 @@ class Data {
     debugPrint('setTransportCurrent ${response}');
     if(response['current'] == null){
       current.id = '';
+      transport_info = current;
       return;
     }
     current.id = response['current']['id'];
@@ -52,6 +54,8 @@ class Data {
     current.lots = response['current']['lots'];
     current.lots_meta = response['current']['lots_meta'];
     current.attachs = response['current']['attachments'];
+
+    transport_info = current;
     
   }
   static setTransportSelect(Map<String,dynamic> response){
@@ -69,6 +73,8 @@ class Data {
     transport.lots = response['lots'];
     transport.lots_meta = response['lots_meta'];
     transport.attachs = response['attachments']??[];
+     
+    transport_info = transport;
     
   }
 

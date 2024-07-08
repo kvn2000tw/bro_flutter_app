@@ -59,27 +59,8 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
       initialIndex: 0,
     )..addListener(() => setState(() {}));
 
-    Data.transport_id = widget.info.id;
+    initButton();
 
-    print('widget.info.status ${widget.info.status}');
-    if(widget.info.status == transport_status.DISPATCHED.value){
-      if(Data.current.id == '')
-        canStart = true;
-    }
-
-    else if(widget.info.status == transport_status.STARTED.value || 
-      widget.info.status == transport_status.REJECTED.value){
-      canRequest = true;
-    }
-
-    else if(widget.info.status == transport_status.APPROVED.value) 
-    {
-      canReturn = true;
-    }
-    else if(widget.info.status == transport_status.RETURNED.value) 
-    {
-      canFinish = true;
-    }
 
   }
 
@@ -88,6 +69,42 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
     _model.dispose();
 
     super.dispose();
+  }
+
+  initButton(){
+    Data.transport_id = widget.info.id;
+
+    canStart = false;
+    canRequest = false;
+    canReturn = false;
+    canFinish = false;  
+
+    print('widget.info.status ${widget.info.status}');
+    if(widget.info.status == transport_status.DISPATCHED.value){
+      if(Data.current.id == ''){
+        canStart = true;
+      }
+    }
+
+    else if(widget.info.status == transport_status.STARTED.value || 
+      widget.info.status == transport_status.REJECTED.value){
+      if(Data.isCurrent == true){
+        canRequest = true;
+      }
+    }
+
+    else if(widget.info.status == transport_status.APPROVED.value) 
+    {
+      if(Data.isCurrent == true){
+        canReturn = true;
+      }
+    }
+    else if(widget.info.status == transport_status.RETURNED.value) 
+    {
+      if(Data.isCurrent == true){
+        canFinish = true;
+      }
+    }
   }
   void showNotification(String title,String body)
 {
@@ -105,6 +122,55 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
     duration: Duration(seconds: 2),
   );     
 }
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('開始運輸？'),
+        content:  SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('將紀錄起始里程數並開始運輸'),
+              Text('需要一張開始里程數的照片'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('上傳開始里程數照片'),
+            onPressed: () async {
+              
+              Data.runFunc = 'started';
+              await Navigator.pushNamed(context,'/camera');
+              if (context.mounted){
+                Navigator.pop(context);
+              }
+            },
+          ),
+           TextButton(
+            child: const Text('取消'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+  _startButton(BuildContext context)async{
+    await _showMyDialog(context);
+    
+    setState(
+      (){
+        widget.info = Data.transport_info;
+        initButton();
+      }
+    );
+
+  }
 
   Future<void> _showRequestDialog(BuildContext context) async {
   return showDialog<void>(
@@ -126,7 +192,10 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
             onPressed: () async{
              
               bool ret = await Service.Request();
-              Navigator.of(context).pop();
+              if (context.mounted){
+                Navigator.of(context).pop();
+              }
+
               if(ret == true){
                 showNotification('上傳','成功');
               }
@@ -164,7 +233,9 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
             onPressed: () async{
              
               bool ret = await Service.Returned();
-              Navigator.pop(context);
+              if(context.mounted){
+                Navigator.of(context).pop();
+              }
               if(ret == true){
                 showNotification('上傳','成功');
               }
@@ -204,8 +275,9 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
             
               await Navigator.pushNamed(context,'/camera');
 
-              Navigator.of(context).pop();
-             
+              if (context.mounted){
+                Navigator.of(context).pop();
+              }
               //showNotification('上傳','成功');
               
              
@@ -264,13 +336,18 @@ Future<bool> checkRequest()async{
 
     var ret = await checkRequest();
     if(ret == false){
+      if(context.mounted){
       _showRequestAlert(context);
+      }
       return;
     }
-    await _showRequestDialog(context);
+    if(context.mounted){
+      await _showRequestDialog(context);
+    }
     setState(
       (){
-      
+        widget.info = Data.transport_info;
+        initButton();
       }
     );
 
@@ -281,7 +358,8 @@ Future<bool> checkRequest()async{
     await _showReturnDialog(context);
     setState(
       (){
-      
+        widget.info = Data.transport_info;
+        initButton();
       }
     );
 
@@ -289,8 +367,9 @@ Future<bool> checkRequest()async{
   _finishButton(BuildContext context)async{
 
     await _showFinishDialog(context);
-    Navigator.pushNamed(context,'/home');
-
+    if(context.mounted){
+      await Navigator.pushNamed(context,'/home');
+    }
   }
 
   @override
@@ -342,6 +421,7 @@ Future<bool> checkRequest()async{
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,
+                          startPressed: ()=>_startButton(context),
                           requestPressed: ()=>_requestButton(context),
                           returnPressed: ()=>_returnButton(context),
                           finishPressed: ()=>_finishButton(context)),

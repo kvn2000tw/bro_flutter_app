@@ -13,38 +13,6 @@ class ReturnButton extends StatelessWidget {
   }
   bool show = false;
   VoidCallback? onPressed;
-  Future<void> _showMyDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('開始回程？'),
-        content:  SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(''),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('確認'),
-            onPressed: () async{
-              onPressed!();
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +23,7 @@ class ReturnButton extends StatelessWidget {
     child: FFButtonWidget(
       onPressed: () async{
         print('Button pressed ...');
-        _showMyDialog(context);
+         onPressed!();
       },
       text: '開始回程',
       options: FFButtonOptions(

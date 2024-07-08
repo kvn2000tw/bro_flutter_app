@@ -59,7 +59,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
 
     List<Widget> list = [];
     for(var i = 0; i < widget.info.lots.length; i++){
-        list.add(TransportOrdersDetailItemWidget(lot:widget.info.lots[i]));
+        list.add(TransportOrdersDetailItemWidget(index:i,lot:widget.info.lots[i]));
     }
     return 
  Column(
