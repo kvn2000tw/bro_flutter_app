@@ -7,8 +7,8 @@ import 'package:radio_group_v2/utils/radio_group_decoration.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 import 'package:radio_group_v2/widgets/views/radio_group.dart';
 
-class TransportOrdersStatusItem extends StatefulWidget {
-   TransportOrdersStatusItem({super.key,
+class TransportOrderStatusItem extends StatefulWidget {
+   TransportOrderStatusItem({super.key,
   
   required this.info,
   this.radio,
@@ -23,19 +23,19 @@ class TransportOrdersStatusItem extends StatefulWidget {
   late TextEditingController? textController;
   late bool canCheck;
   @override
-  State<TransportOrdersStatusItem> createState() =>
-      _TransportOrdersStatusState();
+  State<TransportOrderStatusItem> createState() =>
+      _TransportOrderStatusState();
 }
 
-class _TransportOrdersStatusState
-    extends State<TransportOrdersStatusItem> {
+class _TransportOrderStatusState
+    extends State<TransportOrderStatusItem> {
 
-    late TransportOrdersStatusItemModel _model;
+    late TransportOrderStatusItemModel _model;
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransportOrdersStatusItemModel());
+    _model = createModel(context, () => TransportOrderStatusItemModel());
 
     _model.textController1 ??= TextEditingController(text:widget.info["name"]);
     _model.textFieldFocusNode1 ??= FocusNode();

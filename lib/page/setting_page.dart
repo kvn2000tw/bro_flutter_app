@@ -1,6 +1,6 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
+import 'package:bro_flutter_app/transport_order_brief/transport_order_brief_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';

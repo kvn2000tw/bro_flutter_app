@@ -12,17 +12,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 //import 'transport_orders_list_model.dart';
 
-class TransportOrdersItemWidget extends StatefulWidget {
-   TransportOrdersItemWidget({super.key,
+class TransportOrderBriefWidget extends StatefulWidget {
+   TransportOrderBriefWidget({super.key,
   required this.info});
 
   late TransportOrdersInfo info;
 
   @override
-  State<TransportOrdersItemWidget> createState() => _TransportOrdersItemWidgetState();
+  State<TransportOrderBriefWidget> createState() => _TransportOrderBriefWidgetState();
 }
 
-class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
+class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
 
   final String OfficeIcon = 'assets/images/office-building.svg';
   final String LocationIcon = 'assets/images/location-marker.svg';

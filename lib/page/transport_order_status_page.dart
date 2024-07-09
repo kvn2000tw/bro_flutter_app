@@ -76,7 +76,7 @@ class _TransportOrderStatusState
     list = [];
     for(var i = 0; i < Data.lotStatus.checkables.length; i++){
        
-        list.add(TransportOrdersStatusItem(info:Data.lotStatus.checkables[i],
+        list.add(TransportOrderStatusItem(info:Data.lotStatus.checkables[i],
         radio:radio_list[i],
         value:Data.lotStatus.checkables[i]["value"],
         textController:text_list[i],

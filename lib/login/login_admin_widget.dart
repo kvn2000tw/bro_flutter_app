@@ -173,7 +173,7 @@ Column(
                                     },
                                     child: Icon(
                                       Icons.clear,
-                                      size: 25,
+                                      size: 15,
                                     ),
                                   )
                                 : null,
@@ -275,7 +275,7 @@ Column(
                                     },
                                     child: Icon(
                                       Icons.clear,
-                                      size: 25,
+                                      size: 15,
                                     ),
                                   )
                                 : null,

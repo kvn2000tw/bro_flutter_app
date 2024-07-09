@@ -2,7 +2,7 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/page/transport_orders_page/transport_orders_page_model.dart';
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
+import 'package:bro_flutter_app/transport_order_brief/transport_order_brief_widget.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -64,7 +64,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
 
     List<Widget> list = [];
     for(var i=0;i<Data.ordersList.length;i++){
-      list.add(TransportOrdersItemWidget(info:Data.ordersList[i]));
+      list.add(TransportOrderBriefWidget(info:Data.ordersList[i]));
     }
     return 
    Column(
