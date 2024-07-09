@@ -1,24 +1,18 @@
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
-
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'transport_orders_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class TransportOrdersAttachWidget extends StatefulWidget {
-  TransportOrdersAttachWidget({super.key,
+class TransportOrderAttachWidget extends StatefulWidget {
+  TransportOrderAttachWidget({super.key,
   required this.attach,
   });
 
   late Map<String,dynamic> attach;
   @override
-  State<TransportOrdersAttachWidget> createState() => _TransportOrdersAttachtState();
+  State<TransportOrderAttachWidget> createState() => _TransportOrderAttachtState();
 }
 
-class _TransportOrdersAttachtState extends State<TransportOrdersAttachWidget> {
+class _TransportOrderAttachtState extends State<TransportOrderAttachWidget> {
   
   final scaffoldKey = GlobalKey<ScaffoldState>();
 

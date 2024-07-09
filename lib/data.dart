@@ -1,4 +1,4 @@
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:flutter/material.dart';
 
 class Token{

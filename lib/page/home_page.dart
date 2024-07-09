@@ -1,9 +1,10 @@
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/setting_page.dart';
+import 'package:bro_flutter_app/page/runing_page.dart';
+import 'package:bro_flutter_app/page/setting_page.dart';
+import 'package:bro_flutter_app/page/transport_orders_page/transport_orders_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bro_flutter_app/runing_page.dart';
-import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
 class HomePage extends StatefulWidget {
    HomePage({super.key,
@@ -37,28 +38,19 @@ class _HomePageState
   final String ListIcon = 'assets/images/list-bullet.svg';
   final String CogIcon = 'assets/images/cog.svg';
 
-  _goItem()async{
-   
-    int item = widget.item ?? 0;
-    
-    if(item > 0)
-       _onItemTapped(item);
-
-  }
-  
   @override
   void initState() {
     super.initState();
 
   _widgetOptions = <Widget>[
     RuningPage(onTap:()=>_onItemTapped(1)),
-    TransportOrdersListWidget(),
-    SettingPage()
+    const TransportOrdersPage(),
+    const SettingPage()
   ];
   
     _selectedIndex = 0;
     Data.isCurrent = true;
-    _goItem();
+    
     isLoad = false;
   }
 
@@ -76,7 +68,7 @@ class _HomePageState
           toolbarHeight: 30,
           backgroundColor: Colors.blue,
           elevation:10,
-          title: Text('',
+          title: const Text('',
           style: TextStyle(color:Colors.white),)
         ),
       body: isLoad == true ? Container():Center(

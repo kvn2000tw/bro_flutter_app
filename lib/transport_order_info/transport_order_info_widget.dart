@@ -1,26 +1,20 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_attachs_widget.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_list_widget.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_widget.dart';
-import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_list_widget.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_header.dart';
+import 'package:bro_flutter_app/transport_order/transport_orders_widget.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info_header.dart';
+import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
+import 'package:bro_flutter_app/transport_order_items/transport_order_items_widget.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-import 'transport_orders_info_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'transport_order_info_model.dart';
 
-
-class TransportOrdersInfoWidget extends StatefulWidget {
-  TransportOrdersInfoWidget( {super.key,
+class TransportOrderInfoWidget extends StatefulWidget {
+  TransportOrderInfoWidget( {super.key,
   required this.title ,
   required this.info,
   this.hasReturn,
@@ -32,12 +26,12 @@ class TransportOrdersInfoWidget extends StatefulWidget {
   bool? hasReturn;
   bool? hasAction;
   @override
-  State<TransportOrdersInfoWidget> createState() => _TransportOrdersInfoWidgetState();
+  State<TransportOrderInfoWidget> createState() => _TransportOrderInfoWidgetState();
 }
 
-class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
+class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
     with TickerProviderStateMixin {
-  late TransportOrdersInfoModel _model;
+  late TransportOrderInfoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -51,7 +45,7 @@ class _TransportOrdersInfoWidgetState extends State<TransportOrdersInfoWidget>
   void initState() {
     super.initState();
 
-    _model = createModel(context, () => TransportOrdersInfoModel());
+    _model = createModel(context, () => TransportOrderInfoModel());
 
     _model.tabBarController = TabController(
       vsync: this,
@@ -129,7 +123,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('開始運輸？'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('將紀錄起始里程數並開始運輸'),
@@ -179,7 +173,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('申請結算？'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('確認送出運輸單物料結算申請？'),
@@ -220,7 +214,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('開始回程？'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text(''),
@@ -260,7 +254,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('結束運輸？'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('將紀錄里程數並結束運輸'),
@@ -301,7 +295,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('無法結算'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('請確認所有貨品檢查結果'),
@@ -378,7 +372,7 @@ Future<bool> checkRequest()async{
         Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-             TransportOrdersInfoHeader(title:widget.title,hasReturn:widget.hasReturn,hasAction:widget.hasAction),
+             TransportOrderInfoHeader(title:widget.title,hasReturn:widget.hasReturn,hasAction:widget.hasAction),
               Expanded(
                 child: Column(
                   children: [
@@ -395,8 +389,8 @@ Future<bool> checkRequest()async{
                                 ),
                         unselectedLabelStyle: TextStyle(),
                         indicatorColor: FlutterFlowTheme.of(context).primary,
-                        padding: EdgeInsets.all(4),
-                        tabs: [
+                        padding: const EdgeInsets.all(4),
+                        tabs: const [
                           Tab(
                             text: '運輸單資訊',
                           ),
@@ -417,7 +411,7 @@ Future<bool> checkRequest()async{
                       child: TabBarView(
                         controller: _model.tabBarController,
                         children: [
-                          TransportOrdersWidget(info:widget.info,canStart:canStart,
+                          TransportOrderWidget(info:widget.info,canStart:canStart,
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,
@@ -425,14 +419,14 @@ Future<bool> checkRequest()async{
                           requestPressed: ()=>_requestButton(context),
                           returnPressed: ()=>_returnButton(context),
                           finishPressed: ()=>_finishButton(context)),
-                          TransportOrdersDetailListWidget(info:widget.info,
+                          TransportOrderItemsWidget(info:widget.info,
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,
                           requestPressed: ()=>_requestButton(context),
                           returnPressed: ()=>_returnButton(context),
                           finishPressed: ()=>_finishButton(context)),
-                          TransportOrdersAttachsWidget(attachs:widget.info.attachs,
+                          TransportOrderAttachsWidget(attachs:widget.info.attachs,
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,

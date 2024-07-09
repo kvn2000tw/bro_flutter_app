@@ -1,20 +1,14 @@
 
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
-import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_attachs_widget.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
-import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info_model.dart';
-import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_model.dart';
+import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
+import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/transport_order_status/transport_order_status_item_info_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bro_flutter_app/runing_page.dart';
-import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 
-class TransportOrdersStatusItemInfo extends StatefulWidget {
-   TransportOrdersStatusItemInfo({super.key,
+class TransportOrderStatusItemInfo extends StatefulWidget {
+   TransportOrderStatusItemInfo({super.key,
   required this.info,
   this.textController
   });
@@ -23,19 +17,19 @@ class TransportOrdersStatusItemInfo extends StatefulWidget {
   TextEditingController? textController;
 
   @override
-  State<TransportOrdersStatusItemInfo> createState() =>
-      _TransportOrdersStatusState();
+  State<TransportOrderStatusItemInfo> createState() =>
+      _TransportOrderStatusState();
 }
 
-class _TransportOrdersStatusState
-    extends State<TransportOrdersStatusItemInfo> {
+class _TransportOrderStatusState
+    extends State<TransportOrderStatusItemInfo> {
 
-       late TransportOrdersStatusItemInfoModel _model;
+       late TransportOrderStatusItemInfoModel _model;
  
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransportOrdersStatusItemInfoModel());
+    _model = createModel(context, () => TransportOrderStatusItemInfoModel());
 
     _model.textController1 ??= TextEditingController(text:widget.info.weight);
     _model.textController2 ??= TextEditingController(text:widget.info.description);
@@ -52,7 +46,7 @@ class _TransportOrdersStatusState
   Widget build(BuildContext context) {
     List<Widget> list = [];
     for(var i = 0; i < widget.info.attachments.length; i++){
-        list.add(TransportOrdersAttachWidget(attach:widget.info.attachments[i]));
+        list.add(TransportOrderAttachWidget(attach:widget.info.attachments[i]));
     }
 
      return        
@@ -491,7 +485,7 @@ class _TransportOrdersStatusState
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
                         ),
-                        child: TransportOrdersAttachsWidget(attachs:widget.info.attachments),
+                        child: TransportOrderAttachsWidget(attachs:widget.info.attachments),
                       ),
                       Container(
                         width: double.infinity,

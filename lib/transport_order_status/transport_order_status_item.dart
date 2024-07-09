@@ -1,14 +1,8 @@
 
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
-import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
-import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_model.dart';
+import 'package:bro_flutter_app/transport_order_status/transport_order_status_item_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:bro_flutter_app/runing_page.dart';
-import 'package:bro_flutter_app/transport_orders_list/transport_orders_list_widget.dart';
 import 'package:radio_group_v2/utils/radio_group_decoration.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 import 'package:radio_group_v2/widgets/views/radio_group.dart';

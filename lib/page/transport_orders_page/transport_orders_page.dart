@@ -1,5 +1,6 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/page/transport_orders_page/transport_orders_page_model.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_orders_item/transport_orders_item_widget.dart';
 
@@ -11,18 +12,18 @@ import 'package:flutter/material.dart';
 
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'transport_orders_list_model.dart';
 
-class TransportOrdersListWidget extends StatefulWidget {
-  const TransportOrdersListWidget({super.key});
+
+class TransportOrdersPage extends StatefulWidget {
+  const TransportOrdersPage({super.key});
 
   @override
-  State<TransportOrdersListWidget> createState() => _TransportOrdersListWidgetState();
+  State<TransportOrdersPage> createState() => _TransportOrdersPageState();
 }
 
-class _TransportOrdersListWidgetState extends State<TransportOrdersListWidget> {
+class _TransportOrdersPageState extends State<TransportOrdersPage> {
 
-  late TransportOrdersListModel _model;
+  late TransportOrdersPageModel _model;
   final String SearchIcon = 'assets/images/search.svg';
   final String SortIcon = 'assets/images/sort-ascending.svg';
   final String FilterIcon = 'assets/images/filter.svg';
@@ -32,7 +33,7 @@ class _TransportOrdersListWidgetState extends State<TransportOrdersListWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransportOrdersListModel());
+    _model = createModel(context, () => TransportOrdersPageModel());
   }
 
   @override

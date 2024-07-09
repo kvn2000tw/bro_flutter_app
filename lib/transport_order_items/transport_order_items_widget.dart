@@ -1,22 +1,17 @@
 
-import 'package:bro_flutter_app/transport_orders_detail/transport_orders_detail_item_widget.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_items/transport_order_item_widget.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
-
-
 
 import '/flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
 
 
-import 'transport_orders_detail_list_model.dart';
-
-
-class TransportOrdersDetailListWidget extends StatefulWidget {
-  TransportOrdersDetailListWidget({super.key,
+class TransportOrderItemsWidget extends StatefulWidget {
+  TransportOrderItemsWidget({super.key,
   this.canRequest = false,
   this.canReturn = false,
   this.canFinish = false,
@@ -33,11 +28,10 @@ class TransportOrdersDetailListWidget extends StatefulWidget {
   final VoidCallback? returnPressed;
   final VoidCallback? finishPressed;  
   @override
-  State<TransportOrdersDetailListWidget> createState() => _TransportOrdersDetailListWidgetState();
+  State<TransportOrderItemsWidget> createState() => _TransportOrderItemsWidgetState();
 }
 
-class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailListWidget> {
-  late TransportOrdersDetailListModel _model;
+class _TransportOrderItemsWidgetState extends State<TransportOrderItemsWidget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -59,7 +53,7 @@ class _TransportOrdersDetailListWidgetState extends State<TransportOrdersDetailL
 
     List<Widget> list = [];
     for(var i = 0; i < widget.info.lots.length; i++){
-        list.add(TransportOrdersDetailItemWidget(index:i,lot:widget.info.lots[i]));
+        list.add(TransportOrderItemWidget(index:i,lot:widget.info.lots[i]));
     }
     return 
  Column(

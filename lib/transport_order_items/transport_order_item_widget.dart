@@ -1,18 +1,17 @@
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+
 
 import 'transport_orders_detail_item_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TransportOrdersDetailItemWidget extends StatefulWidget {
-   TransportOrdersDetailItemWidget({super.key,
+class TransportOrderItemWidget extends StatefulWidget {
+   TransportOrderItemWidget({super.key,
   
   required this.lot,
   required this.index});
@@ -20,10 +19,10 @@ class TransportOrdersDetailItemWidget extends StatefulWidget {
   late int index;
   late Map<String,dynamic> lot; 
   @override
-  State<TransportOrdersDetailItemWidget> createState() => _TransportOrdersDetailItemWidgetState();
+  State<TransportOrderItemWidget> createState() => _TransportOrderItemWidgetState();
 }
 
-class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailItemWidget> {
+class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
   late TransportOrdersModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -88,7 +87,7 @@ class _TransportOrdersDetailItemWidgetState extends State<TransportOrdersDetailI
         onTap: ()async{
           print("alarm clicked");
           Data.lot_barcode = widget.lot['barcode'];
-          await Navigator.pushNamed(context,'/transport-orders-status');
+          await Navigator.pushNamed(context,'/transport-order-status');
           setState(() {
 
             _initStatus();

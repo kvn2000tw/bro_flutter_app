@@ -5,24 +5,24 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 
-import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item.dart';
-import 'package:bro_flutter_app/transport_orders_status/transport_orders_status_item_info.dart';
+import 'package:bro_flutter_app/transport_order_status/transport_order_status_item.dart';
+import 'package:bro_flutter_app/transport_order_status/transport_order_status_item_info.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
-class TransportOrdersStatusPage extends StatefulWidget {
-  const TransportOrdersStatusPage({super.key});
+class TransportOrderStatusPage extends StatefulWidget {
+  const TransportOrderStatusPage({super.key});
 
   @override
-  State<TransportOrdersStatusPage> createState() =>
-      _TransportOrdersStatusState();
+  State<TransportOrderStatusPage> createState() =>
+      _TransportOrderStatusState();
 }
 
-class _TransportOrdersStatusState
-    extends State<TransportOrdersStatusPage> {
+class _TransportOrderStatusState
+    extends State<TransportOrderStatusPage> {
  
 
   bool canCheck = false;
@@ -85,7 +85,7 @@ class _TransportOrdersStatusState
         
     }
 
-    list.add(TransportOrdersStatusItemInfo(info:Data.lotStatus,
+    list.add(TransportOrderStatusItemInfo(info:Data.lotStatus,
     textController:noteController
     ));
 
@@ -190,7 +190,7 @@ Future<void> _takePicture(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('完成檢查？'),
-        content:  SingleChildScrollView(
+        content:  const SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('將儲存物料檢查結果'),
@@ -232,7 +232,7 @@ Future<void> _takePicture(BuildContext context) async {
           toolbarHeight: 30,
           backgroundColor: Colors.blue,
           elevation:10,
-          title: Text('',
+          title: const Text('',
           style: TextStyle(color:Colors.white),)
         ),
       body:  isLoad == true ? Container():Column(
@@ -319,7 +319,7 @@ Future<void> _takePicture(BuildContext context) async {
                 ),
               ),
               canFinish == false ? Container():Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
   child: Container(
     width: double.infinity,
     height: 50,
@@ -340,8 +340,8 @@ Future<void> _takePicture(BuildContext context) async {
       text: '完成檢查',
       options: FFButtonOptions(
         height: 40,
-        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+        iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
         color: FlutterFlowTheme.of(context).primaryBackground,
         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
               fontFamily: 'Readex Pro',
@@ -359,7 +359,7 @@ Future<void> _takePicture(BuildContext context) async {
   ),
 ),
               canCheck == false ? Container() : Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
   child: Container(
     width: double.infinity,
     height: 50,
@@ -374,8 +374,8 @@ Future<void> _takePicture(BuildContext context) async {
       text: '儲存檢查結果',
       options: FFButtonOptions(
         height: 40,
-        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+        iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
         color: FlutterFlowTheme.of(context).primaryBackground,
         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
               fontFamily: 'Readex Pro',
@@ -407,8 +407,8 @@ Future<void> _takePicture(BuildContext context) async {
                     text: '修改重量',
                     options: FFButtonOptions(
                       height: 40,
-                      padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-                      iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                       color: FlutterFlowTheme.of(context).primaryBackground,
                       textStyle:
                           FlutterFlowTheme.of(context).titleSmall.override(

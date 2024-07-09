@@ -1,6 +1,7 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/show_order_status.dart';
 
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -107,30 +108,14 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                               height: 50,
                               decoration: BoxDecoration(
                               
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                color: FlutterFlowTheme.of(context).secondaryBackground,
                                     
                               ),
                               child:Align(
   alignment: AlignmentDirectional(0, 0),
-  child: Padding(
-    padding: EdgeInsets.all(10),
-    child:DecoratedBox(
-      decoration:  BoxDecoration(color:TransportOrdersStatusBKColor[widget.info.status]),
-    child: Text(
-      TransportOrdersStatus[widget.info.status],
-      style: FlutterFlowTheme.of(context).bodyMedium.override(
-            fontFamily: 'Readex Pro',
-            letterSpacing: 0,
-            fontSize: 13,
-            fontWeight:FontWeight.w600,
-            color:TransportOrdersStatusColor[widget.info.status]
-          ),
-    ),
-  ),
-)),
+  child:ShowOrderStatus(status:widget.info.status),
 
-                            ),
+                            )),
                           ],
                         ),
                       ),
@@ -436,7 +421,7 @@ class _TransportOrdersItemWidgetState extends State<TransportOrdersItemWidget> {
                             onPressed: () async{
                               print('Button pressed ...');
                               Data.transport_id = widget.info.id;
-                              Navigator.pushNamed(context,'/transport-orders-info');
+                              Navigator.pushNamed(context,'/transport-order-info');
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();
                             },

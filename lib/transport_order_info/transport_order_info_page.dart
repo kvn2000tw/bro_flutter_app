@@ -3,20 +3,20 @@ import 'dart:io';
 
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info_widget.dart';
 import 'package:flutter/material.dart';
 
-class TransportOrdersInfoPage extends StatefulWidget {
-   TransportOrdersInfoPage({super.key});
+class TransportOrderInfoPage extends StatefulWidget {
+   TransportOrderInfoPage({super.key});
 
 
   @override
-  State<TransportOrdersInfoPage> createState() =>
-      _TransportOrdersInfoState();
+  State<TransportOrderInfoPage> createState() =>
+      _TransportOrderInfoState();
 }
 
-class _TransportOrdersInfoState
-    extends State<TransportOrdersInfoPage> {
+class _TransportOrderInfoState
+    extends State<TransportOrderInfoPage> {
  
   bool loaded = true;
   @override
@@ -67,7 +67,7 @@ class _TransportOrdersInfoState
         ),
       body: loaded == true ? Container():
       Center(
-        child: TransportOrdersInfoWidget(
+        child: TransportOrderInfoWidget(
           title:'運輸單資訊',
           hasAction:true,
           hasReturn:true,

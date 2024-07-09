@@ -1,13 +1,9 @@
-
-import 'dart:io';
-
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info_widget.dart';
-
+import 'package:bro_flutter_app/transport_order_info/transport_order_info_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +28,7 @@ class _Page1WidgetState extends State<RuningPage>
   @override
   void initState() {
     super.initState();
-   print('RuningPage');
+
   }
 
   @override
@@ -169,7 +165,7 @@ Future<bool> _getTransportCurrent()async{
         if(Data.current.id == '')
           return _empty(context);
 
-        return TransportOrdersInfoWidget(
+        return TransportOrderInfoWidget(
           title:'執行中的運輸單',hasAction:true,
           info:Data.current
 

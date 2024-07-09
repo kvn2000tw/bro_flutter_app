@@ -1,22 +1,15 @@
-import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_attach_widget.dart';
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
 import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
-import 'package:bro_flutter_app/utils/start_button.dart';
 
 
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'transport_orders_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class TransportOrdersAttachsWidget extends StatefulWidget {
-  TransportOrdersAttachsWidget({super.key,
+class TransportOrderAttachsWidget extends StatefulWidget {
+  TransportOrderAttachsWidget({super.key,
   required this.attachs,
   this.canRequest=false ,
   this.canReturn=false ,
@@ -34,10 +27,10 @@ class TransportOrdersAttachsWidget extends StatefulWidget {
   final VoidCallback? returnPressed;  
   final VoidCallback? finishPressed;    
   @override
-  State<TransportOrdersAttachsWidget> createState() => _TransportOrdersAttachtState();
+  State<TransportOrderAttachsWidget> createState() => _TransportOrderAttachsState();
 }
 
-class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
+class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -59,7 +52,7 @@ class _TransportOrdersAttachtState extends State<TransportOrdersAttachsWidget> {
 
     List<Widget> list = [];
     for(var i = 0; i < widget.attachs.length; i++){
-        list.add(TransportOrdersAttachWidget(attach:widget.attachs[i]));
+        list.add(TransportOrderAttachWidget(attach:widget.attachs[i]));
     }
 
     return Column(

@@ -1,19 +1,12 @@
-import 'package:bro_flutter_app/transport_orders/transport_orders_list_widget.dart';
-import 'package:bro_flutter_app/transport_orders/transport_orders_widget.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
-import 'transport_orders_info_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 
-class TransportOrdersInfoHeader extends StatefulWidget {
-  TransportOrdersInfoHeader({super.key,
+class TransportOrderInfoHeader extends StatefulWidget {
+  TransportOrderInfoHeader({super.key,
   required this.title,
   this.hasReturn,
   this.hasAction, 
@@ -23,10 +16,10 @@ class TransportOrdersInfoHeader extends StatefulWidget {
   bool? hasReturn;
   bool? hasAction;
   @override
-  State<TransportOrdersInfoHeader> createState() => _TransportOrdersInfoHeaderState();
+  State<TransportOrderInfoHeader> createState() => _TransportOrderInfoHeaderState();
 }
 
-class _TransportOrdersInfoHeaderState extends State<TransportOrdersInfoHeader>
+class _TransportOrderInfoHeaderState extends State<TransportOrderInfoHeader>
     with TickerProviderStateMixin {
 
 

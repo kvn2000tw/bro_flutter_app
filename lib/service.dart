@@ -1,6 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:intl/intl.dart';
+
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:dio/dio.dart';
@@ -85,8 +84,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",

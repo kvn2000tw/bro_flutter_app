@@ -1,7 +1,8 @@
-import 'package:bro_flutter_app/transport_orders_info/transport_orders_info.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
+import 'package:bro_flutter_app/utils/show_order_status.dart';
 import 'package:bro_flutter_app/utils/start_button.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -12,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'transport_orders_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TransportOrdersWidget extends StatefulWidget {
-  TransportOrdersWidget({super.key,
+class TransportOrderWidget extends StatefulWidget {
+  TransportOrderWidget({super.key,
   required this.info,
   this.canRequest = false,
   this.canReturn = false,
@@ -35,10 +36,10 @@ class TransportOrdersWidget extends StatefulWidget {
   final VoidCallback? returnPressed;
   final VoidCallback? finishPressed;  
   @override
-  State<TransportOrdersWidget> createState() => _TransportOrdersWidgetState();
+  State<TransportOrderWidget> createState() => _TransportOrderWidgetState();
 }
 
-class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
+class _TransportOrderWidgetState extends State<TransportOrderWidget> {
   late TransportOrdersModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -126,29 +127,16 @@ class _TransportOrdersWidgetState extends State<TransportOrdersWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                           child: Container(
                             width: 100,
-                            height: 30,
+                            height: 50,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context)
                                   .secondaryBackground,
                             ),
                             child: Align(
                               alignment: AlignmentDirectional(0, 0),
-                              child: DecoratedBox(
-                                decoration:  BoxDecoration(color:TransportOrdersStatusBKColor[widget.info.status]),
-                              child: Text(
-                                TransportOrdersStatus[widget.info.status],
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0,
-                                      fontWeight:FontWeight.w600,
-                                      color:TransportOrdersStatusColor[widget.info.status]
-                                    ),
-                              ),
-                            )),
+                              child:ShowOrderStatus(status:widget.info.status),
+                             )),
                           ),
-                        ),
                       ],
                     ),
                   ),
