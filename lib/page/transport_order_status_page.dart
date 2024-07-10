@@ -155,9 +155,9 @@ Future<void> _showMyDialog(String title,String text) async {
     }
     data["checkable"] = list;
     data['note'] = noteController.text;
-    bool ret = await Service.updateLot(Data.lotStatus.barcode,data);
+    await Service.updateLot(Data.lotStatus.barcode,data);
 
-    if(ret == true){
+    if(Data.httpRet == true){
       showNotification('儲存檢查結果','儲存成功');
       
      setState(() {
@@ -330,7 +330,7 @@ Future<void> _takePicture(BuildContext context) async {
       onPressed: () async{
         print('Button pressed ...');
         await _takePicture(context);
-        showNotification('上傳','成功');
+        showNotification('完成檢查','成功');
         print('_takePicture');
         setState(() {
       

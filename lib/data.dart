@@ -25,6 +25,7 @@ class Data {
   static String url_key = '';
   static bool isCurrent = false;
   static String runFunc = '';
+  static bool httpRet = false;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

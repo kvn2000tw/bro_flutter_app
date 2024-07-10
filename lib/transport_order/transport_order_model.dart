@@ -4,7 +4,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
 
-class TransportOrdersModel extends FlutterFlowModel {
+class TransportOrderModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
 

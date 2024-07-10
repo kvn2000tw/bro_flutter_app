@@ -34,6 +34,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersPageModel());
+    Data.ordersList = [];
   }
 
   @override
@@ -43,11 +44,10 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   }
   
   Future<bool> _getTransportOrders()async{
+    
+    final ret = await Service.GetTransportOrders();
 
-  //   var response =  await http.get('https://getProjectList');    
-    final response = await Service.GetTransportOrders();
-
-   return true;
+   return ret;
 }
   @override
   Widget build(BuildContext context) {

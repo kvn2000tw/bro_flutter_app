@@ -138,6 +138,9 @@ Future<void> _showMyDialog(BuildContext context) async {
               
               Data.runFunc = 'started';
               await Navigator.pushNamed(context,'/camera');
+              if(Data.httpRet == true){
+                showNotification('開始運輸', '完成');
+              }
               if (context.mounted){
                 Navigator.pop(context);
               }
@@ -185,13 +188,13 @@ Future<void> _showMyDialog(BuildContext context) async {
             child: const Text('確認'),
             onPressed: () async{
              
-              bool ret = await Service.Request();
+              await Service.Request();
               if (context.mounted){
                 Navigator.of(context).pop();
               }
 
-              if(ret == true){
-                showNotification('上傳','成功');
+              if(Data.httpRet == true){
+                showNotification('結算','完成');
               }
              
             },
@@ -226,12 +229,12 @@ Future<void> _showMyDialog(BuildContext context) async {
             child: const Text('確認'),
             onPressed: () async{
              
-              bool ret = await Service.Returned();
+              await Service.Returned();
               if(context.mounted){
                 Navigator.of(context).pop();
               }
-              if(ret == true){
-                showNotification('上傳','成功');
+              if(Data.httpRet == true){
+                showNotification('開始回程','完成');
               }
              
             },
@@ -272,8 +275,9 @@ Future<void> _showMyDialog(BuildContext context) async {
               if (context.mounted){
                 Navigator.of(context).pop();
               }
-              //showNotification('上傳','成功');
-              
+              if(Data.httpRet == true){
+                showNotification('結束運輸','完成');
+              }
              
             },
           ),

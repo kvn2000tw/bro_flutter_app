@@ -10,7 +10,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'transport_orders_model.dart';
+import 'transport_order_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TransportOrderWidget extends StatefulWidget {
@@ -40,7 +40,7 @@ class TransportOrderWidget extends StatefulWidget {
 }
 
 class _TransportOrderWidgetState extends State<TransportOrderWidget> {
-  late TransportOrdersModel _model;
+  late TransportOrderModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -48,7 +48,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => TransportOrdersModel());
+    _model = createModel(context, () => TransportOrderModel());
 
     _model.textController1 ??= TextEditingController(text:widget.info.initial_odometer.toString());
     _model.textFieldFocusNode1 ??= FocusNode();

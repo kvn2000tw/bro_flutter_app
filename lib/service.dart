@@ -189,7 +189,9 @@ class Service{
       
         );
         final dio = Dio(options);
-     
+
+    bool ret = false; 
+    try{
       Response response;
     
       response = await dio.post(url,data:data);
@@ -199,9 +201,17 @@ class Service{
         print('GetTransportOrders');
         print(fromJsonMap);
         Data.setTransportOrdersList(fromJsonMap);
-      }
 
-      return response;
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
   }
   
   static profile()async {
@@ -258,23 +268,51 @@ class Service{
       String string = dateFormat.format(DateTime.now());
       String fileName = '$string.jpg';
       
+      bool ret = false;
+
+      try{
       response = await dio.post(url,data:{"filename": fileName});
 
       if(response.statusCode == HttpStatus.ok){
+        Data.httpRet = true;
          Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print(fromJsonMap);
         
         Data.setUploadUrl(fromJsonMap);
         await upload_file(uploadUrl,fileName);
+
+
        
       }
-      //print(response.statusCode.toString()); 
-      //print(response.data.toString());
-
-      return response;
+      }
+      on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+      }
+      return ret;
   }
 
-  static upload_file(String uoloadUrl,String fileName)async{
+  static remote_error(DioException e){
+      if (e.response != null) {
+        
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+        if(fromJsonMap['errorCode'] == 400){
+          print(fromJsonMap['errors']);
+        
+        }
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+
+  }
+  static  upload_file(String uoloadUrl,String fileName)async{
 
     final options = BaseOptions(
       //baseUrl: url,
@@ -288,6 +326,8 @@ class Service{
         );
         final bytes = io.File(uoloadUrl).readAsBytesSync();
 
+      Data.httpRet = false;
+      try{
         final dio = Dio(options);
     final response =  await dio.put(
   Data.presignedUrl,
@@ -299,10 +339,20 @@ class Service{
     },
   ),
 );
+ 
         //final response = await dio.put(Data.presignedUrl, data: formData);
         if(response.statusCode == HttpStatus.ok){
+          Data.httpRet = true;
            await upload(fileName);
+           
         }
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+        remote_error(e);
+      }
+      
   }
   static upload(String fileName)async{
     String url = "$BaseUrl/media/upload";
@@ -323,11 +373,12 @@ class Service{
       Response response;
 
       Map<String,dynamic> data = {"files": [{"path":Data.url_key,"filename":fileName}]};
-      
+      Data.httpRet = false;
       try{
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
+        Data.httpRet = true;
        if(Data.runFunc == 'started'){
         await started(response.data[0]);
         }
@@ -339,6 +390,7 @@ class Service{
           await updatEodometer(response.data[0]);
 
         }        
+        Data.httpRet = true;
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -346,23 +398,9 @@ class Service{
       }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
-      
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
-      //return response;
+     
   }  
 
   static started(String arttach)async{
@@ -384,15 +422,17 @@ class Service{
       Response response;
     
       Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
-     
+      Data.httpRet = false;
       try{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
        
+        Data.httpRet = true;
         await GetTransportOrders();
         await getTransportCurrent();
-        //Data.setUploadUrl(fromJsonMap);
+        
+      
       }
       //print(response.statusCode.toString()); 
       //print(response.data.toString());
@@ -400,22 +440,9 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
-      //return response;
+    
   }  
 
   static passed(String arttach)async{
@@ -434,6 +461,7 @@ class Service{
         );
         final dio = Dio(options);
      
+     Data.httpRet = false;
       Response response;
     
       Map<String,dynamic> data = {"attachment": arttach};
@@ -442,7 +470,7 @@ class Service{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+        Data.httpRet = true;
         await getLotStatus(Data.lot_barcode);
         getTransportCurrent();
       }
@@ -451,21 +479,7 @@ class Service{
       }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
-      
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
       //return response;
   }  
@@ -485,6 +499,7 @@ class Service{
         );
         final dio = Dio(options);
      
+     Data.httpRet = false;
       Response response;
     
       Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
@@ -493,7 +508,7 @@ class Service{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+       Data.httpRet = true;
         await getLotStatus(Data.lot_barcode);
         getTransportCurrent();
       }
@@ -503,20 +518,7 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+        remote_error(e);
     }
       //return response;
   }  
@@ -537,6 +539,7 @@ class Service{
         );
         final dio = Dio(options);
      
+     Data.httpRet = false;
       Response response;
     
       Map<String,dynamic> data = {"final_odometer": 1000, "initial_odometer": 500, "note": null};
@@ -545,7 +548,7 @@ class Service{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+       Data.httpRet = true;
        await finished(arttach);
       }
       //print(response.statusCode.toString()); 
@@ -554,20 +557,7 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
       //return response;
   }  
@@ -589,17 +579,17 @@ class Service{
      
       Response response;
     
-      bool ret = false;
+      Data.httpRet = false;
       try{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+       Data.httpRet = true;
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print('updateLot');
         //print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
-        ret = true;
+       
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -608,22 +598,9 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
-      return ret;
+    
   }  
 
   static Request()async{
@@ -642,20 +619,21 @@ class Service{
         );
         final dio = Dio(options);
      
+     Data.httpRet = false;
       Response response;
       var data = {"lat": 24.7911418, "lng": 120.9658681};
-      bool ret = false;
+
       try{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+       Data.httpRet = true;
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print('updateLot');
         await getTransportCurrent();
         //print(fromJsonMap);
         //Data.setTransportLotStatus(fromJsonMap);
-        ret = true;
+
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -664,22 +642,9 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
-      return ret;
+      
   }  
   static Returned()async{
     String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/returned";
@@ -697,6 +662,7 @@ class Service{
         );
         final dio = Dio(options);
      
+     Data.httpRet = false;
       Response response;
       var data = {"lat": 24.7911418, "lng": 120.9658681};
       bool ret = false;
@@ -704,7 +670,7 @@ class Service{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-       
+       Data.httpRet = true;
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print('updateLot');
         await getTransportCurrent();
@@ -719,20 +685,7 @@ class Service{
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
-          print(fromJsonMap['errors']);
-        
-        }
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
+      remote_error(e);
     }
       return ret;
   }  
