@@ -9,6 +9,7 @@ import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 
 import 'package:bro_flutter_app/transport_order_status/transport_order_status_item.dart';
 import 'package:bro_flutter_app/transport_order_status/transport_order_status_item_info.dart';
+import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
@@ -183,44 +184,33 @@ Future<void> _showMyDialog(String title,String text) async {
     duration: Duration(seconds: 2),
   );     
 }
+
+_finishCheck()async{
+    Data.runFunc = 'passed';
+    await Navigator.pushNamed(context,'/camera');
+    print('abcd');
+    if (context.mounted){
+      Navigator.of(context).pop();
+    }
+
+    if(Data.httpRet == true){
+      showNotification('完成檢查','完成');
+      print('_takePicture');
+    
+      setState(() {
+      
+        initLotStatus();
+      });
+    }
+
+}
 Future<void> _takePicture(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('完成檢查？'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('將儲存物料檢查結果'),
-              Text('需要一張物料狀態的照片'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('上傳物料狀態的照片'),
-            onPressed: () async{
-              
-              Data.runFunc = 'passed';
-              await Navigator.pushNamed(context,'/camera');
-              print('abcd');
-              if (context.mounted){
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
+  String title = '完成檢查？';
+  List<String> contents = ['將儲存物料檢查結果','需要一張物料狀態的照片'];
+  String buttonText = '上傳物料狀態的照片';
+
+  showTransportDialog(context, title, contents, buttonText, _finishCheck);
+ 
 }
   
   @override
@@ -330,24 +320,18 @@ Future<void> _takePicture(BuildContext context) async {
       onPressed: () async{
         print('Button pressed ...');
         await _takePicture(context);
-        showNotification('完成檢查','成功');
-        print('_takePicture');
-        setState(() {
-      
-          initLotStatus();
-        });
       },
       text: '完成檢查',
       options: FFButtonOptions(
         height: 40,
         padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
         iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        color: FlutterFlowTheme.of(context).primaryBackground,
+        color: FlutterFlowTheme.of(context).primary,
         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-              fontFamily: 'Readex Pro',
-              color: FlutterFlowTheme.of(context).primary,
-              letterSpacing: 0,
-            ),
+          fontFamily: 'Readex Pro',
+          color: Colors.white,
+          letterSpacing: 0,
+        ),
         elevation: 3,
         borderSide: BorderSide(
           color: FlutterFlowTheme.of(context).primary,

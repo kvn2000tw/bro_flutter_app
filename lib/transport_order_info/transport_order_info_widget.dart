@@ -1,10 +1,13 @@
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_header.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_order_items/transport_order_items_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/dialog.dart';
+import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -100,22 +103,6 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
       }
     }
   }
-  void showNotification(String title,String body)
-{
-  showSimpleNotification(
-    Text(title,textAlign: TextAlign.center,
-      style: TextStyle(
-      color: Colors.black,
-    ),),
-    subtitle: Text(body,textAlign: TextAlign.center,
-      style: TextStyle(
-      color: Colors.black,
-    ),),
-    background: Colors.cyan.shade700,
-    foreground:Colors.cyan.shade700,
-    duration: Duration(seconds: 2),
-  );     
-}
 Future<void> _showMyDialog(BuildContext context) async {
   return showDialog<void>(
     context: context,
@@ -123,7 +110,7 @@ Future<void> _showMyDialog(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('開始運輸？'),
-        content:  const SingleChildScrollView(
+        content:   SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
               Text('將紀錄起始里程數並開始運輸'),
@@ -157,8 +144,25 @@ Future<void> _showMyDialog(BuildContext context) async {
     },
   );
 }
+
+  _startOnPress()async{
+    Data.runFunc = 'started';
+    await Navigator.pushNamed(context,'/camera');
+    if(Data.httpRet == true){
+        showNotification('開始運輸', '完成');
+    }
+
+    if (context.mounted){
+      Navigator.pop(context);
+    }
+  }
   _startButton(BuildContext context)async{
-    await _showMyDialog(context);
+    String title = '開始運輸?';
+    List<String> list = ['將紀錄起始里程數並開始運輸',
+    '起始里程數','要一張開始里程數的照片'];
+    String buttonText = '上傳開始里程數照片';
+ 
+    await showTransportDialog(context,title,list,buttonText,_startOnPress);
     
     setState(
       (){
@@ -169,129 +173,7 @@ Future<void> _showMyDialog(BuildContext context) async {
 
   }
 
-  Future<void> _showRequestDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('申請結算？'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('確認送出運輸單物料結算申請？'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('確認'),
-            onPressed: () async{
-             
-              await Service.Request();
-              if (context.mounted){
-                Navigator.of(context).pop();
-              }
 
-              if(Data.httpRet == true){
-                showNotification('結算','完成');
-              }
-             
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
-  Future<void> _showReturnDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('開始回程？'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(''),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('確認'),
-            onPressed: () async{
-             
-              await Service.Returned();
-              if(context.mounted){
-                Navigator.of(context).pop();
-              }
-              if(Data.httpRet == true){
-                showNotification('開始回程','完成');
-              }
-             
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
-  Future<void> _showFinishDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('結束運輸？'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('將紀錄里程數並結束運輸'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('上傳結束里程數照片'),
-            onPressed: () async{
-             Data.runFunc = 'finished';
-            
-              await Navigator.pushNamed(context,'/camera');
-
-              if (context.mounted){
-                Navigator.of(context).pop();
-              }
-              if(Data.httpRet == true){
-                showNotification('結束運輸','完成');
-              }
-             
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
   Future<void> _showRequestAlert(BuildContext context) async {
   return showDialog<void>(
     context: context,
@@ -330,18 +212,56 @@ Future<bool> checkRequest()async{
   }
   return true;
 }
+requestPress()async{
+  
+  await Service.Request();
+  if (context.mounted){
+    Navigator.of(context).pop();
+  }
+
+  if(Data.httpRet == true){
+    showNotification('結算','完成');
+  }
+}
+returnPress()async{
+  
+  await Service.Returned();
+  if(context.mounted){
+    Navigator.of(context).pop();
+  }
+  if(Data.httpRet == true){
+    showNotification('開始回程','完成');
+  }
+}
+finishPress()async{
+  
+    Data.runFunc = 'finished';
+            
+    await Navigator.pushNamed(context,'/camera');
+
+    if (context.mounted){
+      Navigator.of(context).pop();
+    }
+    if(Data.httpRet == true){
+      showNotification('結束運輸','完成');
+    }
+             
+}
+
   _requestButton(BuildContext context)async{
 
     var ret = await checkRequest();
     if(ret == false){
       if(context.mounted){
-      _showRequestAlert(context);
+        _showRequestAlert(context);
       }
       return;
     }
-    if(context.mounted){
-      await _showRequestDialog(context);
-    }
+   
+    String title = '申請結算？';
+    List<String> contents = ['確認送出運輸單物料結算申請？'];
+    String buttonText = '確認';
+    await showTransportDialog(context,title,contents,buttonText,requestPress);
     setState(
       (){
         widget.info = Data.transport_info;
@@ -353,7 +273,10 @@ Future<bool> checkRequest()async{
 
   _returnButton(BuildContext context)async{
 
-    await _showReturnDialog(context);
+    String title = '開始回程？';
+    List<String> contents = [''];
+    String buttonText = '確認';
+    await showTransportDialog(context,title,contents,buttonText,returnPress);
     setState(
       (){
         widget.info = Data.transport_info;
@@ -364,7 +287,11 @@ Future<bool> checkRequest()async{
   }
   _finishButton(BuildContext context)async{
 
-    await _showFinishDialog(context);
+    String title = '結束運輸？';
+    List<String> contents = ['將紀錄里程數並結束運輸'];
+    String buttonText = '上傳結束里程數照片';
+    await showTransportDialog(context,title,contents,buttonText,finishPress);
+    
     if(context.mounted){
       await Navigator.pushNamed(context,'/home');
     }

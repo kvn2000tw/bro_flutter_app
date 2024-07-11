@@ -171,8 +171,8 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                       ),
                     ),
                     Container(
-                      width: 40,
-                      height: 100,
+                      width: 30,
+                      height: 30,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
@@ -186,8 +186,8 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                       child: Container(
-                        width: 40,
-                        height: 40,
+                        width: 30,
+                        height: 30,
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,

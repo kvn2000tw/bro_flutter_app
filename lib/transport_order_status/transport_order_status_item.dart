@@ -258,8 +258,7 @@ class _TransportOrderStatusState
                                 width: double.infinity,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
+                                  color: widget.info['value'] == true ? Color.fromRGBO(220, 252, 231,1):Color.fromRGBO(254, 226, 226,1),
                                 ),
                                 child: Align(
                                   alignment: AlignmentDirectional(-1, 0),
@@ -273,6 +272,7 @@ class _TransportOrderStatusState
                                           .override(
                                             fontFamily: 'Readex Pro',
                                             letterSpacing: 0,
+                                            color:widget.info['value'] == true ?Color.fromRGBO(22, 163, 74,1) : Color.fromRGBO(220 ,38, 38,1),
                                           ),
                                     ),
                                   ),
