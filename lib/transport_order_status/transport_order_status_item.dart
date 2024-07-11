@@ -69,10 +69,12 @@ class _TransportOrderStatusState
   ),
 );
   }
+  checkColor(){
+    return widget.info['value'] == true ? Color.fromRGBO(220, 252, 231,1):Color.fromRGBO(254, 226, 226,1);
+  }
   @override
   Widget build(BuildContext context) {
 
-    
      return                    
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -258,7 +260,8 @@ class _TransportOrderStatusState
                                 width: double.infinity,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: widget.info['value'] == true ? Color.fromRGBO(220, 252, 231,1):Color.fromRGBO(254, 226, 226,1),
+                                  color: widget.canCheck == true ? FlutterFlowTheme.of(context)
+                                      .secondaryBackground : checkColor(),
                                 ),
                                 child: Align(
                                   alignment: AlignmentDirectional(-1, 0),
