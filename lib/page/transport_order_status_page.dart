@@ -9,9 +9,10 @@ import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 
 import 'package:bro_flutter_app/transport_order_status/transport_order_status_item.dart';
 import 'package:bro_flutter_app/transport_order_status/transport_order_status_item_info.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
+import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:flutter/material.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
 class TransportOrderStatusPage extends StatefulWidget {
@@ -33,6 +34,7 @@ class _TransportOrderStatusState
   List<TextEditingController> text_list = [];
   List<Widget> list = [];
   TextEditingController noteController = TextEditingController();
+  TextEditingController weightController = TextEditingController();
 
   _getLotStatus()async{
     final response = await Service.getLotStatus(Data.lot_barcode);
@@ -65,6 +67,7 @@ class _TransportOrderStatusState
       radio_list = [];
       text_list = [];
       noteController = TextEditingController(text:Data.lotStatus.note);
+      weightController = TextEditingController(text:Data.lotStatus.weight);
 
       for(var i = 0; i < Data.lotStatus.checkables.length; i++){
         var radio = RadioGroupController();
@@ -87,6 +90,7 @@ class _TransportOrderStatusState
     }
 
     list.add(TransportOrderStatusItemInfo(info:Data.lotStatus,
+    weightController:weightController,
     textController:noteController
     ));
 
@@ -100,38 +104,12 @@ class _TransportOrderStatusState
 
   @override
   void dispose() {
-   
+    noteController.dispose();
+    weightController.dispose();
     super.dispose();
   }
 
-Future<void> _showMyDialog(String title,String text) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title:  Text(title),
-        content:  SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text(text),
-              
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-  saveCheck()async{
+  saveCheck(BuildContext context)async{
     
     for(var i = 0; i < Data.lotStatus.checkables.length; i++){
        
@@ -139,7 +117,7 @@ Future<void> _showMyDialog(String title,String text) async {
       print(text_list[i].text);
       print(noteController.text);
       if(radio_list[i].value == null){
-        _showMyDialog('檢查錯誤','請點選合格或不合格');
+        showAlert(context,'檢查錯誤','請點選合格或不合格');
         return;
       }
         
@@ -156,8 +134,9 @@ Future<void> _showMyDialog(String title,String text) async {
     }
     data["checkable"] = list;
     data['note'] = noteController.text;
+  
     await Service.updateLot(Data.lotStatus.barcode,data);
-
+  
     if(Data.httpRet == true){
       showNotification('儲存檢查結果','儲存成功');
       
@@ -168,22 +147,25 @@ Future<void> _showMyDialog(String title,String text) async {
     }
       
   }
-  void showNotification(String title,String body)
-{
-  showSimpleNotification(
-    Text(title,textAlign: TextAlign.center,
-      style: TextStyle(
-      color: Colors.black,
-    ),),
-    subtitle: Text(body,textAlign: TextAlign.center,
-      style: TextStyle(
-      color: Colors.black,
-    ),),
-    background: Colors.cyan.shade700,
-    foreground:Colors.cyan.shade700,
-    duration: Duration(seconds: 2),
-  );     
-}
+  updateWeight(BuildContext context)async{
+    
+    Map<String,dynamic> data = {};
+   
+    data['weight'] = weightController.text;
+    //await Service.updateLot(Data.lotStatus.barcode,data);
+    await Service.updateLotWeight(Data.lotStatus.barcode,data);
+
+    if(Data.httpRet == true){
+      showNotification('修改重量','成功');
+      
+     setState(() {
+      
+      initLotStatus();
+    });
+    }
+      
+  }
+
 
 _finishCheck()async{
     Data.runFunc = 'passed';
@@ -213,6 +195,7 @@ Future<void> _takePicture(BuildContext context) async {
  
 }
   
+   
   @override
   Widget build(BuildContext context) {
 
@@ -353,7 +336,7 @@ Future<void> _takePicture(BuildContext context) async {
     child: FFButtonWidget(
       onPressed: () {
         print('Button pressed ...');
-        saveCheck();
+        saveCheck(context);
       },
       text: '儲存檢查結果',
       options: FFButtonOptions(
@@ -376,7 +359,7 @@ Future<void> _takePicture(BuildContext context) async {
     ),
   ),
 ),
-              Padding(
+              Data.isCurrent == false? Container(): Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                 child: Container(
                   width: double.infinity,
@@ -387,6 +370,7 @@ Future<void> _takePicture(BuildContext context) async {
                   child: FFButtonWidget(
                     onPressed: () {
                       print('Button pressed ...');
+                      updateWeight(context);
                     },
                     text: '修改重量',
                     options: FFButtonOptions(

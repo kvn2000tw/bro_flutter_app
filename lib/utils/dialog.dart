@@ -1,7 +1,6 @@
-import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
-import 'package:bro_flutter_app/utils/notify.dart';
+
 import 'package:flutter/material.dart';
 
 Future<void> showTransportDialog(BuildContext context,
@@ -30,6 +29,7 @@ Future<void> showTransportDialog(BuildContext context,
     //barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return Dialog(
+         insetPadding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
         alignment: AlignmentDirectional(0, 1),
  shape: RoundedRectangleBorder(
                 borderRadius:

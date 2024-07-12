@@ -10,27 +10,27 @@ class TransportOrderStatusItemInfoModel extends FlutterFlowModel {
 
   final unfocusNode = FocusNode();
   // State field(s) for TextField widget.
-  TextEditingController? textController1;
-  String? Function(BuildContext, String?)? textController1Validator;
+ 
   // State field(s) for TextField widget.
   TextEditingController? textController2;
   String? Function(BuildContext, String?)? textController2Validator;
-  TextEditingController? textController3;
-  String? Function(BuildContext, String?)? textController3Validator;
 
   /// Initialization and disposal methods.
 
-  var textFieldFocusNode1 = FocusNode();
+  var textFieldFocusNode1 = FocusNode(); 
   var textFieldFocusNode2 = FocusNode();
-  var textFieldFocusNode3 = FocusNode();
-  void initState(BuildContext context) {}
+  var textFieldFocusNode3 = FocusNode();  
 
   void dispose() {
     unfocusNode.dispose();
-    textController1?.dispose();
+ 
     textController2?.dispose();
-    textController3?.dispose();
-   
+  
+  }
+  
+  @override
+  void initState(BuildContext context) {
+    // TODO: implement initState
   }
 
   /// Action blocks are added here.

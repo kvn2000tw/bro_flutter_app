@@ -26,6 +26,7 @@ class Data {
   static bool isCurrent = false;
   static String runFunc = '';
   static bool httpRet = false;
+  static int sort = 0;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

@@ -605,6 +605,47 @@ class Service{
     }
     
   }  
+  static updateLotWeight(String barcode,Map<String,dynamic> data)async{
+    String url = "$BaseUrl/admin/lots/barcode/$barcode/update";
+    print('profile $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Data.httpRet = false;
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       Data.httpRet = true;
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('updateLot');
+        //print(fromJsonMap);
+        Data.setTransportLotStatus(fromJsonMap);
+       
+        //Data.setUploadUrl(fromJsonMap);
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+    
+  }  
 
   static Request()async{
     String url = "$BaseUrl/admin/transport-orders/${Data.current.id}/requested";

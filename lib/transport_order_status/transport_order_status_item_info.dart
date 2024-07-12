@@ -10,11 +10,13 @@ import 'package:flutter/material.dart';
 class TransportOrderStatusItemInfo extends StatefulWidget {
    TransportOrderStatusItemInfo({super.key,
   required this.info,
-  this.textController
+  this.textController,
+  this.weightController,
   });
 
   late TransportOrdersLotStatus info;
   TextEditingController? textController;
+  TextEditingController? weightController;
 
   @override
   State<TransportOrderStatusItemInfo> createState() =>
@@ -31,9 +33,8 @@ class _TransportOrderStatusState
     super.initState();
     _model = createModel(context, () => TransportOrderStatusItemInfoModel());
 
-    _model.textController1 ??= TextEditingController(text:widget.info.weight);
     _model.textController2 ??= TextEditingController(text:widget.info.description);
-    _model.textController3 ??= TextEditingController(text:widget.info.note);
+
   }
 
   @override
@@ -309,7 +310,7 @@ class _TransportOrderStatusState
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
                                 child: TextFormField(
-                                  controller: _model.textController1,
+                                  controller: widget.weightController,
                                   focusNode: _model.textFieldFocusNode1,
                                   autofocus: false,
                                   obscureText: false,
@@ -365,8 +366,7 @@ class _TransportOrderStatusState
                                         fontFamily: 'Readex Pro',
                                         letterSpacing: 0,
                                       ),
-                                  validator: _model.textController1Validator
-                                      .asValidator(context),
+                                  keyboardType: TextInputType.number,
                                 ),
                               ),
                             ),
@@ -583,8 +583,7 @@ class _TransportOrderStatusState
                                         fontFamily: 'Readex Pro',
                                         letterSpacing: 0,
                                       ),
-                                  validator: _model.textController3Validator
-                                      .asValidator(context),
+                                
                                 ),
                               ),
                             ),

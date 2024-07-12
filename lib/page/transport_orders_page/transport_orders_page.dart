@@ -3,6 +3,8 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/page/transport_orders_page/transport_orders_page_model.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_brief/transport_order_brief_widget.dart';
+import 'package:bro_flutter_app/utils/filter.dart';
+import 'package:bro_flutter_app/utils/sort_order.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -60,12 +62,21 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
     );
   }
   
+  filterPress(){
+    
+  }
   Widget builder(BuildContext context) {
 
     List<Widget> list = [];
     for(var i=0;i<Data.ordersList.length;i++){
       list.add(TransportOrderBriefWidget(info:Data.ordersList[i]));
     }
+
+    var empty = const Center(child:Text('無資料'));
+    if(Data.ordersList.isEmpty){
+      list.add(empty);
+    }
+    
     return 
    Column(
             mainAxisSize: MainAxisSize.max,
@@ -170,22 +181,16 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child:SvgPicture.asset(
-                        SortIcon,
-                        colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),),
-                      ),
-                    ),
+                    const SortOrder(),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                      child: Container(
+                      child: 
+                      InkWell(
+                        onTap: () { 
+                        print("Tapped on container");
+                         showTransportFilter(context,filterPress);
+                        },
+                        child:Container(
                         width: 30,
                         height: 30,
                         decoration: BoxDecoration(
@@ -199,7 +204,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                         colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),),
                       ),
                       ),
-                    ),
+                    )),
                   ],
                 ),
               ),
