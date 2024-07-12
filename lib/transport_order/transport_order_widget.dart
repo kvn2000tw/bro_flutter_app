@@ -1,5 +1,9 @@
+import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/finish_button.dart';
+import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/request_button.dart';
 import 'package:bro_flutter_app/utils/return_button.dart';
 import 'package:bro_flutter_app/utils/show_order_status.dart';
@@ -24,6 +28,7 @@ class TransportOrderWidget extends StatefulWidget {
   this.requestPressed,
   this.returnPressed,
   this.finishPressed,
+  this.savePressed,  
   });
 
   late TransportOrdersInfo info;
@@ -34,7 +39,8 @@ class TransportOrderWidget extends StatefulWidget {
   final VoidCallback? startPressed;  
   final VoidCallback? requestPressed;
   final VoidCallback? returnPressed;
-  final VoidCallback? finishPressed;  
+  final VoidCallback? finishPressed; 
+  final VoidCallback? savePressed;    
   @override
   State<TransportOrderWidget> createState() => _TransportOrderWidgetState();
 }
@@ -44,7 +50,29 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  _saveButton(BuildContext context)async {
+
+    print( _model.textController1.text);
+    print( _model.textController2.text);
+    print( _model.textController3.text);
+    var start = double.parse(_model.textController1.text);
+    var end = double.parse(_model.textController2.text);
+
+    if(start >= end){
+      showAlert(context,'結束里程','需大於起始里程數');
+      return;
+      
+    }
+    await Service.updatEodometer(start, end, _model.textController3.text);
   
+    if(Data.httpRet == true){
+      showNotification('儲存資料', '成功');
+      
+    }else {
+      showAlert(context,'儲存資料',Data.errorMessage);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -335,7 +363,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
-                                        readOnly: true,
+                                        readOnly: false,
                                         controller: _model.textController1,
                                         focusNode: _model.textFieldFocusNode1,
                                         autofocus: false,
@@ -366,6 +394,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                               fontFamily: 'Readex Pro',
                                               letterSpacing: 0,
                                             ),
+                                        keyboardType: TextInputType.number,    
                                         validator: _model
                                             .textController1Validator
                                             .asValidator(context),
@@ -447,7 +476,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
-                                         readOnly: true,
+                                         readOnly: false,
                                         controller: _model.textController2,
                                         focusNode: _model.textFieldFocusNode2,
                                         autofocus: false,
@@ -478,6 +507,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                               fontFamily: 'Readex Pro',
                                               letterSpacing: 0,
                                             ),
+                                        keyboardType: TextInputType.number,    
                                         validator: _model
                                             .textController2Validator
                                             .asValidator(context),
@@ -559,7 +589,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           8, 0, 8, 0),
                                       child: TextFormField(
-                                         readOnly: true,
+                                         readOnly: false,
                                         controller: _model.textController3,
                                         focusNode: _model.textFieldFocusNode3,
                                         autofocus: false,
@@ -648,13 +678,15 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                   RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
                   FinishButton(show:widget.canFinish,onPressed:widget.finishPressed),
 
-                  Align(
+                  Data.isCurrent == false ?  Container():Align(
                     alignment: AlignmentDirectional(0, 0),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
                       child: FFButtonWidget(
                         onPressed: () {
                           print('Button pressed ...');
+                          //widget.savePressed!();
+                          _saveButton(context);
                         },
                         text: '儲存資料',
                         options: FFButtonOptions(

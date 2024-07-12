@@ -298,11 +298,11 @@ class Service{
       if (e.response != null) {
         
         print(e.response?.data);
-       
+        Data.errorMessage = '';
         Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
         if(fromJsonMap['errorCode'] == 400){
           print(fromJsonMap['errors']);
-        
+          Data.errorMessage = fromJsonMap['message'];
         }
 
       } else {
@@ -387,7 +387,7 @@ class Service{
 
         }
         else if(Data.runFunc == 'finished'){
-          await updatEodometer(response.data[0]);
+          await finished(response.data[0]);
 
         }        
         Data.httpRet = true;
@@ -523,7 +523,7 @@ class Service{
       //return response;
   }  
 
-  static updatEodometer(String arttach)async{
+  static updatEodometer(double start,double end,String note)async{
     String url = "$BaseUrl/admin/transport-orders/${Data.current.id}";
     print('finished $url');
     // Or create `Dio` with a `BaseOptions` instance.
@@ -542,14 +542,17 @@ class Service{
      Data.httpRet = false;
       Response response;
     
-      Map<String,dynamic> data = {"final_odometer": 1000, "initial_odometer": 500, "note": null};
+      //Map<String,dynamic> data = {"final_odometer": end, "initial_odometer": start, "note": note};
+      Map<String,dynamic> data = {"final_odometer": end, "initial_odometer": start, "note": note};
+
 
       try{
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
+        await getTransportCurrent();
        Data.httpRet = true;
-       await finished(arttach);
+       
       }
       //print(response.statusCode.toString()); 
       //print(response.data.toString());

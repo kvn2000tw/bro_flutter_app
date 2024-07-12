@@ -69,8 +69,31 @@ class _TransportOrderStatusState
   ),
 );
   }
-  checkColor(){
-    return widget.info['value'] == true ? Color.fromRGBO(220, 252, 231,1):Color.fromRGBO(254, 226, 226,1);
+  Widget showResult(BuildContext context){
+    
+    String text = '未檢測';
+    Color color = Color.fromRGBO(75, 85, 99,1);
+    if(widget.info['value'] != null){
+      text = widget.info['value'] == true ? '合格' : '不合格';
+      color = widget.info['value'] == true ?Color.fromRGBO(22, 163, 74,1) : Color.fromRGBO(220 ,38, 38,1);
+    }
+
+    return Text(
+      text,
+      style: FlutterFlowTheme.of(context)
+      .bodyMedium
+      .override(
+        fontFamily: 'Readex Pro',
+        letterSpacing: 0,
+        color:color
+    ));
+  }
+
+  checkColor(BuildContext context){
+    if(widget.info['value'] != null)
+      return widget.info['value'] == true ? Color.fromRGBO(220, 252, 231,1):Color.fromRGBO(254, 226, 226,1);
+    else 
+      return Color.fromRGBO(243, 244, 246,1);
   }
   @override
   Widget build(BuildContext context) {
@@ -261,23 +284,14 @@ class _TransportOrderStatusState
                                 height: 40,
                                 decoration: BoxDecoration(
                                   color: widget.canCheck == true ? FlutterFlowTheme.of(context)
-                                      .secondaryBackground : checkColor(),
+                                      .secondaryBackground : checkColor(context),
                                 ),
                                 child: Align(
                                   alignment: AlignmentDirectional(-1, 0),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
-                                    child:widget.canCheck == true? showCheck(context) : Text(
-                                      widget.info['value'] == true ? '合格' : '不合格',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0,
-                                            color:widget.info['value'] == true ?Color.fromRGBO(22, 163, 74,1) : Color.fromRGBO(220 ,38, 38,1),
-                                          ),
-                                    ),
+                                    child:widget.canCheck == true? showCheck(context) : showResult(context),
                                   ),
                                 ),
                               ),

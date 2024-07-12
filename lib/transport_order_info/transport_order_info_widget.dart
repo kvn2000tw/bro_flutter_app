@@ -1,14 +1,13 @@
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_header.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_order_items/transport_order_items_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
-import 'package:overlay_support/overlay_support.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -103,47 +102,6 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
       }
     }
   }
-Future<void> _showMyDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('開始運輸？'),
-        content:   SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('將紀錄起始里程數並開始運輸'),
-              Text('需要一張開始里程數的照片'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('上傳開始里程數照片'),
-            onPressed: () async {
-              
-              Data.runFunc = 'started';
-              await Navigator.pushNamed(context,'/camera');
-              if(Data.httpRet == true){
-                showNotification('開始運輸', '完成');
-              }
-              if (context.mounted){
-                Navigator.pop(context);
-              }
-            },
-          ),
-           TextButton(
-            child: const Text('取消'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
-        ],
-      );
-    },
-  );
-}
 
   _startOnPress()async{
     Data.runFunc = 'started';
@@ -173,35 +131,23 @@ Future<void> _showMyDialog(BuildContext context) async {
 
   }
 
+  _saveButton(BuildContext context)async{
+    String title = '開始運輸?';
+    List<String> list = ['將紀錄起始里程數並開始運輸',
+    '起始里程數','要一張開始里程數的照片'];
+    String buttonText = '上傳開始里程數照片';
+ 
+    await showTransportDialog(context,title,list,buttonText,_startOnPress);
+    
+    setState(
+      (){
+        widget.info = Data.transport_info;
+        initButton();
+      }
+    );
 
-  Future<void> _showRequestAlert(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('無法結算'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('請確認所有貨品檢查結果'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('確認'),
-            onPressed: () async{
-              Navigator.of(context).pop();
-             
-            },
-          ),
-         
-        ],
-      );
-    },
-  );
-}
+  }
+
 Future<bool> checkRequest()async{
   if(Data.current.id == '')    return false;
 
@@ -253,7 +199,7 @@ finishPress()async{
     var ret = await checkRequest();
     if(ret == false){
       if(context.mounted){
-        _showRequestAlert(context);
+        showAlert(context,'無法結算','請確認所有貨品檢查結果');
       }
       return;
     }
@@ -287,6 +233,10 @@ finishPress()async{
   }
   _finishButton(BuildContext context)async{
 
+    if(widget.info.final_odometer == 0){
+      showAlert(context,'結束里程','請填寫並儲存結束里程數');
+      return;
+    }
     String title = '結束運輸？';
     List<String> contents = ['將紀錄里程數並結束運輸'];
     String buttonText = '上傳結束里程數照片';
@@ -346,6 +296,7 @@ finishPress()async{
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,
+                          savePressed: ()=>_saveButton(context),
                           startPressed: ()=>_startButton(context),
                           requestPressed: ()=>_requestButton(context),
                           returnPressed: ()=>_returnButton(context),
