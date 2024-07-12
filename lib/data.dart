@@ -1,4 +1,5 @@
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Token{
@@ -27,6 +28,8 @@ class Data {
   static String runFunc = '';
   static bool httpRet = false;
   static int sort = 0;
+  static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
+  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

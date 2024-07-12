@@ -63,7 +63,18 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   }
   
   filterPress(){
-    
+
+  }
+  _getFilter(){
+    bool ret = false;
+    for(var i=0;i<Data.filter.length;i++){
+      if(Data.filter[i].value == true){
+        ret = true;
+        break;
+      }
+    }
+
+    return ret == false ? Colors.grey : Colors.blue;
   }
   Widget builder(BuildContext context) {
 
@@ -186,9 +197,14 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                       child: 
                       InkWell(
-                        onTap: () { 
+                        onTap: () async{ 
                         print("Tapped on container");
-                         showTransportFilter(context,filterPress);
+                        await showTransportFilter(context,filterPress);
+                        setState(
+                          (){
+                            
+                          }
+                        );
                         },
                         child:Container(
                         width: 30,
@@ -201,7 +217,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                         borderRadius: BorderRadius.circular(8),
                         child:SvgPicture.asset(
                         FilterIcon,
-                        colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),),
+                        colorFilter: ColorFilter.mode(_getFilter(), BlendMode.srcIn),),
                       ),
                       ),
                     )),
