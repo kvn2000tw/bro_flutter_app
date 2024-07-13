@@ -13,8 +13,8 @@ class Service{
         // Or create `Dio` with a `BaseOptions` instance.
         final options = BaseOptions(
         baseUrl: url,
-        connectTimeout: Duration(seconds: 5),
-        receiveTimeout: Duration(seconds: 3),
+        connectTimeout: Duration(seconds: 10),
+        receiveTimeout: Duration(seconds: 10),
         headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -95,18 +95,37 @@ class Service{
         final dio = Dio(options);
      
       Response response;
-    
+    bool ret = false;
+    try {
       response = await dio.get(url);
 
       if(response.statusCode == HttpStatus.ok){
          Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         print(fromJsonMap);
         Data.setTransportCurrent(fromJsonMap);
+        ret = true;
       }
+
+    }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+       
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
       //print(response.statusCode.toString()); 
       //print(response.data.toString());
 
-      return response;
+      return ret;
   }
 
   static getTransportSelect()async {
@@ -176,7 +195,35 @@ class Service{
     String url = '$BaseUrl/admin/transport-orders/index?page=1';
     print('GetTransportOrders $url');
     // Or create `Dio` with a `BaseOptions` instance.
-    Map<String, List> data = {"filters": [], "sorts": []};
+    
+    List<Map<String,dynamic>> sorts = [];
+    if(Data.sort == 1){
+      sorts = [{"field":"updated_at","order":"desc","label":"最新","selected":true}];
+    }
+    else if(Data.sort == 2){
+      sorts = [{"field":"updated_at","order":"asc","label":"最舊","selected":true}];
+    }
+   
+   List<Map<String,dynamic>> filters = [];
+
+   if(Data.search != ""){
+    filters.add({"field":"custom_id","value":Data.search});
+   }
+
+    List<Map<String,dynamic>> value = [];
+    for(var i=0;i<Data.filter.length;i++){
+      if(Data.filter[i].value == true){
+        value.add( {"field":"status","operator":"=","value":(i+1)});
+      }
+    }
+
+    if(!value.isEmpty){
+      filters.add(
+        {"field":"status","value":value,"operator":"group"}
+      );
+    }
+
+    Map<String, List> data = {"filters": filters, "sorts": sorts};
     final options = BaseOptions(
       baseUrl: url,
       connectTimeout: Duration(seconds: 5),

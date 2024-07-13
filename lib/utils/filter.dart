@@ -1,3 +1,4 @@
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/utils/filter_widget.dart';
@@ -22,7 +23,7 @@ Future<void> showTransportFilter(BuildContext context,
             BorderRadius.circular(16.0),
             
             ), //this right here
-          child: FilterWidget()
+          child: FilterWidget(filter:Data.filter)
       );
     },
   );

@@ -1,5 +1,6 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -167,5 +168,7 @@ class MenuItems {
 
         break;
     }
+
+    Service.GetTransportOrders();
   }
 }

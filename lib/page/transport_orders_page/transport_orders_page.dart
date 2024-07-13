@@ -36,6 +36,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersPageModel());
+    _model.textController ??= TextEditingController();
     Data.ordersList = [];
   }
 
@@ -174,13 +175,27 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             prefixIcon:IconButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              Service.GetTransportOrders();
+                            },
                             icon: SvgPicture.asset(
                             SearchIcon,
                             height: 24,
                             width: 24,
                             ),
                             ),
+         suffixIcon: _model.textController!.text.isNotEmpty
+            ? InkWell(
+                onTap: () async {
+                  _model.textController?.clear();
+                  setState(() {});
+                },
+                child: Icon(
+                  Icons.clear,
+                  size: 20,
+                ),
+              )
+            : null,
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -189,6 +204,14 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                                   ),
                           validator: _model.textControllerValidator
                               .asValidator(context),
+                          onEditingComplete: () {
+                            // This optional block of code can be used to run
+                            // code when the user saves the form.
+                            print('onEditingComplete ${_model.textController.text}');
+                            Data.search = _model.textController.text;
+                            FocusScope.of(context).unfocus();
+                            Service.GetTransportOrders();
+                          },  
                         ),
                       ),
                     ),
@@ -202,7 +225,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                         await showTransportFilter(context,filterPress);
                         setState(
                           (){
-                            
+
                           }
                         );
                         },

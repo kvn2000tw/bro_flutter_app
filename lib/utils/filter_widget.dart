@@ -1,53 +1,59 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:flutter/material.dart';
 
 
 class FilterWidget extends StatelessWidget {
   
   FilterWidget({this.show = false,
-  this.onPressed,})
+  this.onPressed,filter})
   {
-    
+    for(var i=0;i<filter.length;i++){
+      this.filter[i].value = filter[i].value;
+    }
   }
   bool show = false;
   VoidCallback? onPressed;
 
+  List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
+  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
+
   filter1Press(){
 
-    Data.filter[0].value = !Data.filter[0].value;
+    filter[0].value = !filter[0].value;
 
     
   }
   filter2Press(){
 
-    Data.filter[1].value = !Data.filter[1].value;
+    filter[1].value = !filter[1].value;
 
     
   }
 
   filter3Press(){
 
-    Data.filter[2].value = !Data.filter[2].value;
+    filter[2].value = !filter[2].value;
 
     
   }
   filter4Press(){
 
-    Data.filter[3].value = !Data.filter[3].value;
+    filter[3].value = !filter[3].value;
 
     
   }
   filter5Press(){
 
-    Data.filter[4].value = !Data.filter[4].value;
+    filter[4].value = !filter[4].value;
 
     
   }
   filter6Press(){
 
-    Data.filter[5].value = !Data.filter[5].value;
+    filter[5].value = !filter[5].value;
 
     
   }
@@ -60,36 +66,46 @@ class FilterWidget extends StatelessWidget {
   
   Widget _filterBuilder1(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'派車運輸',Data.filter[0].value == true ? enable_color : disable_color,Data.filter[0].value == true ? enable_bkColor : disable_bkColor,filter1Press);                 
+    return filterContent(context,'派車運輸',filter[0].value,filter1Press);                 
 
   }
   Widget _filterBuilder2(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'開始運輸',Data.filter[1].value == true ? enable_color : disable_color,Data.filter[1].value == true ? enable_bkColor : disable_bkColor,filter2Press);                 
+    return filterContent(context,'開始運輸',filter[1].value,filter2Press);                 
 
   }
   Widget _filterBuilder3(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'等待回覆',Data.filter[2].value == true ? enable_color : disable_color,Data.filter[2].value == true ? enable_bkColor : disable_bkColor,filter3Press);                 
+    return filterContent(context,'等待回覆',filter[2].value,filter3Press);                 
 
   }
   Widget _filterBuilder4(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'生產廠簽收',Data.filter[3].value == true ? enable_color : disable_color,Data.filter[3].value == true ? enable_bkColor : disable_bkColor,filter4Press);                 
+    return filterContent(context,'生產廠簽收',filter[3].value,filter4Press);                 
 
   }
   Widget _filterBuilder5(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'生產廠拒絕',Data.filter[4].value == true ? enable_color : disable_color,Data.filter[4].value == true ? enable_bkColor : disable_bkColor,filter5Press);                 
+    return filterContent(context,'生產廠拒絕',filter[4].value,filter5Press);                 
 
   }
   Widget _filterBuilder6(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'開始回程',Data.filter[5].value == true ? enable_color : disable_color,Data.filter[5].value == true ? enable_bkColor : disable_bkColor,filter6Press);                 
+    return filterContent(context,'開始回程',filter[5].value,filter6Press);                 
 
   }
 
-  filterContent(BuildContext context,String text,Color color,Color bkColor,VoidCallback onPressed){
+  filterContent(BuildContext context,String text,bool filter,VoidCallback onPressed){
+    Color color  = disable_color;
+    if(filter == true){
+      color = enable_color;
+    }
+
+    Color bkColor  = disable_bkColor;
+    if(filter == true){
+      bkColor = enable_bkColor;
+    }
+
     return                    Container(
                               width: 110,
                               decoration: BoxDecoration(),
@@ -123,31 +139,37 @@ class FilterWidget extends StatelessWidget {
                               ),
                             );
   }
+
+  searchPress(BuildContext context)async{
+    Data.filter = filter;
+    await Service.GetTransportOrders();
+    Navigator.pop(context);
+  }
   @override
   Widget build(BuildContext context) {
     ValueListenableBuilder<bool> filterBuild1 = ValueListenableBuilder<bool>(
         builder: _filterBuilder1,
-        valueListenable: Data.filter[0],
+        valueListenable: filter[0],
       );
     ValueListenableBuilder<bool> filterBuild2 = ValueListenableBuilder<bool>(
         builder: _filterBuilder2,
-        valueListenable: Data.filter[1],
+        valueListenable: filter[1],
       );
     ValueListenableBuilder<bool> filterBuild3 = ValueListenableBuilder<bool>(
         builder: _filterBuilder3,
-        valueListenable: Data.filter[2],
+        valueListenable: filter[2],
       );
     ValueListenableBuilder<bool> filterBuild4 = ValueListenableBuilder<bool>(
         builder: _filterBuilder4,
-        valueListenable: Data.filter[3],
+        valueListenable: filter[3],
       );
     ValueListenableBuilder<bool> filterBuild5 = ValueListenableBuilder<bool>(
         builder: _filterBuilder5,
-        valueListenable: Data.filter[4],
+        valueListenable: filter[4],
       );
     ValueListenableBuilder<bool> filterBuild6 = ValueListenableBuilder<bool>(
         builder: _filterBuilder6,
-        valueListenable: Data.filter[5],
+        valueListenable: filter[5],
       );
 
     return 
@@ -260,6 +282,7 @@ Padding(
                 child: FFButtonWidget(
                   onPressed: () {
                     print('Button pressed ...');
+                    searchPress(context);
                   },
                   text: '搜尋',
                   options: FFButtonOptions(

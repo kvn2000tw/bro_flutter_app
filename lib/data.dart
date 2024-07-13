@@ -30,6 +30,7 @@ class Data {
   static int sort = 0;
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
+  static var search = '';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
