@@ -71,16 +71,6 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   }
   Widget builder(BuildContext context) {
 
-    List<Widget> list = [];
-    for(var i=0;i<Data.ordersList.length;i++){
-      list.add(TransportOrderBriefWidget(info:Data.ordersList[i]));
-    }
-
-    var empty = const Center(child:Text('無資料'));
-    if(Data.ordersList.isEmpty){
-      list.add(empty);
-    }
-    
     return 
    Column(
             mainAxisSize: MainAxisSize.max,
