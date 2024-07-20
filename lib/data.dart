@@ -31,6 +31,8 @@ class Data {
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
   static var search = '';
+  static int page = 0;
+  static bool read_more = true;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -97,24 +99,33 @@ class Data {
 
   }
 
-  static setTransportOrdersList(Map<String,dynamic> response){
-    ordersList.clear();
-    
+  static setTransportOrders(Map<String,dynamic> response){
+    //ordersList.clear();
+    bool is_driver = user.roles.contains('driver');
+    if(response['items'].length == 0){
+      read_more = false;
+      return;
+    }
     for(var i=0;i<response['items'].length;i++){
       var item = TransportOrdersInfo();
       item.id = response['items'][i]['id'];
-      item.custom_id = response['items'][i]['custom_id'];
+      item.custom_id = response['items'][i]['custom_id'] ?? '';
+      item.name = response['items'][i]['name'] ?? '';
       item.status = response['items'][i]['status'];
-      item.address_from = response['items'][i]['address_from'];
-      item.manufacturer = response['items'][i]['manufacturer']['name'];
-      item.total_item = response['items'][i]['lots_meta']['total_item'];
+      item.address_from = response['items'][i]['address_from'] ?? '';
+      item.manufacturer = is_driver == false ? '' :response['items'][i]['manufacturer']['name']??'';
+      item.barcode = response['items'][i]['barcode'] ?? '';
+      item.total_item = is_driver == true ? response['items'][i]['lots_meta']['total_item'] : 0;
       item.description = response['items'][i]['description']??'';
-      item.total_weight = response['items'][i]['lots_meta']['total_weight'].toString();
-
+      item.total_weight = is_driver == true ? response['items'][i]['lots_meta']['total_weight'].toString() : response['items'][i]['weight'].toString();
+      
+      //item.warehouse = response['items'][i]['warehouse'] ? response['items'][i]['warehouse']['name'] :  '';
+      if(response['items'][i]['warehouse'] != null)
+        item.warehouse = response['items'][i]['warehouse']['name'];
       ordersList.add(item);
     }
   }
-
+  
   static setProfile(Map<String,dynamic> response){
 
     user.id = response['user']['id'];

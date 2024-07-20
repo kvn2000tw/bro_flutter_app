@@ -31,13 +31,16 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   final String FilterIcon = 'assets/images/filter.svg';
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  bool is_driver = Data.user.roles.contains('driver');
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => TransportOrdersPageModel());
     _model.textController ??= TextEditingController();
     Data.ordersList = [];
+    Data.page = 1;
+    Data.read_more = true;
+    _retrieveData();
   }
 
   @override
@@ -46,21 +49,10 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
     super.dispose();
   }
   
-  Future<bool> _getTransportOrders()async{
-    
-    final ret = await Service.GetTransportOrders();
-
-   return ret;
-}
   @override
   Widget build(BuildContext context) {
-        return FutureBuilder<bool>(
-      future: _getTransportOrders(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
-        
-        return builder(context);
-      }
-    );
+    return builder(context);
+
   }
   
   filterPress(){
@@ -104,7 +96,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                   child: Align(
                     alignment: AlignmentDirectional(-1, 0),
                     child: Text(
-                      '運輸單',
+                      is_driver ? '運輸單' : '物料單列表',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 24,
@@ -133,7 +125,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                           autofocus: false,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: '搜尋運輸單編號',
+                            labelText: is_driver ? '搜尋運輸單編號' : '搜尋物料編號',
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -248,13 +240,58 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                 ),
               ),
               Expanded(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  children: list,
-                ),
+                child: listBuild(context),
               ),
             ]);
+  }
+
+   Widget listBuild(BuildContext context) {
+    return ListView.separated(
+      itemCount: Data.ordersList.length,
+      itemBuilder: (context, index) {
+        //如果到了表尾
+        if (index == (Data.ordersList.length-1)) {
+          //不足100条，继续获取数据
+          if (Data.read_more == true) {
+            //获取数据
+            _retrieveData();
+            //加载时显示loading
+            return Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 24.0,
+                height: 24.0,
+                child: CircularProgressIndicator(strokeWidth: 2.0),
+              ),
+            );
+          } else {
+            //已经加载了100条数据，不再获取数据。
+            return Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "没有更多了",
+                style: TextStyle(color: Colors.grey),
+              ),
+            );
+          }
+        }
+        //显示单词列表项
+        return TransportOrderBriefWidget(info:Data.ordersList[index]);
+      },
+      separatorBuilder: (context, index) => Divider(height: .0),
+    );
+  }
+
+    void _retrieveData() {
+      
+    Service.GetTransportOrders().then((e) {
+      setState(() {
+        //重新构建列表
+        Data.page = Data.page+1;
+       
+      });
+    });
   }
 }

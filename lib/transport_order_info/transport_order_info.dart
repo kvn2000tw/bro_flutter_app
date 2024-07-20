@@ -19,6 +19,10 @@ class TransportOrdersInfo{
   int total_item=0;
   String total_weight='';
   String description = '';
+
+   String name='';
+   String barcode='';
+   String warehouse='';
 }
    
   class TransportOrdersLotStatus{
@@ -49,28 +53,62 @@ final TransportOrdersStatusColor=[Colors.grey,Colors.orange,Colors.blue,Colors.o
 
 final TransportOrdersStatusBKColor=[Color(0xFFF3F4F6),Color(0xFFFEF9C3),Color(0xFFDBEAFE),Color(0xFFFEF9C3),Color(0xFFDCFCE7),Color(0xFFFEE2E2),Color(0xFFDBEAFE),Color(0xFFF3F4F6),Color(0xFFFEE2E2)];
 
-enum lot_status{
-  CREATED(value: 0, label: "CREATED"),
-  FILLED(value: 1, label: "FILLED"),
-  REQUESTED(value: 2, label: "REQUESTED"),
-  DISPATCHED(value: 3, label: "DISPATCHED"),
-  PASSED(value: 4, label: "PASSED"),
+final LotStatusArr=['尚未填寫','填寫完成','納入移轉','納入運輸','檢查完成','檢查不合格','已簽收','運輸中','完成運輸','納入倉儲','納入再製','再製投入','再製完成'];
+   
+final LotStatusColorArr=[
+Colors.red,
+Colors.green,
+Color.fromARGB(255, 202, 138, 4),
+Colors.blue,
+Colors.green,
+Colors.red,
+Colors.green,
+Colors.blue,
+Colors.green,
+Color.fromARGB(255, 202, 138, 4),
+Color.fromARGB(255, 202, 138, 4),
+Colors.blue,
+Colors.green];
 
-  FAILED(value: 5, label: "FAILED"),
-  CONFIRMED(value: 6, label: "CONFIRMED"),
-  TRANSPORTING(value: 7, label: "TRANSPORTING"),
-  TRANSPORTED(value: 8, label: "TRANSPORTED"),
-  STORED(value: 9, label: "STORED"),
-  SCHEDULED(value: 10, label: "SCHEDULED"),
-  PICKED(value: 11, label: "PICKED"),
-  PRODUCED(value: 12, label: "PRODUCED");
+final LotStatusBKColorArr=[
+Color.fromARGB(255, 254, 226, 226),//red
+Color.fromARGB(255, 220, 252, 231),//green
+Color.fromARGB(255, 254, 249, 195),//yellow
+Color.fromARGB(255, 219, 234, 254),//blue
+Color.fromARGB(255, 220, 252, 231),//green
+Color.fromARGB(255, 254, 226, 226),//red
+Color.fromARGB(255, 220, 252, 231),//green
+Color.fromARGB(255, 219, 234, 254),//blue
+Color.fromARGB(255, 220, 252, 231),//green
+Color.fromARGB(255, 254, 249, 195),//yellow
+Color.fromARGB(255, 254, 249, 195),//yellow
+Color.fromARGB(255, 219, 234, 254),//blue
+Color.fromARGB(255, 220, 252, 231)];//green
+
+enum lot_status{
+  CREATED(value: 0, label: "CREATED",name:'尚未填寫'),
+  FILLED(value: 1, label: "FILLED",name:'填寫完成'),
+  REQUESTED(value: 2, label: "REQUESTED",name:'納入移轉'),
+  DISPATCHED(value: 3, label: "DISPATCHED",name:'納入運輸'),
+  PASSED(value: 4, label: "PASSED",name:'檢查完成'),
+
+  FAILED(value: 5, label: "FAILED",name:'檢查不合格'),
+  CONFIRMED(value: 6, label: "CONFIRMED",name:'已簽收'),
+  TRANSPORTING(value: 7, label: "TRANSPORTING",name:'運輸中'),
+  TRANSPORTED(value: 8, label: "TRANSPORTED",name:'完成運輸'),
+  STORED(value: 9, label: "STORED",name:'納入倉儲'),
+  SCHEDULED(value: 10, label: "SCHEDULED",name:'納入再製'),
+  PICKED(value: 11, label: "PICKED",name:'再製投入'),
+  PRODUCED(value: 12, label: "PRODUCED",name:'再製完成');
 
     final int value;
     final String label;
-  
+    final String name;
+   
   const lot_status({
     required this.value,
     required this.label,
+    required this.name,
    
   });
 }

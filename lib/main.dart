@@ -2,6 +2,7 @@
 import 'package:bro_flutter_app/camera/take_picture_screen.dart';
 import 'package:bro_flutter_app/login/login.dart';
 import 'package:bro_flutter_app/page/home_page.dart';
+import 'package:bro_flutter_app/page/transport_lot_status_page.dart';
 import 'package:bro_flutter_app/page/transport_order_status_page.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_page.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,9 @@ class MyApp extends StatelessWidget {
       routes: {
         "/home" : (context) =>  HomePage(),
         "/transport-order-info" : (context) =>  TransportOrderInfoPage(),
+        "/transport-lot-info" : (context) =>  TransportLotStatusPage(),
         "/transport-order-status" : (context) => const TransportOrderStatusPage(), 
+        
         "/" :  (context) => Login(),
         "/camera" :  (context) => TakePictureScreen(camera: _cameras.first),
       },

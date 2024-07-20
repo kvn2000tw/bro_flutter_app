@@ -24,6 +24,7 @@ class TransportOrderBriefWidget extends StatefulWidget {
 
 class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
 
+  final String ViewIcon = 'assets/images/view-list.svg';
   final String OfficeIcon = 'assets/images/office-building.svg';
   final String LocationIcon = 'assets/images/location-marker.svg';
   final String CalculatorIcon = 'assets/images/calculator.svg';
@@ -45,12 +46,13 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
   
   @override
   Widget build(BuildContext context) {
+    bool is_driver = Data.user.roles.contains('driver');
     return 
              Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                 child: Container(
                   width: double.infinity,
-                  height: 370,
+                  height: is_driver ? 370 : 320,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                     border: Border.all(
@@ -88,7 +90,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        widget.info.custom_id,
+                                        is_driver ? widget.info.custom_id : widget.info.name,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -139,7 +141,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: SvgPicture.asset(
-                            OfficeIcon,
+                            is_driver? OfficeIcon : ViewIcon,
                             height: 24,
                             width: 24,
                             colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
@@ -162,7 +164,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        widget.info.manufacturer,
+                                        is_driver ? widget.info.manufacturer:widget.info.barcode,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -180,7 +182,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                           ],
                         ),
                       ),
-                      Container(
+                      is_driver == false? Container():Container(
                         width: double.infinity,
                         height: 50,
                         decoration: BoxDecoration(
@@ -294,7 +296,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                           ],
                         ),
                       ),
-                      Container(
+                      is_driver == false ? Container():Container(
                         width: double.infinity,
                         height: 50,
                         decoration: BoxDecoration(
@@ -408,6 +410,63 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                           ],
                         ),
                       ),
+                      is_driver? Container() :Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: SvgPicture.asset(
+                            LocationIcon,
+                            height: 24,
+                            width: 24,
+                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
+                            ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentDirectional(0, -1),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: Align(
+                                    alignment: AlignmentDirectional(-1, 0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          10, 0, 0, 0),
+                                      child: Text(
+                                        widget.info.warehouse,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              fontSize: 16,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                         child: Container(
@@ -421,7 +480,9 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                             onPressed: () async{
                               print('Button pressed ...');
                               Data.transport_id = widget.info.id;
-                              Navigator.pushNamed(context,'/transport-order-info');
+                              Data.lot_barcode = widget.info.barcode;
+                              String path = is_driver ? '/transport-order-info':'/transport-lot-info';
+                              Navigator.pushNamed(context,path);
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();
                             },

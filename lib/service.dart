@@ -40,7 +40,7 @@ class Service{
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
         //print(fromJsonMap);
         Data.setToken(fromJsonMap);
-        profile();
+        await profile();
 
         ret = true;
       }
@@ -192,7 +192,11 @@ class Service{
       return response;
   }
   static GetTransportOrders()async{
-    String url = '$BaseUrl/admin/transport-orders/index?page=1';
+
+    String url = '$BaseUrl/admin/warehouse/lots/index?page=${Data.page}';
+    if(Data.user.roles.contains('driver')){
+      url = '$BaseUrl/admin/transport-orders/index?page=${Data.page}';
+    }
     print('GetTransportOrders $url');
     // Or create `Dio` with a `BaseOptions` instance.
     
@@ -244,10 +248,10 @@ class Service{
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print('GetTransportOrders');
         print(fromJsonMap);
-        Data.setTransportOrdersList(fromJsonMap);
+        Data.setTransportOrders(fromJsonMap);
 
         ret = true;
       }

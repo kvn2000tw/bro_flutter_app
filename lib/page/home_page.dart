@@ -42,12 +42,14 @@ class _HomePageState
   void initState() {
     super.initState();
 
-  _widgetOptions = <Widget>[
-    RuningPage(onTap:()=>_onItemTapped(1)),
-    const TransportOrdersPage(),
-    const SettingPage()
-  ];
-  
+  bool is_driver = Data.user.roles.contains("driver");
+  if(is_driver){
+    _widgetOptions.add( RuningPage(onTap:()=>_onItemTapped(1)));
+  }
+
+  _widgetOptions.add( const TransportOrdersPage());
+  _widgetOptions.add( const SettingPage());
+
     _selectedIndex = 0;
     Data.isCurrent = true;
     
@@ -62,6 +64,53 @@ class _HomePageState
 
   @override
   Widget build(BuildContext context) {
+  bool is_driver = Data.user.roles.contains("driver");
+  List<BottomNavigationBarItem> _barItem = [];
+  
+  if(is_driver){
+   
+    _barItem.add(
+       BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+          TruckIcon,
+          colorFilter: ColorFilter.mode(_selectedIndex==0?Colors.blue:Colors.black, BlendMode.srcIn),),
+            label: '執行中',
+          )
+    );
+      _barItem.add(
+       BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+          ListIcon,
+          colorFilter: ColorFilter.mode(_selectedIndex==1?Colors.blue:Colors.black, BlendMode.srcIn),),
+            label: '運輸單列表',
+          )
+    ); 
+  _barItem.add(
+       BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+          CogIcon,
+          colorFilter: ColorFilter.mode(_selectedIndex==2?Colors.blue:Colors.black, BlendMode.srcIn),),
+            label: '系統設定',
+          )
+    ); 
+  }else{
+  _barItem.add(
+       BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+          ListIcon,
+          colorFilter: ColorFilter.mode(_selectedIndex==0?Colors.blue:Colors.black, BlendMode.srcIn),),
+            label: '物料單列表',
+          )
+    ); 
+  _barItem.add(
+       BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+          CogIcon,
+          colorFilter: ColorFilter.mode(_selectedIndex==1?Colors.blue:Colors.black, BlendMode.srcIn),),
+            label: '系統設定',
+          )
+    ); 
+  }
      return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -75,27 +124,7 @@ class _HomePageState
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: isLoad == true? null : BottomNavigationBar(
-        items:  <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-          TruckIcon,
-          colorFilter: ColorFilter.mode(_selectedIndex==0?Colors.blue:Colors.black, BlendMode.srcIn),),
-            label: '執行中',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              ListIcon,
-              colorFilter: ColorFilter.mode(_selectedIndex==1?Colors.blue:Colors.black, BlendMode.srcIn),),
-
-            label: '運輸單列表',
-          ),
-          BottomNavigationBarItem(
-            icon:  SvgPicture.asset(
-                  CogIcon,
-                  colorFilter: ColorFilter.mode(_selectedIndex==2?Colors.blue:Colors.black, BlendMode.srcIn),),
-            label: '系統設定',
-          ),
-        ],
+        items:  _barItem,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue[800],
         onTap: _onItemTapped,
