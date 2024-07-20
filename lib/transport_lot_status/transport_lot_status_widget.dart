@@ -8,6 +8,8 @@ import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_lot_status/transport_order_model.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/dialog.dart';
+import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -24,7 +26,8 @@ class _TransportLotStatusState
 
     late TransportLotStatusModel _model;
     bool isLoad = true;
- 
+    bool need_change = false;
+    final ValueNotifier<bool> status = ValueNotifier(false);
   @override
   void initState() {
     super.initState();
@@ -40,6 +43,7 @@ class _TransportLotStatusState
     //_model.textController3 ??= TextEditingController(text:widget.info.note);
     _model.textFieldFocusNode3 ??= FocusNode();
 
+    need_change = false;
   }
 
   @override
@@ -53,24 +57,77 @@ class _TransportLotStatusState
   }
   Future<bool> _getTransportLot()async{
     isLoad = true;
-  
+    
    await Service.getTransportWarehouse();
     dropdownValue = Data.warehouse.first;
+
    final ret = await Service.getTransportLotInfo();
-    String weight = '${Data.lotInfo.weight} kg';
+
+    for(var i=0;i<Data.warehouse.length;i++){
+      if(Data.lotInfo.warehouse_id == Data.warehouse[i].id){
+        dropdownValue = Data.warehouse[i];
+      }
+    }
+    String weight = '${Data.lotInfo.weight}';
     _model.textController1 = TextEditingController(text:weight);
     _model.textController2 = TextEditingController(text:Data.lotInfo.description);
     _model.textController3 = TextEditingController(text:Data.lotInfo.note);
     isLoad = false;
+    if(Data.lotInfo.warehouse_id == '' || Data.lotInfo.status == 9){
+      need_change = true;
+    }
    return ret;
 }
 
 late WarehouseModel dropdownValue;
-Widget _DropDown(BuildContext context) {
-    return DropdownButton<WarehouseModel>(
+
+  _finishCheck()async{
+    Data.runFunc = 'storage';
+    await Navigator.pushNamed(context,'/camera');
+    
+    if (context.mounted){
+      Navigator.of(context).pop();
+    }
+
+    if(Data.httpRet == true){
+      bool ret = await Service.updateLotInfo(_model.textController3!.text,_model.textController1!.text,dropdownValue.id);
+
+      if(ret){
+       showNotification('納入倉儲','完成');
+      }
+      
+      print('_takePicture');
+    
+      setState(() {
+        dropdownValue;
+        //initLotStatus();
+      });
+    }
+
+}
+_onSave(BuildContext context)async{
+  if(dropdownValue.id != Data.lotInfo.warehouse_id){
+    String title = '變更物料倉儲？';
+    List<String> contents = ['將物料納入 ${dropdownValue.name}','需要一張納入倉儲的照片'];
+    String buttonText = '上傳納入倉儲照片';
+
+    showTransportDialog(context, title, contents, buttonText, _finishCheck);
+  }else {
+
+  bool ret = await Service.updateLotInfo(_model.textController3!.text,_model.textController1!.text,dropdownValue.id);
+
+  if(ret){
+    showNotification('修改','完成');
+  }
+  }
+}
+  Widget _DropDownBuilder(BuildContext context, bool selectedButton, Widget? child){
+   
+     return DropdownButton<WarehouseModel>(
       
       isExpanded: true,
-      value: dropdownValue,
+      hint: const Text('選擇倉位'),
+      value: Data.lotInfo.warehouse_id == '' ? null : dropdownValue,
       elevation: 16,
       style:FlutterFlowTheme.of(context)
                                 .bodyMedium
@@ -80,15 +137,12 @@ Widget _DropDown(BuildContext context) {
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w600,
                                 ),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: false ? null : (WarehouseModel? value) {
+      onChanged: need_change == false ? null : (WarehouseModel? value) {
         // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
+        dropdownValue = value!; 
+        Data.lotInfo.warehouse_id = '1';
+        status.value = !status.value;
+        //dropdownValue = value!;
       },
       items: Data.warehouse.map<DropdownMenuItem<WarehouseModel>>((WarehouseModel value) {
         return DropdownMenuItem<WarehouseModel>(
@@ -97,14 +151,19 @@ Widget _DropDown(BuildContext context) {
         );
       }).toList(),
     );
+    
   }
-  
+
 Widget builder(BuildContext context) {
       List<Widget> list = [];
     for(var i = 0; i < Data.lotInfo.attachs.length; i++){
         list.add(TransportOrderAttachWidget(attach:Data.lotInfo.attachs[i]));
     }
 
+      ValueListenableBuilder<bool> _DropDown = ValueListenableBuilder<bool>(
+        builder: _DropDownBuilder,
+        valueListenable: status,
+      );
   return 
  // Generated code for this Column Widget...
 Column(
@@ -133,7 +192,9 @@ Column(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
+                    InkWell(
+                      onTap: () { Navigator.of(context).pop();},
+                    child:Container(
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
@@ -149,7 +210,7 @@ Column(
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
+                    )),
                     Expanded(
                       child: Container(
                         width: 100,
@@ -181,6 +242,7 @@ Column(
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,
+                         colorFilter: ColorFilter.mode(Colors.blue, BlendMode.srcIn)
                       ),
                     ),
                   ],
@@ -242,7 +304,7 @@ Column(
                         color:
                             FlutterFlowTheme.of(context).secondaryBackground,
                       ),
-                      child: _DropDown(context)
+                      child: _DropDown
                     ),
                   ],
                 ),
@@ -486,76 +548,84 @@ Column(
                                 ),
                       ),
                     ),
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color:
-                            FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
-                        child: TextFormField(
-                          controller: _model.textController1,
-                          focusNode: _model.textFieldFocusNode1,
-                          autofocus: false,
-                          obscureText: false,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  letterSpacing: 0,
-                                ),
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  letterSpacing: 0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Readex Pro',
-                                letterSpacing: 0,
-                              ),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          validator: _model.textController1Validator
-                              .asValidator(context),
-                        ),
-                      ),
-                    ),
+                   // Generated code for this Row Widget...
+Row(
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Expanded(
+      child: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+          color: FlutterFlowTheme.of(context).secondaryBackground,
+        ),
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+          child: TextFormField(
+            controller: _model.textController1,
+            focusNode: _model.textFieldFocusNode1,
+            autofocus: false,
+            obscureText: false,
+            readOnly: !need_change,
+            decoration: InputDecoration(
+              labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                    fontFamily: 'Readex Pro',
+                    letterSpacing: 0,
+                  ),
+              hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                    fontFamily: 'Readex Pro',
+                    letterSpacing: 0,
+                  ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: FlutterFlowTheme.of(context).alternate,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: FlutterFlowTheme.of(context).primary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: FlutterFlowTheme.of(context).error,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: FlutterFlowTheme.of(context).error,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                  fontFamily: 'Readex Pro',
+                  letterSpacing: 0,
+                ),
+            keyboardType:
+                const TextInputType.numberWithOptions(decimal: true),
+            validator: _model.textController1Validator.asValidator(context),
+          ),
+        ),
+      ),
+    ),
+    Text(
+      'kg',
+      style: FlutterFlowTheme.of(context).bodyMedium.override(
+            fontFamily: 'Readex Pro',
+            letterSpacing: 0,
+          ),
+    ),
+  ],
+)
+
                   ],
                 ),
               ),
@@ -765,7 +835,7 @@ Column(
                           focusNode: _model.textFieldFocusNode3,
                           autofocus: false,
                           obscureText: false,
-                          readOnly: true,
+                          readOnly: !need_change,
                           decoration: InputDecoration(
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
@@ -838,10 +908,11 @@ Padding(
       color: FlutterFlowTheme.of(context).secondaryBackground,
     ),
     child: FFButtonWidget(
-      onPressed: () {
+      onPressed: need_change == false ? null:() {
         print('Button pressed ...');
+        _onSave(context);
       },
-      text: 'Button',
+      text: '儲存',
       options: FFButtonOptions(
         height: 40,
         padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),

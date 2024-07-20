@@ -30,6 +30,7 @@ class Data {
   static String runFunc = '';
   static bool httpRet = false;
   static int sort = 0;
+  static String arttach = '';
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
   static var search = '';
@@ -81,7 +82,7 @@ class Data {
     lotInfo.volume = response['volume'];
     lotInfo.container = response['container'];
     lotInfo.name = response['name'];
-    lotInfo.warehouse_id = response['warehouse_id'];
+    lotInfo.warehouse_id = response['warehouse_id']?? '';
     lotInfo.attachs = response['attachments']??[];
     
   }

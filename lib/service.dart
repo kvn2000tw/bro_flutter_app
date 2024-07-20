@@ -214,6 +214,44 @@ class Service{
       return ret;
   }
 
+  static updateLotInfo(String note,String weight,String warehouse)async {
+    
+    String url = "$BaseUrl/admin/warehouse/lots/barcode/${Data.lotInfo.barcode}";
+    print('updateLotInfo $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+    Response response;
+    bool ret = false;
+    try {
+      Map<String,dynamic> data = {"note": note, "weight": weight};
+      if(Data.arttach != ''){
+        data["attachments"] = [Data.arttach];
+        data["warehouse_id"] = warehouse;
+      }
+     response = await dio.put(url,data:data);
+     if(response.statusCode == HttpStatus.ok){
+      // if there is a key before array, use this : return (response.data['data'] as List).map((child)=> Children.fromJson(child)).toList();
+   
+      ret = true;
+     }
+    } catch (error, stacktrace) {
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
+
+      return ret;
+  }
+
   static getTransportSelect()async {
     
     String url = "$BaseUrl/admin/transport-orders/${Data.transport_id}";
@@ -527,6 +565,11 @@ class Service{
           await finished(response.data[0]);
 
         }        
+        else if(Data.runFunc == 'storage'){
+          Data.arttach = response.data[0];
+
+        }        
+
         Data.httpRet = true;
         //Data.setUploadUrl(fromJsonMap);
       }
