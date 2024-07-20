@@ -48,7 +48,7 @@ class _TransportLotStatusState
           toolbarHeight: 30,
           backgroundColor: Colors.blue,
           elevation:10,
-          title: Text(Data.lot_barcode,
+          title: Text('',
           style: TextStyle(color:Colors.white),)
         ),
       body:  TransportLotStatusWidget()   

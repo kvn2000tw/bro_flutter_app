@@ -16,7 +16,9 @@ class Data {
   static TransportOrdersInfo transport = TransportOrdersInfo();
   static TransportOrdersInfo transport_info = TransportOrdersInfo();
   static TransportOrdersLotStatus lotStatus = TransportOrdersLotStatus();
+  static TransportLotInfo lotInfo = TransportLotInfo();
   static List<TransportOrdersInfo> ordersList = [];
+  static List<WarehouseModel> warehouse=[];
   static User user = User();
   static String lot_barcode='';
   static String transport_id='';
@@ -66,6 +68,24 @@ class Data {
     transport_info = current;
     
   }
+  static setTransportLotInfo(Map<String,dynamic> response){
+    debugPrint('setTransportLot ${response}');
+   
+    lotInfo.id = response['id'];
+    lotInfo.status = response['status'];
+    lotInfo.barcode = response['barcode'];
+    lotInfo.note = response['note']??'';
+    lotInfo.description = response['description'];
+    lotInfo.weight = response['weight'];
+   
+    lotInfo.volume = response['volume'];
+    lotInfo.container = response['container'];
+    lotInfo.name = response['name'];
+    lotInfo.warehouse_id = response['warehouse_id'];
+    lotInfo.attachs = response['attachments']??[];
+    
+  }
+
   static setTransportSelect(Map<String,dynamic> response){
     debugPrint('setTransportCurrent ${response}');
     transport.id = response['id'];
@@ -83,6 +103,12 @@ class Data {
     transport.attachs = response['attachments']??[];
      
     transport_info = transport;
+    
+  }
+
+  static setTransportWarehouse(Map<String,dynamic> response){
+    debugPrint('setTransportWarehouse ${response}');
+   
     
   }
 

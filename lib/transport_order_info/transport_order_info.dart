@@ -39,7 +39,40 @@ class TransportOrdersInfo{
   List<dynamic> attachments=[];
   
 }
+  class TransportLotInfo{
+  String id='';
+  int status = 0; 
+  String barcode = ''; 
+  String note = '';
+  String description = '';
+  String weight = '';
+  String volume = '';
+  String container = '';
+  String name='';
+  String warehouse_id = '';
+  List<dynamic> attachs=[];
+  
+}
+class WarehouseModel {
+  WarehouseModel({
+    this.id='',
+    this.name=''
+  });
 
+  String id;
+  String name;
+
+  factory WarehouseModel.fromJson(Map<String, dynamic> json) => WarehouseModel(
+    id: json["id"],
+    name: json["name"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+  
+  };
+}
 class User{
   String id='';
   String full_name='';

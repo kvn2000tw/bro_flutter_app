@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
+import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:dio/dio.dart';
 import 'dart:io' as io;
 class Service{
@@ -124,6 +125,91 @@ class Service{
     }
       //print(response.statusCode.toString()); 
       //print(response.data.toString());
+
+      return ret;
+  }
+
+  static getTransportLotInfo()async {
+    
+    String url = "$BaseUrl/admin/warehouse/lots/barcode/${Data.lot_barcode}";
+    print('getTransportLotInfo $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+    Response response;
+    bool ret = false;
+    try {
+      response = await dio.get(url);
+
+      if(response.statusCode == HttpStatus.ok){
+         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print(fromJsonMap);
+        Data.setTransportLotInfo(fromJsonMap);
+        ret = true;
+      }
+
+    }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      if (e.response != null) {
+        print(e.response?.data);
+       
+        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
+       
+
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+        print(e.message);
+      }
+    }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+
+      return ret;
+  }
+  static getTransportWarehouse()async {
+    
+    String url = "$BaseUrl/admin/warehouse";
+    print('getTransportWarehouse $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+    Response response;
+    bool ret = false;
+    try {
+     response = await dio.get(url);
+     if(response.statusCode == HttpStatus.ok){
+      // if there is a key before array, use this : return (response.data['data'] as List).map((child)=> Children.fromJson(child)).toList();
+      Data.warehouse = (response.data as List)
+          .map((x) => WarehouseModel.fromJson(x))
+          .toList();
+      ret = true;
+     }
+    } catch (error, stacktrace) {
+      throw Exception("Exception occured: $error stackTrace: $stacktrace");
+    }
 
       return ret;
   }
