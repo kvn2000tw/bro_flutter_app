@@ -13,23 +13,56 @@ class ShowOrderStatus extends StatelessWidget {
   }
 
   late int status;
+
+  showBKColor(){
+    Color color = LotStatusBKColorArr[status];
+    if(Data.is_driver){
+      color = TransportOrdersStatusBKColor[status];
+    }else if(Data.is_product){
+      color = ManufactureStatusBKColorArr[status];
+    }
+
+    return color;
+  }
+  showColor(){
+    Color color = LotStatusColorArr[status];
+    if(Data.is_driver){
+      color = TransportOrdersStatusColor[status];
+    }else if(Data.is_product){
+      color = ManufactureStatusColorArr[status];
+    }
+
+    return color;
+  }
+
+  showText(){
+    String text = LotStatusArr[status];
+
+    if(Data.is_driver){
+      text = TransportOrdersStatus[status];
+    }else if(Data.is_product){
+      text = ManufactureStatusArr[status];
+    }
+   
+    return text;
+  }
   @override
   Widget build(BuildContext context) {
-    bool is_driver = Data.user.roles.contains('driver');
+   
    return DecoratedBox(
    decoration: BoxDecoration(
-  color:is_driver ? TransportOrdersStatusBKColor[status] :LotStatusBKColorArr[status]
+  color:showBKColor(),
    ),
   child: Padding(
     padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
     child: Text(
-      is_driver ? TransportOrdersStatus[status]:LotStatusArr[status],
+      showText(),
       style: FlutterFlowTheme.of(context).bodyMedium.override(
             fontFamily: 'Readex Pro',
             letterSpacing: 0,
             fontSize: 13,
             fontWeight:FontWeight.w600,
-            color:is_driver? TransportOrdersStatusColor[status]:LotStatusColorArr[status]
+            color:showColor(),
           ),
     ),
   )

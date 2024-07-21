@@ -20,7 +20,7 @@ class _HomePageState
     extends State<HomePage> {
   int _selectedIndex = 0;
   bool isLoad = true;
- 
+  bool is_driver = false;
   List<Widget> _widgetOptions = [];
 
   void _onItemTapped(int index)async {
@@ -42,7 +42,7 @@ class _HomePageState
   void initState() {
     super.initState();
 
-  bool is_driver = Data.user.roles.contains("driver");
+  is_driver = Data.user.roles.contains("driver");
   if(is_driver){
     _widgetOptions.add( RuningPage(onTap:()=>_onItemTapped(1)));
   }
@@ -64,7 +64,7 @@ class _HomePageState
 
   @override
   Widget build(BuildContext context) {
-  bool is_driver = Data.user.roles.contains("driver");
+ 
   List<BottomNavigationBarItem> _barItem = [];
   
   if(is_driver){

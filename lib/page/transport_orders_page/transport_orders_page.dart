@@ -31,7 +31,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   final String FilterIcon = 'assets/images/filter.svg';
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  bool is_driver = Data.user.roles.contains('driver');
+  
   @override
   void initState() {
     super.initState();
@@ -69,6 +69,29 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
 
     return ret == false ? Colors.grey : Colors.blue;
   }
+  showTitle(){
+    String text = '物料單列表';
+    if(Data.is_driver){
+      text = '運輸單';
+
+    }else if(Data.is_product){
+      text = '再製單列表';
+    }
+
+    return text;
+  }
+  showSearch(){
+    String text =  '搜尋物料編號';
+
+    if(Data.is_driver){
+      text = '搜尋運輸單編號';
+
+    }else if(Data.is_product){
+      text = '搜尋再製單編號';
+    }
+
+    return text;
+  }
   Widget builder(BuildContext context) {
 
     return 
@@ -86,7 +109,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                   child: Align(
                     alignment: AlignmentDirectional(-1, 0),
                     child: Text(
-                      is_driver ? '運輸單' : '物料單列表',
+                      showTitle(),
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 24,
@@ -115,7 +138,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                           autofocus: false,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: is_driver ? '搜尋運輸單編號' : '搜尋物料編號',
+                            labelText: showSearch(),
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(

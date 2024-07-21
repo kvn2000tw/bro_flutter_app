@@ -320,6 +320,8 @@ class Service{
     String url = '$BaseUrl/admin/warehouse/lots/index?page=${Data.page}';
     if(Data.user.roles.contains('driver')){
       url = '$BaseUrl/admin/transport-orders/index?page=${Data.page}';
+    }else if(Data.user.roles.contains('production_manager')){
+      url = '$BaseUrl/admin/manufacturer-orders/index?page=${Data.page}';
     }
     print('GetTransportOrders $url');
     // Or create `Dio` with a `BaseOptions` instance.

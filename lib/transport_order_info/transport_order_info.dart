@@ -23,6 +23,8 @@ class TransportOrdersInfo{
    String name='';
    String barcode='';
    String warehouse='';
+  int background_emissions_percent = 0;
+  Map<String,dynamic> production_line = {};
 }
    
   class TransportOrdersLotStatus{
@@ -168,3 +170,34 @@ enum transport_status{
    
   });
 }
+
+enum manufacture_status{
+  CREATED(value: 0, label: "CREATED"),
+  
+  STARTED(value: 1, label: "STARTED"),
+  
+  FINISHED(value: 2, label: "FINISHED");
+
+    final int value;
+    final String label;
+  
+  const manufacture_status({
+    required this.value,
+    required this.label,
+   
+  });
+}
+final ManufactureStatusArr=['尚未再製','開始再製','再製完成'];
+   
+  
+final ManufactureStatusColorArr=[
+
+Color.fromARGB(255, 202, 138, 4),
+Colors.blue,
+Colors.green];
+
+final ManufactureStatusBKColorArr=[
+Color.fromARGB(255, 254, 249, 195),//yellow
+Color.fromARGB(255, 219, 234, 254),//blue
+Color.fromARGB(255, 220, 252, 231)];//green
+

@@ -1,5 +1,6 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/transport_order_brief/transport_order_brief_one.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/show_order_status.dart';
 
@@ -9,8 +10,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-
-//import 'transport_orders_list_model.dart';
 
 class TransportOrderBriefWidget extends StatefulWidget {
    TransportOrderBriefWidget({super.key,
@@ -43,16 +42,52 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
     //_model.dispose();
     super.dispose();
   }
-  
+  setHeight(){
+    
+    int height = 320;
+
+    if(Data.is_driver)   height = 370;
+    return height.toDouble();
+  }
+  showName(){
+    String text = widget.info.barcode;
+    if(Data.is_driver){
+      text = widget.info.manufacturer;
+    }
+    else if(Data.is_product){
+      text = widget.info.name;
+    }
+    return text;
+   
+  }
+  showDesc(){
+    String text = widget.info.description;
+    if(Data.is_product){
+      text =  '背景能耗 ${widget.info.background_emissions_percent} %';
+    }
+
+    return text;
+  }
+  getPath(){
+    String path = '/transport-lot-info';
+
+    if(Data.is_driver){
+      path = '/transport-order-info';
+    }
+    else if(Data.is_product){
+      path = 'manufacture-info';
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
-    bool is_driver = Data.user.roles.contains('driver');
+    
     return 
              Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                 child: Container(
                   width: double.infinity,
-                  height: is_driver ? 370 : 320,
+                  height: setHeight(),
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                     border: Border.all(
@@ -90,7 +125,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           10, 0, 0, 0),
                                       child: Text(
-                                        is_driver ? widget.info.custom_id : widget.info.name,
+                                        Data.is_driver || Data.is_product ? widget.info.custom_id : widget.info.name,
                                         style: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .override(
@@ -125,348 +160,13 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                         thickness: 1,
                         color: FlutterFlowTheme.of(context).primaryText,
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: SvgPicture.asset(
-                            is_driver? OfficeIcon : ViewIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        is_driver ? widget.info.manufacturer:widget.info.barcode,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      is_driver == false? Container():Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: SvgPicture.asset(
-                            LocationIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        widget.info.address_from,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child:SvgPicture.asset(
-                            CalculatorIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        '${widget.info.total_weight} kg',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      is_driver == false ? Container():Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child:  SvgPicture.asset(
-                            ListIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        '${widget.info.total_item} 件物料',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: SvgPicture.asset(
-                            DocumentIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        widget.info.description,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      is_driver? Container() :Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: SvgPicture.asset(
-                            LocationIcon,
-                            height: 24,
-                            width: 24,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn)
-                            ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(0, -1),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(-1, 0),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        widget.info.warehouse,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      TransportOrderBriefOne(icon:Data.is_driver? OfficeIcon : ViewIcon,title:showName()),
+                      Data.is_driver == false? Container():TransportOrderBriefOne(icon:LocationIcon,title:widget.info.address_from),
+                      TransportOrderBriefOne(icon:CalculatorIcon,title:'${widget.info.total_weight} kg'),
+                      Data.is_driver == false? Container():TransportOrderBriefOne(icon:ListIcon,title:'${widget.info.total_item} 件物料'),
+                      TransportOrderBriefOne(icon:DocumentIcon,title:showDesc()),
+                      Data.is_driver ? Container(): Data.is_product ? TransportOrderBriefOne(icon:LocationIcon,title:widget.info.production_line['name']) :TransportOrderBriefOne(icon:LocationIcon,title:widget.info.warehouse),
+                   
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                         child: Container(
@@ -481,7 +181,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                               print('Button pressed ...');
                               Data.transport_id = widget.info.id;
                               Data.lot_barcode = widget.info.barcode;
-                              String path = is_driver ? '/transport-order-info':'/transport-lot-info';
+                              String path = getPath();
                               Navigator.pushNamed(context,path);
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();

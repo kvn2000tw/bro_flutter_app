@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         "/transport-order-info" : (context) =>  TransportOrderInfoPage(),
         "/transport-lot-info" : (context) =>  TransportLotStatusPage(),
         "/transport-order-status" : (context) => const TransportOrderStatusPage(), 
+        "/manufacture-info" : (context) => const TransportOrderStatusPage(), 
         
         "/" :  (context) => Login(),
         "/camera" :  (context) => TakePictureScreen(camera: _cameras.first),

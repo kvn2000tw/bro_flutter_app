@@ -36,6 +36,8 @@ class Data {
   static var search = '';
   static int page = 0;
   static bool read_more = true;
+  static bool is_driver = false;
+  static bool is_product = false;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -128,7 +130,6 @@ class Data {
 
   static setTransportOrders(Map<String,dynamic> response){
     //ordersList.clear();
-    bool is_driver = user.roles.contains('driver');
     if(response['items'].length == 0){
       read_more = false;
       return;
@@ -140,13 +141,22 @@ class Data {
       item.name = response['items'][i]['name'] ?? '';
       item.status = response['items'][i]['status'];
       item.address_from = response['items'][i]['address_from'] ?? '';
-      item.manufacturer = is_driver == false ? '' :response['items'][i]['manufacturer']['name']??'';
-      item.barcode = response['items'][i]['barcode'] ?? '';
-      item.total_item = is_driver == true ? response['items'][i]['lots_meta']['total_item'] : 0;
-      item.description = response['items'][i]['description']??'';
-      item.total_weight = is_driver == true ? response['items'][i]['lots_meta']['total_weight'].toString() : response['items'][i]['weight'].toString();
       
-      //item.warehouse = response['items'][i]['warehouse'] ? response['items'][i]['warehouse']['name'] :  '';
+      item.barcode = response['items'][i]['barcode'] ?? '';
+     
+      item.description = response['items'][i]['description']??'';
+      if(is_driver){
+         item.total_item = response['items'][i]['lots_meta']['total_item'];
+        item.manufacturer = response['items'][i]['manufacturer']['name']??'';
+        item.total_weight = response['items'][i]['lots_meta']['total_weight'].toString();
+      }else if(is_product){
+        item.total_weight = response['items'][i]['expect_weight'];
+        item.background_emissions_percent = response['items'][i]['background_emissions_percent'];
+        item.production_line = response['items'][i]['production_line'];
+      }else {
+        item.total_weight = response['items'][i]['weight'].toString();
+      }
+     
       if(response['items'][i]['warehouse'] != null)
         item.warehouse = response['items'][i]['warehouse']['name'];
       ordersList.add(item);
@@ -160,6 +170,9 @@ class Data {
     user.roles = response['user']['roles'];
     user.profile_photo_path = response['user']['profile_photo_path'] ?? '';
    
+    is_driver = user.roles.contains('driver');
+    is_product = user.roles.contains('production_manager');
+
   }
 
   static setUploadUrl(Map<String,dynamic> response){
