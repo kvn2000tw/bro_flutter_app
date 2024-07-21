@@ -1,16 +1,17 @@
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
-import 'package:bro_flutter_app/service.dart';
 import 'package:flutter/material.dart';
 
 
-class RequestButton extends StatelessWidget {
+class ShowButton extends StatelessWidget {
   
-  RequestButton({this.show = false,
+  ShowButton({this.show = false,
+  this.title = '',
   this.onPressed,})
   {
     
   }
+  String title = '';
   bool show = false;
   VoidCallback? onPressed;
 
@@ -26,7 +27,7 @@ class RequestButton extends StatelessWidget {
          onPressed!();
        
       },
-      text: '結算',
+      text: title,
       options: FFButtonOptions(
         width: double.infinity,
         height: 40,

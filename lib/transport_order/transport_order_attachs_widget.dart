@@ -1,9 +1,6 @@
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
-import 'package:bro_flutter_app/utils/finish_button.dart';
-import 'package:bro_flutter_app/utils/request_button.dart';
-import 'package:bro_flutter_app/utils/return_button.dart';
-
-
+import 'package:bro_flutter_app/utils/show_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -80,8 +77,9 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
                   ),
                 ),  
               ),
-                            list.length == 0 ? Padding(
+                            list.length == 0 ? Expanded(child:Padding(
   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+
   child: Container(
     width: double.infinity,
     height: 50,
@@ -101,7 +99,7 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
       ),
     ),
   ),
-):
+)):
               Expanded(
                 child: ListView(
                   padding: EdgeInsets.zero,
@@ -111,9 +109,9 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
                 ),
               ),
               
-              RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
-              ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
-              FinishButton(show:widget.canFinish,onPressed:widget.finishPressed),
+              ShowButton(show:widget.canRequest,title:'結算',onPressed:widget.requestPressed),
+              ShowButton(show:widget.canReturn,title:'開始回程',onPressed:widget.returnPressed),
+              ShowButton(show:widget.canFinish,title:Data.is_product?'完成再製':'結束運輸',onPressed:widget.finishPressed),
             ],
           );
   }

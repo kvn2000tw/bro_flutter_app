@@ -2,12 +2,9 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/alert.dart';
-import 'package:bro_flutter_app/utils/finish_button.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
-import 'package:bro_flutter_app/utils/request_button.dart';
-import 'package:bro_flutter_app/utils/return_button.dart';
+import 'package:bro_flutter_app/utils/show_button.dart';
 import 'package:bro_flutter_app/utils/show_order_status.dart';
-import 'package:bro_flutter_app/utils/start_button.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -673,10 +670,10 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                       ),
                     ),
                   ),
-                  StartButton( show:widget.canStart,onPressed:widget.startPressed),
-                  ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
-                  RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
-                  FinishButton(show:widget.canFinish,onPressed:widget.finishPressed),
+                  ShowButton( show:widget.canStart,title:'開始運輸',onPressed:widget.startPressed),
+                  ShowButton(show:widget.canReturn,title:'開始回程',onPressed:widget.returnPressed),
+                  ShowButton(show:widget.canRequest,title:'結算',onPressed:widget.requestPressed),
+                  ShowButton(show:widget.canFinish,title:'結束運輸',onPressed:widget.finishPressed),
 
                   Data.isCurrent == false ?  Container():Align(
                     alignment: AlignmentDirectional(0, 0),

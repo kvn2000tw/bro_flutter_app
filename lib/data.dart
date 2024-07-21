@@ -38,6 +38,7 @@ class Data {
   static bool read_more = true;
   static bool is_driver = false;
   static bool is_product = false;
+  static ManufactureInfo manufacture = ManufactureInfo();
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -128,6 +129,26 @@ class Data {
 
   }
 
+  static setManufactureInfo(Map<String,dynamic> response){
+    manufacture.id = response['id'];
+    manufacture.name = response['name'];
+    manufacture.unit = response['unit'];
+    manufacture.expect_weight = response['expect_weight'];
+    manufacture.background_emissions_percent = response['background_emissions_percent'];
+    manufacture.production_line = response['production_line'];
+    manufacture.description = response['description'] ?? '';
+    manufacture.note = response['note'] ?? '';
+
+    manufacture.expect_started_at = response['expect_started_at'] ?? '';
+    manufacture.expect_ended_at = response['expect_ended_at'] ?? '';    
+
+    manufacture.lots = response['lots'] ?? [];
+    manufacture.lots_meta = response['lots_meta'];
+    manufacture.attachs = response['attachs'] ?? [];
+    manufacture.checkables = response['checkables'] ?? [];
+
+    
+  }
   static setTransportOrders(Map<String,dynamic> response){
     //ordersList.clear();
     if(response['items'].length == 0){

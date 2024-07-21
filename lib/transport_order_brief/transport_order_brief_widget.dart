@@ -70,14 +70,17 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
   }
   getPath(){
     String path = '/transport-lot-info';
-
+ 
+    Data.lot_barcode = widget.info.barcode;
     if(Data.is_driver){
+      Data.transport_id = widget.info.id;
       path = '/transport-order-info';
     }
     else if(Data.is_product){
-      path = 'manufacture-info';
+      Data.transport_id = widget.info.id;
+      path = '/manufacture-info';
     }
-
+    return path;
   }
   @override
   Widget build(BuildContext context) {
@@ -179,8 +182,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                           child: FFButtonWidget(
                             onPressed: () async{
                               print('Button pressed ...');
-                              Data.transport_id = widget.info.id;
-                              Data.lot_barcode = widget.info.barcode;
+                             
                               String path = getPath();
                               Navigator.pushNamed(context,path);
                               //  final picture = await Camera().takePicture();

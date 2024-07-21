@@ -2,6 +2,36 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
+class ManufactureInfo{
+  String id='';
+  String custom_id='';
+  String address_from='';
+  String address_to='';
+  String manufacturer='';
+  String organization='';
+  String note='';
+  int initial_odometer=0;
+  int final_odometer=0;
+  int status = 0;
+  List<dynamic> lots=[];
+  Map<String,dynamic> lots_meta={};
+  List<dynamic> attachs=[];
+  int total_item=0;
+  String total_weight='';
+  String description = '';
+
+   String name='';
+   String barcode='';
+   String warehouse='';
+  int background_emissions_percent = 0;
+  Map<String,dynamic> production_line = {};
+  String unit = '1';
+  String expect_weight = '30.0';
+  String expect_started_at = '';
+  String expect_ended_at = '';
+  List<dynamic> checkables=[];
+  
+}
 class TransportOrdersInfo{
   String id='';
   String custom_id='';
@@ -25,6 +55,8 @@ class TransportOrdersInfo{
    String warehouse='';
   int background_emissions_percent = 0;
   Map<String,dynamic> production_line = {};
+
+  
 }
    
   class TransportOrdersLotStatus{

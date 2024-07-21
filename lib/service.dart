@@ -315,6 +315,51 @@ class Service{
 
       return response;
   }
+  
+    static getManufactureInfo()async{
+
+    String url = '$BaseUrl/admin/manufacturer-orders/${Data.transport_id}';
+   
+    print('getManufactureInfo $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+      
+        );
+        final dio = Dio(options);
+
+    bool ret = false; 
+    try{
+      Response response;
+    
+      response = await dio.get(url);
+
+      if(response.statusCode == HttpStatus.ok){
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+        print('getManufactureInfo');
+        print(fromJsonMap);
+        Data.setManufactureInfo(fromJsonMap);
+
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
+  }
+
   static GetTransportOrders()async{
 
     String url = '$BaseUrl/admin/warehouse/lots/index?page=${Data.page}';

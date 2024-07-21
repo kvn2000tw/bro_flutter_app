@@ -2,6 +2,7 @@
 import 'package:bro_flutter_app/camera/take_picture_screen.dart';
 import 'package:bro_flutter_app/login/login.dart';
 import 'package:bro_flutter_app/page/home_page.dart';
+import 'package:bro_flutter_app/page/manufature_page.dart';
 import 'package:bro_flutter_app/page/transport_lot_status_page.dart';
 import 'package:bro_flutter_app/page/transport_order_status_page.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_page.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         "/transport-order-info" : (context) =>  TransportOrderInfoPage(),
         "/transport-lot-info" : (context) =>  TransportLotStatusPage(),
         "/transport-order-status" : (context) => const TransportOrderStatusPage(), 
-        "/manufacture-info" : (context) => const TransportOrderStatusPage(), 
+        "/manufacture-info" : (context) => ManufaturePage(), 
         
         "/" :  (context) => Login(),
         "/camera" :  (context) => TakePictureScreen(camera: _cameras.first),

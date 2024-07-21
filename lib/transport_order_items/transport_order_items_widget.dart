@@ -1,9 +1,8 @@
 
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/transport_order_items/transport_order_item_widget.dart';
-import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
-import 'package:bro_flutter_app/utils/finish_button.dart';
-import 'package:bro_flutter_app/utils/request_button.dart';
-import 'package:bro_flutter_app/utils/return_button.dart';
+
+import 'package:bro_flutter_app/utils/show_button.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 
@@ -17,16 +16,21 @@ class TransportOrderItemsWidget extends StatefulWidget {
   this.canFinish = false,
   this.requestPressed,
   this.returnPressed,
-  this.finishPressed,  
-  required this.info});
+  this.finishPressed, 
+ 
+  required this.lots,
+  required this.lots_meta});
 
-  late TransportOrdersInfo info;
+  late List<dynamic> lots;
+  late dynamic lots_meta;
   late bool canRequest;
   late bool canReturn;
   late bool canFinish;  
+ 
   final VoidCallback? requestPressed;
   final VoidCallback? returnPressed;
   final VoidCallback? finishPressed;  
+ 
   @override
   State<TransportOrderItemsWidget> createState() => _TransportOrderItemsWidgetState();
 }
@@ -52,8 +56,8 @@ class _TransportOrderItemsWidgetState extends State<TransportOrderItemsWidget> {
   Widget build(BuildContext context) {
 
     List<Widget> list = [];
-    for(var i = 0; i < widget.info.lots.length; i++){
-        list.add(TransportOrderItemWidget(index:i,lot:widget.info.lots[i]));
+    for(var i = 0; i < widget.lots.length; i++){
+        list.add(TransportOrderItemWidget(index:i,lot:widget.lots[i]));
     }
     return 
  Column(
@@ -82,7 +86,7 @@ class _TransportOrderItemsWidgetState extends State<TransportOrderItemsWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: Text(
-                          '總重量:${widget.info.lots_meta["total_weight"]} kg',
+                          '總重量:${widget.lots_meta["total_weight"]} kg',
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
@@ -95,7 +99,7 @@ class _TransportOrderItemsWidgetState extends State<TransportOrderItemsWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                         child: Text(
-                          '總數量:${widget.info.lots_meta["total_item"]}',
+                          '總數量:${widget.lots_meta["total_item"]}',
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
@@ -118,9 +122,9 @@ class _TransportOrderItemsWidgetState extends State<TransportOrderItemsWidget> {
                 ),
               ),
                  
-              RequestButton(show:widget.canRequest,onPressed:widget.requestPressed),
-              ReturnButton(show:widget.canReturn,onPressed:widget.returnPressed),
-             FinishButton(show:widget.canFinish,onPressed:widget.finishPressed)                   
+              ShowButton(show:widget.canRequest,title:'結算',onPressed:widget.requestPressed),
+              ShowButton(show:widget.canReturn,title:'開始回程',onPressed:widget.returnPressed),
+              ShowButton(show:widget.canFinish,title:Data.is_product?'完成再製':'結束運輸',onPressed:widget.finishPressed)                   
             ]);
   }
 }

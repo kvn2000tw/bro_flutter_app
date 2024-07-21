@@ -64,7 +64,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
   final String ExclamationIcon = 'assets/images/exclamation-circle.svg';
  
   _initStatus(){
-    int this_status = Data.transport_info.lots[widget.index]['status'];
+    int this_status = widget.lot['status'];
     status = SearchIcon;
    if( this_status == lot_status.PASSED.value){
       status = CheckIcon;
