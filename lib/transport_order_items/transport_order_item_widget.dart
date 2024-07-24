@@ -43,10 +43,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
 
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
-
-    status = SearchIcon;
-    color = Colors.blue;
-
+  
     _initStatus();
 
   }
@@ -66,7 +63,13 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
   _initStatus(){
     int this_status = widget.lot['status'];
     status = SearchIcon;
-   if( this_status == lot_status.PASSED.value){
+    color = Colors.blue;
+    if(this_status == lot_status.PICKED.value)
+    {
+      status = CheckIcon;
+      color = Colors.green;
+    }
+    else if( this_status == lot_status.PASSED.value){
       status = CheckIcon;
       color = Colors.green;
    }else if(this_status == lot_status.REQUESTED.value){
@@ -89,7 +92,8 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
           Data.lot_barcode = widget.lot['barcode'];
           await Navigator.pushNamed(context,'/transport-order-status');
           setState(() {
-
+            if(Data.is_product)
+              widget.lot = Data.manufacture.lots[widget.index];
             _initStatus();
           });
 

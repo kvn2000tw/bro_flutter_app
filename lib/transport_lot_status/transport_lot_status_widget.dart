@@ -1,5 +1,3 @@
-
-
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +8,7 @@ import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.da
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
+import 'package:bro_flutter_app/utils/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -52,28 +51,25 @@ class _TransportLotStatusState
     super.dispose();
   }
 
-  Widget _empty(BuildContext context){
-    return Container();
-  }
   Future<bool> _getTransportLot()async{
     isLoad = true;
     
    await Service.getTransportWarehouse();
     dropdownValue = Data.warehouse.first;
 
-   final ret = await Service.getTransportLotInfo();
+   final ret = await Service.getLotStatus(Data.lot_barcode);
 
     for(var i=0;i<Data.warehouse.length;i++){
-      if(Data.lotInfo.warehouse_id == Data.warehouse[i].id){
+      if(Data.lotStatus.warehouse_id == Data.warehouse[i].id){
         dropdownValue = Data.warehouse[i];
       }
     }
-    String weight = '${Data.lotInfo.weight}';
+    String weight = '${Data.lotStatus.weight}';
     _model.textController1 = TextEditingController(text:weight);
-    _model.textController2 = TextEditingController(text:Data.lotInfo.description);
-    _model.textController3 = TextEditingController(text:Data.lotInfo.note);
+    _model.textController2 = TextEditingController(text:Data.lotStatus.description);
+    _model.textController3 = TextEditingController(text:Data.lotStatus.note);
     isLoad = false;
-    if(Data.lotInfo.warehouse_id == '' || Data.lotInfo.status == 9){
+    if(Data.lotStatus.warehouse_id == '' || Data.lotStatus.status == 9){
       need_change = true;
     }
    return ret;
@@ -106,7 +102,7 @@ late WarehouseModel dropdownValue;
 
 }
 _onSave(BuildContext context)async{
-  if(dropdownValue.id != Data.lotInfo.warehouse_id){
+  if(dropdownValue.id != Data.lotStatus.warehouse_id){
     String title = '變更物料倉儲？';
     List<String> contents = ['將物料納入 ${dropdownValue.name}','需要一張納入倉儲的照片'];
     String buttonText = '上傳納入倉儲照片';
@@ -127,7 +123,7 @@ _onSave(BuildContext context)async{
       
       isExpanded: true,
       hint: const Text('選擇倉位'),
-      value: Data.lotInfo.warehouse_id == '' ? null : dropdownValue,
+      value: Data.lotStatus.warehouse_id == '' ? null : dropdownValue,
       elevation: 16,
       style:FlutterFlowTheme.of(context)
                                 .bodyMedium
@@ -140,7 +136,7 @@ _onSave(BuildContext context)async{
       onChanged: need_change == false ? null : (WarehouseModel? value) {
         // This is called when the user selects an item.
         dropdownValue = value!; 
-        Data.lotInfo.warehouse_id = '1';
+        Data.lotStatus.warehouse_id = '1';
         status.value = !status.value;
         //dropdownValue = value!;
       },
@@ -153,102 +149,14 @@ _onSave(BuildContext context)async{
     );
     
   }
-
-Widget builder(BuildContext context) {
-      List<Widget> list = [];
-    for(var i = 0; i < Data.lotInfo.attachs.length; i++){
-        list.add(TransportOrderAttachWidget(attach:Data.lotInfo.attachs[i]));
-    }
-
-      ValueListenableBuilder<bool> _DropDown = ValueListenableBuilder<bool>(
+Widget Warehouse(BuildContext context){
+        ValueListenableBuilder<bool> _DropDown = ValueListenableBuilder<bool>(
         builder: _DropDownBuilder,
         valueListenable: status,
       );
-  return 
- // Generated code for this Column Widget...
-Column(
-  mainAxisSize: MainAxisSize.max,
-  children: [
-    Expanded(
-      child: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-        child: Container(
-          width: double.infinity,
-          height: 530,
-          decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-          ),
-          child: ListView(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.vertical,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: FlutterFlowTheme.of(context).secondaryBackground,
-                  shape: BoxShape.rectangle,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    InkWell(
-                      onTap: () { Navigator.of(context).pop();},
-                    child:Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color:
-                            FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          'assets/images/iconLeftArrow_3x.png',
-                          width: 300,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )),
-                    Expanded(
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context)
-                              .secondaryBackground,
-                        ),
-                        child: Align(
-                          alignment: AlignmentDirectional(0, 0),
-                          child: Text(
-                            Data.lotInfo.barcode,
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 21,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: SvgPicture.asset(
-                        'assets/images/camera.svg',
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                         colorFilter: ColorFilter.mode(Colors.blue, BlendMode.srcIn)
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
+
+  return              Wrap(
+    children:[ Container(
                 width: double.infinity,
                 height: 50,
                 decoration: BoxDecoration(
@@ -308,7 +216,99 @@ Column(
                     ),
                   ],
                 ),
+              )]);
+}
+Widget builder(BuildContext context) {
+      List<Widget> list = [];
+    for(var i = 0; i < Data.lotStatus.attachments.length; i++){
+        list.add(TransportOrderAttachWidget(attach:Data.lotStatus.attachments[i]));
+    }
+
+  return 
+ // Generated code for this Column Widget...
+Column(
+  mainAxisSize: MainAxisSize.max,
+  children: [
+    Expanded(
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+        child: Container(
+          width: double.infinity,
+          height: 530,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+          ),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.vertical,
+            children: [
+              Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  shape: BoxShape.rectangle,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    InkWell(
+                      onTap: () { Navigator.of(context).pop();},
+                    child:Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          'assets/images/iconLeftArrow_3x.png',
+                          width: 300,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )),
+                    Expanded(
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context)
+                              .secondaryBackground,
+                        ),
+                        child: Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Text(
+                            Data.lotStatus.barcode,
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  fontSize: 21,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: SvgPicture.asset(
+                        'assets/images/camera.svg',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                         colorFilter: ColorFilter.mode(Colors.blue, BlendMode.srcIn)
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              Warehouse(context),
               Container(
                 width: double.infinity,
                 height: 50,
@@ -368,7 +368,7 @@ Column(
                       child: Align(
                         alignment: AlignmentDirectional(-1, 0),
                         child: Text(
-                          Data.lotInfo.name,
+                          Data.lotStatus.name,
                           style: FlutterFlowTheme.of(context)
                               .bodyMedium
                               .override(
@@ -438,7 +438,7 @@ Column(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
                                     child: Text(
-                                      Data.lotInfo.container,
+                                      Data.lotStatus.container,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -502,7 +502,7 @@ Column(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         10, 0, 0, 0),
                                     child: Text(
-                                      Data.lotInfo.volume,
+                                      Data.lotStatus.volume,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -944,7 +944,7 @@ Padding(
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
         
         if(isLoad == true)
-          return _empty(context);
+          return WaitingWidget();
 
         return builder(context);
       }

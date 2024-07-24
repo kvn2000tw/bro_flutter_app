@@ -1,6 +1,11 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+
+
+class ManufactureProducts{
+  List<dynamic> list = [];
+  Map<String,dynamic> meta = {};
+}
 
 class ManufactureInfo{
   String id='';
@@ -69,24 +74,12 @@ class TransportOrdersInfo{
   String volume = '';
   String container = '';
   String name='';
+  String warehouse_id='';
   List<dynamic> checkables=[];
   List<dynamic> attachments=[];
   
 }
-  class TransportLotInfo{
-  String id='';
-  int status = 0; 
-  String barcode = ''; 
-  String note = '';
-  String description = '';
-  String weight = '';
-  String volume = '';
-  String container = '';
-  String name='';
-  String warehouse_id = '';
-  List<dynamic> attachs=[];
   
-}
 class WarehouseModel {
   WarehouseModel({
     this.id='',

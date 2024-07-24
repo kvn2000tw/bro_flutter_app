@@ -66,6 +66,7 @@ dependencies:
   radio_group_v2: ^3.2.0
   overlay_support: ^2.1.0
   dropdown_button2: ^2.3.9
+  flutter_datetime_picker_plus: ^2.2.0
 
 
 flutter_icons:

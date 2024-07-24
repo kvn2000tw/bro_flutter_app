@@ -184,7 +184,10 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                               print('Button pressed ...');
                              
                               String path = getPath();
-                              Navigator.pushNamed(context,path);
+                              await Navigator.pushNamed(context,path);
+                              setState(() {
+                                
+                              });
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();
                             },

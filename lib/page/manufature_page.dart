@@ -37,6 +37,7 @@ Future<bool> _getManufactureInfo()async{
 
   //   var response =  await http.get('https://getProjectList');    
    final ret = await Service.getManufactureInfo();
+
     isLoad = false;
    return ret;
 }

@@ -1,4 +1,5 @@
 
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
@@ -27,7 +28,9 @@ class _TransportOrderStatusState
     extends State<TransportOrderStatusItemInfo> {
 
        late TransportOrderStatusItemInfoModel _model;
- 
+     bool need_change = false;
+    final ValueNotifier<bool> status = ValueNotifier(false);
+late WarehouseModel dropdownValue;
   @override
   void initState() {
     super.initState();
@@ -42,9 +45,118 @@ class _TransportOrderStatusState
     _model.dispose();
     super.dispose();
   }
+    Widget _DropDownBuilder(BuildContext context, bool selectedButton, Widget? child){
+   
+     return DropdownButton<WarehouseModel>(
+      
+      isExpanded: true,
+      hint: const Text('選擇倉位'),
+      value: Data.lotStatus.warehouse_id == '' ? null : dropdownValue,
+      elevation: 16,
+      style:FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  fontSize: 21,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+      onChanged: need_change == false ? null : (WarehouseModel? value) {
+        // This is called when the user selects an item.
+        dropdownValue = value!; 
+        Data.lotStatus.warehouse_id = '1';
+        status.value = !status.value;
+        //dropdownValue = value!;
+      },
+      items: Data.warehouse.map<DropdownMenuItem<WarehouseModel>>((WarehouseModel value) {
+        return DropdownMenuItem<WarehouseModel>(
+          value: value,
+          child: Text(value.name),
+        );
+      }).toList(),
+    );
+    
+  }
   
+Widget Warehouse(BuildContext context){
+        ValueListenableBuilder<bool> _DropDown = ValueListenableBuilder<bool>(
+        builder: _DropDownBuilder,
+        valueListenable: status,
+      );
+
+  return              Wrap(
+    children:[ Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                ),
+                child: Align(
+                  alignment: AlignmentDirectional(-1, 0),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                    child: Text(
+                      '入庫資訊',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            fontSize: 24,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Text(
+                        '選擇倉位',
+                        style:
+                            FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: 'Readex Pro',
+                                  fontSize: 24,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: _DropDown
+                    ),
+                  ],
+                ),
+              )]);
+}
+
   @override
   Widget build(BuildContext context) {
+    dropdownValue = Data.warehouse.first;
+
+    for(var i=0;i<Data.warehouse.length;i++){
+      if(Data.lotStatus.warehouse_id == Data.warehouse[i].id){
+        dropdownValue = Data.warehouse[i];
+      }
+    }
     List<Widget> list = [];
     for(var i = 0; i < widget.info.attachments.length; i++){
         list.add(TransportOrderAttachWidget(attach:widget.info.attachments[i]));
@@ -55,7 +167,7 @@ class _TransportOrderStatusState
                 padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                 child: Container(
                   width: double.infinity,
-                  height: 730,
+                  height: Data.is_product ? 850:730,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
@@ -478,6 +590,7 @@ class _TransportOrderStatusState
                           ],
                         ),
                       ),
+                      Data.is_product ? Warehouse(context):Container(),
                       Container(
                         width: double.infinity,
                         height: 190,

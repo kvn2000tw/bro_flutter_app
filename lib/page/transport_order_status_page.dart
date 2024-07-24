@@ -1,9 +1,7 @@
 
-import 'dart:io';
 
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
-import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 
@@ -12,6 +10,8 @@ import 'package:bro_flutter_app/transport_order_status/transport_order_status_it
 import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
+import 'package:bro_flutter_app/utils/show_button.dart';
+import 'package:bro_flutter_app/utils/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:radio_group_v2/widgets/view_models/radio_group_controller.dart';
 
@@ -36,16 +36,12 @@ class _TransportOrderStatusState
   TextEditingController noteController = TextEditingController();
   TextEditingController weightController = TextEditingController();
 
-  _getLotStatus()async{
+  Future<bool> _getLotStatus()async{
+    await Service.getTransportWarehouse();
     final response = await Service.getLotStatus(Data.lot_barcode);
-
-    if(response.statusCode == HttpStatus.ok){
-      
-     setState(() {
-      
-      initLotStatus();
-    });
-    }
+    initLotStatus();
+    isLoad = false;
+    return true;
   }
   initLotStatus(){
 
@@ -99,7 +95,7 @@ class _TransportOrderStatusState
   void initState() {
     super.initState();
     isLoad = true;
-    _getLotStatus();
+  
   }
 
   @override
@@ -109,7 +105,7 @@ class _TransportOrderStatusState
     super.dispose();
   }
 
-  saveCheck(BuildContext context)async{
+  saveCheck()async{
     
     for(var i = 0; i < Data.lotStatus.checkables.length; i++){
        
@@ -147,7 +143,7 @@ class _TransportOrderStatusState
     }
       
   }
-  updateWeight(BuildContext context)async{
+  updateWeight()async{
     
     Map<String,dynamic> data = {};
    
@@ -181,12 +177,42 @@ _finishCheck()async{
     
       setState(() {
       
-        initLotStatus();
+       
       });
     }
 
 }
-Future<void> _takePicture(BuildContext context) async {
+
+Future<void> cancelPicked()async{
+  bool ret = await Service.manufacturerCancelPicked();
+
+  if(ret){
+    await _getLotStatus();
+    await Service.getManufactureInfo();
+    showNotification('退回物料', '完成');
+         setState(() {
+      
+     
+    });
+
+  }
+}
+Future<void> picked()async{
+  bool ret = await Service.manufacturerPicked();
+
+  if(ret){
+    await _getLotStatus();
+    await Service.getManufactureInfo();
+        showNotification('拿取物料', '完成');
+         setState(() {
+      
+      
+    });
+
+  }
+}
+
+Future<void> _takePicture() async {
   String title = '完成檢查？';
   List<String> contents = ['將儲存物料檢查結果','需要一張物料狀態的照片'];
   String buttonText = '上傳物料狀態的照片';
@@ -194,21 +220,22 @@ Future<void> _takePicture(BuildContext context) async {
   showTransportDialog(context, title, contents, buttonText, _finishCheck);
  
 }
-  
-   
-  @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context) {
+        return FutureBuilder<bool>(
+      future: _getLotStatus(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
+        
+        if(isLoad)
+          return WaitingWidget();
 
-     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: 30,
-          backgroundColor: Colors.blue,
-          elevation:10,
-          title: const Text('',
-          style: TextStyle(color:Colors.white),)
-        ),
-      body:  isLoad == true ? Container():Column(
+        return builder1(context);
+      }
+    );
+  }
+  Widget builder1(BuildContext context) {
+ 
+    return 
+    Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -222,9 +249,7 @@ Future<void> _takePicture(BuildContext context) async {
                   children: [
                      InkWell(
         onTap: (){
-         
            Navigator.pop(context);
-         
           
         },     child:
                      Padding(
@@ -266,7 +291,7 @@ Future<void> _takePicture(BuildContext context) async {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
                             child: Text(
-                              '物料資訊',
+                              Data.is_product ? Data.lotStatus.barcode:'物料資訊',
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -291,111 +316,28 @@ Future<void> _takePicture(BuildContext context) async {
                   children: list,
                 ),
               ),
-              canFinish == false ? Container():Padding(
-  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-  child: Container(
-    width: double.infinity,
-    height: 50,
-    decoration: BoxDecoration(
-      color: FlutterFlowTheme.of(context).secondaryBackground,
-    ),
-    child: FFButtonWidget(
-      onPressed: () async{
-        print('Button pressed ...');
-        await _takePicture(context);
-      },
-      text: '完成檢查',
-      options: FFButtonOptions(
-        height: 40,
-        padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-        iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        color: FlutterFlowTheme.of(context).primary,
-        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-          fontFamily: 'Readex Pro',
-          color: Colors.white,
-          letterSpacing: 0,
-        ),
-        elevation: 3,
-        borderSide: BorderSide(
-          color: FlutterFlowTheme.of(context).primary,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-    ),
-  ),
-),
-              canCheck == false ? Container() : Padding(
-  padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-  child: Container(
-    width: double.infinity,
-    height: 50,
-    decoration: BoxDecoration(
-      color: FlutterFlowTheme.of(context).secondaryBackground,
-    ),
-    child: FFButtonWidget(
-      onPressed: () {
-        print('Button pressed ...');
-        saveCheck(context);
-      },
-      text: '儲存檢查結果',
-      options: FFButtonOptions(
-        height: 40,
-        padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-        iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        color: FlutterFlowTheme.of(context).primaryBackground,
-        textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-              fontFamily: 'Readex Pro',
-              color: FlutterFlowTheme.of(context).primary,
-              letterSpacing: 0,
-            ),
-        elevation: 3,
-        borderSide: BorderSide(
-          color: FlutterFlowTheme.of(context).primary,
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-    ),
-  ),
-),
-              Data.isCurrent == false? Container(): Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                  ),
-                  child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
-                      updateWeight(context);
-                    },
-                    text: '修改重量',
-                    options: FFButtonOptions(
-                      height: 40,
-                      padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-                      iconPadding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Readex Pro',
-                                color: FlutterFlowTheme.of(context).primary,
-                                letterSpacing: 0,
-                              ),
-                      elevation: 3,
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
+              ShowButton(show:Data.lotStatus.status == lot_status.SCHEDULED.value,title:'拿取物料',onPressed:picked),
+              ShowButton(show:Data.lotStatus.status == lot_status.PICKED.value,title:'退回物料',onPressed:cancelPicked),
+              ShowButton(show:canFinish,title:'完成檢查',onPressed:_takePicture),
+              ShowButton(show:canCheck,title:'儲存檢查結果',onPressed:saveCheck),
+              ShowButton(show:Data.isCurrent,title:'修改重量',onPressed:updateWeight),
+
             ],
-          ),
+          );
+  } 
+  @override
+  Widget build(BuildContext context) {
+
+     return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: 30,
+          backgroundColor: Colors.blue,
+          elevation:10,
+          title: const Text('',
+          style: TextStyle(color:Colors.white),)
+        ),
+      body:  builder(context)
      
     );
   }

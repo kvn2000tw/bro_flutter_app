@@ -1,9 +1,16 @@
+
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/manufacture_check/manufacture_check_widget.dart';
+import 'package:bro_flutter_app/manufacture_product/manufacture_products_widget.dart';
 import 'package:bro_flutter_app/manufacture_info/manufacture_widget.dart';
+import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_header.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/transport_order_items/transport_order_items_widget.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
+import 'package:bro_flutter_app/utils/dialog.dart';
+import 'package:bro_flutter_app/utils/notify.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -38,8 +45,8 @@ class _ManufactureInfoWidgetState extends State<ManufactureInfoWidget>
   
   bool canRequest = false;
   bool canReturn = false;
-  bool canSave = true;
-  bool canFinish = true;  
+
+  bool canFinish = false;  
   @override
   void initState() {
     super.initState();
@@ -52,17 +59,37 @@ class _ManufactureInfoWidgetState extends State<ManufactureInfoWidget>
       initialIndex: 0,
     )..addListener(() => setState(() {}));
 
+    if(widget.info.status != 2){
+      
+      canFinish = true;
+    }
   }
-  _startButton(BuildContext context){
 
-  }
-_saveButton(BuildContext context){
-
-}
 _requestButton(BuildContext context){
 
 }
-_finishButton(BuildContext context){
+_finishOnPress()async{
+  bool ret = await Service.manufacturerFinish();
+  Navigator.of(context).pop();
+  if(ret == false){
+    showAlert(context,'錯誤',Data.errorMessage);
+    
+  }else {
+    showNotification('結束再製','完成');
+    setState(() {
+      widget.info.status = 2;
+      canFinish = false;
+    });
+  }
+
+}
+_finishButton(BuildContext context)async{
+      String title = '結束再製?';
+    List<String> list = ['將紀錄結束再製的時間並統計碳足跡數據'];
+    String buttonText = '確認';
+ 
+    await showTransportDialog(context,title,list,buttonText,_finishOnPress);
+
 
 }
 _returnButton(BuildContext context){
@@ -119,7 +146,7 @@ _returnButton(BuildContext context){
                         ],
                         controller: _model.tabBarController,
                         onTap: (i) async {
-                          [() async {}, () async {}, () async {},() async {}][i]();
+                          [() async {}, () async {}, () async {},() async {},() async {}][i]();
                         },
                       ),
                     ),
@@ -128,10 +155,8 @@ _returnButton(BuildContext context){
                         controller: _model.tabBarController,
                         children: [
                           ManufactureWidget(info:widget.info,
-                        
-                          canSave:canSave,
                           canFinish:canFinish,
-                          savePressed: ()=>_saveButton(context),
+                         
                           finishPressed: ()=>_finishButton(context)),
               
                           TransportOrderItemsWidget(lots:widget.info.lots,
@@ -153,14 +178,14 @@ _returnButton(BuildContext context){
                           
                           ManufactureCheckWidget(
                             checkables:widget.info.checkables,
+                            id:widget.info.id,
                           canFinish:canFinish,
                           finishPressed: ()=>_finishButton(context),),
 
-                          ManufactureCheckWidget(
-                            checkables:widget.info.checkables,
+                          ManufactureProductsWidget(
+                            
                           canFinish:canFinish,
                           finishPressed: ()=>_finishButton(context),),
-
 
                         ],
                       ),

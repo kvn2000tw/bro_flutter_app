@@ -5,6 +5,8 @@ import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:dio/dio.dart';
 import 'dart:io' as io;
+
+import 'package:flutter/material.dart';
 class Service{
   //static final dio = Dio();
   static const BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
@@ -129,56 +131,6 @@ class Service{
       return ret;
   }
 
-  static getTransportLotInfo()async {
-    
-    String url = "$BaseUrl/admin/warehouse/lots/barcode/${Data.lot_barcode}";
-    print('getTransportLotInfo $url');
-    // Or create `Dio` with a `BaseOptions` instance.
-    final options = BaseOptions(
-      baseUrl: url,
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3),
-      headers:{
-           "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer ${Data.token.access_token}",
-          },
-        );
-        final dio = Dio(options);
-     
-    Response response;
-    bool ret = false;
-    try {
-      response = await dio.get(url);
-
-      if(response.statusCode == HttpStatus.ok){
-         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
-        print(fromJsonMap);
-        Data.setTransportLotInfo(fromJsonMap);
-        ret = true;
-      }
-
-    }on DioException catch (e) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
-      
-      if (e.response != null) {
-        print(e.response?.data);
-       
-        Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-       
-
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-      }
-    }
-      //print(response.statusCode.toString()); 
-      //print(response.data.toString());
-
-      return ret;
-  }
   static getTransportWarehouse()async {
     
     String url = "$BaseUrl/admin/warehouse";
@@ -216,7 +168,7 @@ class Service{
 
   static updateLotInfo(String note,String weight,String warehouse)async {
     
-    String url = "$BaseUrl/admin/warehouse/lots/barcode/${Data.lotInfo.barcode}";
+    String url = "$BaseUrl/admin/warehouse/lots/barcode/${Data.lotStatus.barcode}";
     print('updateLotInfo $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
@@ -285,7 +237,10 @@ class Service{
   }
 
   static getLotStatus(String barcode)async{
+
     String url = '$BaseUrl/admin/lots/barcode/${barcode}';
+    if(Data.is_product)
+      url = '$BaseUrl/admin/warehouse/lots/barcode/${barcode}';
     print('getLotStatus $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
@@ -316,6 +271,291 @@ class Service{
       return response;
   }
   
+  
+  static manufacturerCancelPicked()async{
+
+    String url = '$BaseUrl/admin/manufacturer-orders/lots/${Data.lotStatus.barcode}/cancelPicked';
+   
+    print('manufacturerCancelPicked $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+      
+        );
+        final dio = Dio(options);
+
+    bool ret = false; 
+    try{
+      Response response;
+    
+      response = await dio.put(url);
+
+      if(response.statusCode == HttpStatus.ok){
+    
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
+  }
+    static updateManufactureProduct(String barcode,String weight)async{
+    String url = "$BaseUrl/admin/manufacturer-orders/products/$barcode";
+    print('updateManufactureProduct $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Data.httpRet = false;
+      try{
+      response = await dio.put(url,data: {"weight": weight});
+
+      if(response.statusCode == HttpStatus.ok){
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+        Data.products.list[Data.product_index]['weight'] = fromJsonMap['weight'];
+       Data.httpRet = true;
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+    
+  }  
+  
+  static updateManufacture(String id,Map<String,dynamic> map)async{
+    String url = "$BaseUrl/admin/manufacturer-orders/$id";
+    print('updateManufacture $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Data.httpRet = false;
+     
+      try{
+      response = await dio.put(url,data:map);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+       Data.httpRet = true;
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+    
+  }  
+
+    static updateManufactureCheckable(String id,List<dynamic> list)async{
+    String url = "$BaseUrl/admin/manufacturer-orders/$id/checkable";
+    print('updateManufactureCheckable $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+        );
+        final dio = Dio(options);
+     
+      Response response;
+    
+      Data.httpRet = false;
+      var data = {"checkable": list};
+    
+      try{
+      response = await dio.put(url,data:data);
+
+      if(response.statusCode == HttpStatus.ok){
+       
+       Data.httpRet = true;
+      }
+      //print(response.statusCode.toString()); 
+      //print(response.data.toString());
+      }on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+    
+  }  
+
+  static manufacturerPicked()async{
+
+    String url = '$BaseUrl/admin/manufacturer-orders/lots/${Data.lotStatus.barcode}/picked';
+   
+    print('manufacturerPicked $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+      
+        );
+        final dio = Dio(options);
+
+    bool ret = false; 
+    try{
+      Response response;
+    
+      response = await dio.put(url);
+
+      if(response.statusCode == HttpStatus.ok){
+    
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
+  }
+
+      static manufacturerProducts()async{
+
+    String url = '$BaseUrl/admin/manufacturer-orders/${Data.manufacture.id}/products';
+   
+    print('manufacturerProducts $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+      
+        );
+        final dio = Dio(options);
+
+    bool ret = false; 
+    try{
+      Response response;
+    
+      response = await dio.get(url);
+
+      if(response.statusCode == HttpStatus.ok){
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+        print('manufacturerProducts');
+        Data.setManufacturerProducts(fromJsonMap);
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
+  }
+
+    static manufacturerFinish()async{
+
+    String url = '$BaseUrl/admin/manufacturer-orders/${Data.manufacture.id}/finished';
+   
+    print('manufacturerFinish $url');
+    // Or create `Dio` with a `BaseOptions` instance.
+    
+    final options = BaseOptions(
+      baseUrl: url,
+      connectTimeout: Duration(seconds: 5),
+      receiveTimeout: Duration(seconds: 3),
+      headers:{
+           "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${Data.token.access_token}",
+            "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
+          },
+      
+        );
+        final dio = Dio(options);
+
+    bool ret = false; 
+    try{
+      Response response;
+    
+      response = await dio.put(url);
+
+      if(response.statusCode == HttpStatus.ok){
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+        print('manufacturerFinish');
+        print(fromJsonMap);
+        ret = true;
+      }
+    }
+    on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      
+      remote_error(e);
+    }
+      return ret;
+  }
+
     static getManufactureInfo()async{
 
     String url = '$BaseUrl/admin/manufacturer-orders/${Data.transport_id}';
@@ -349,6 +589,9 @@ class Service{
         Data.setManufactureInfo(fromJsonMap);
 
         ret = true;
+      }else {
+         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+         Data.errorMessage = fromJsonMap['message'];
       }
     }
     on DioException catch (e) {
@@ -522,7 +765,7 @@ class Service{
         print(e.response?.data);
         Data.errorMessage = '';
         Map<String,dynamic> fromJsonMap = jsonDecode(e.response.toString());
-        if(fromJsonMap['errorCode'] == 400){
+        if(fromJsonMap['errorCode'] == 400 || fromJsonMap['errorCode'] == 0){
           print(fromJsonMap['errors']);
           Data.errorMessage = fromJsonMap['message'];
         }
@@ -531,6 +774,7 @@ class Service{
         // Something happened in setting up or sending the request that triggered an Error
         print(e.requestOptions);
         print(e.message);
+        
       }
 
   }

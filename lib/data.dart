@@ -12,11 +12,11 @@ class Token{
 
 class Data {
   static Token token = Token();
+  static ManufactureProducts products = ManufactureProducts();
   static TransportOrdersInfo current = TransportOrdersInfo();
   static TransportOrdersInfo transport = TransportOrdersInfo();
   static TransportOrdersInfo transport_info = TransportOrdersInfo();
   static TransportOrdersLotStatus lotStatus = TransportOrdersLotStatus();
-  static TransportLotInfo lotInfo = TransportLotInfo();
   static List<TransportOrdersInfo> ordersList = [];
   static List<WarehouseModel> warehouse=[];
   static User user = User();
@@ -39,6 +39,7 @@ class Data {
   static bool is_driver = false;
   static bool is_product = false;
   static ManufactureInfo manufacture = ManufactureInfo();
+  static int product_index = 0;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -72,24 +73,6 @@ class Data {
     transport_info = current;
     
   }
-  static setTransportLotInfo(Map<String,dynamic> response){
-    debugPrint('setTransportLot ${response}');
-   
-    lotInfo.id = response['id'];
-    lotInfo.status = response['status'];
-    lotInfo.barcode = response['barcode'];
-    lotInfo.note = response['note']??'';
-    lotInfo.description = response['description'];
-    lotInfo.weight = response['weight'];
-   
-    lotInfo.volume = response['volume'];
-    lotInfo.container = response['container'];
-    lotInfo.name = response['name'];
-    lotInfo.warehouse_id = response['warehouse_id']?? '';
-    lotInfo.attachs = response['attachments']??[];
-    
-  }
-
   static setTransportSelect(Map<String,dynamic> response){
     debugPrint('setTransportCurrent ${response}');
     transport.id = response['id'];
@@ -123,15 +106,21 @@ class Data {
     lotStatus.container = response['container'];
     lotStatus.note = response['note'] ?? '';
     lotStatus.volume = response['volume'];
+    lotStatus.warehouse_id = response['warehouse_id'] ?? '';
     lotStatus.weight = response['weight'].toString();
-    lotStatus.checkables = response['checkables'];
+    lotStatus.checkables = response['checkables'] ?? [];
     lotStatus.attachments = response['attachments']??[];
 
   }
+  static setManufacturerProducts(Map<String,dynamic> response){
+    products.list = response['products'] ?? [];
+    products.meta = response['products_meta'] ?? {};
 
+  }
   static setManufactureInfo(Map<String,dynamic> response){
     manufacture.id = response['id'];
     manufacture.name = response['name'];
+    manufacture.status = response['status'];
     manufacture.unit = response['unit'];
     manufacture.expect_weight = response['expect_weight'];
     manufacture.background_emissions_percent = response['background_emissions_percent'];
@@ -144,7 +133,7 @@ class Data {
 
     manufacture.lots = response['lots'] ?? [];
     manufacture.lots_meta = response['lots_meta'];
-    manufacture.attachs = response['attachs'] ?? [];
+    manufacture.attachs = response['attachments'] ?? [];
     manufacture.checkables = response['checkables'] ?? [];
 
     
