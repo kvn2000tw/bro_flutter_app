@@ -37,9 +37,9 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
     super.initState();
     _model = createModel(context, () => TransportOrdersPageModel());
     _model.textController ??= TextEditingController();
-    Data.ordersList = [];
-    Data.page = 1;
-    Data.read_more = true;
+    
+    Data.resetPage();
+    
     _retrieveData();
   }
 
@@ -180,8 +180,12 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             prefixIcon:IconButton(
-                            onPressed: (){
-                              Service.GetTransportOrders();
+                            onPressed: ()async{
+                              Data.resetPage();
+                              await Service.GetTransportOrders();
+                              setState(() {
+                                
+                              });
                             },
                             icon: SvgPicture.asset(
                             SearchIcon,
@@ -209,20 +213,24 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                                   ),
                           validator: _model.textControllerValidator
                               .asValidator(context),
-                          onEditingComplete: () {
+                          onEditingComplete: () async{
                             // This optional block of code can be used to run
                             // code when the user saves the form.
                             print('onEditingComplete ${_model.textController.text}');
                             Data.search = _model.textController.text;
                             FocusScope.of(context).unfocus();
-                            Service.GetTransportOrders();
+                            Data.resetPage();
+                            await Service.GetTransportOrders();
+                            setState(() {
+                              
+                            });
                           },  
                         ),
                       ),
                     ),
                     const SortOrder(),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                       child: 
                       InkWell(
                         onTap: () async{ 
@@ -263,7 +271,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
       itemCount: Data.ordersList.length,
       itemBuilder: (context, index) {
         //如果到了表尾
-        if (index == (Data.ordersList.length-1)) {
+        if ( Data.ordersList.isEmpty || (index > 0 && index == (Data.ordersList.length-1))) {
           //不足100条，继续获取数据
           if (Data.read_more == true) {
             //获取数据

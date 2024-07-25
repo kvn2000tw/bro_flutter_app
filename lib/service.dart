@@ -544,6 +544,7 @@ class Service{
         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print('manufacturerFinish');
         print(fromJsonMap);
+        Data.manufacture.status = fromJsonMap['status'];
         ret = true;
       }
     }
@@ -631,7 +632,9 @@ class Service{
     List<Map<String,dynamic>> value = [];
     for(var i=0;i<Data.filter.length;i++){
       if(Data.filter[i].value == true){
-        value.add( {"field":"status","operator":"=","value":(i+1)});
+        int index = i+1;
+        if(Data.is_product)    index = i;
+        value.add( {"field":"status","operator":"=","value":index});
       }
     }
 
@@ -658,7 +661,7 @@ class Service{
     bool ret = false; 
     try{
       Response response;
-    
+      print(data);
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
@@ -876,7 +879,7 @@ class Service{
 
   static started(String arttach)async{
     String url = "$BaseUrl/admin/transport-orders/${Data.transport_id}/started";
-    print('profile $url');
+    print('started $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,

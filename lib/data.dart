@@ -117,6 +117,13 @@ class Data {
     products.meta = response['products_meta'] ?? {};
 
   }
+  static resetPage(){
+    print('resetPage');
+    page = 1;
+    ordersList = [];
+    read_more = true;
+
+  }
   static setManufactureInfo(Map<String,dynamic> response){
     manufacture.id = response['id'];
     manufacture.name = response['name'];

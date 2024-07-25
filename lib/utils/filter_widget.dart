@@ -66,17 +66,31 @@ class FilterWidget extends StatelessWidget {
   
   Widget _filterBuilder1(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'派車運輸',filter[0].value,filter1Press);                 
+    String title = '派車運輸';
+    if(Data.is_product){
+      title = '尚未再製';
+    }
+    return filterContent(context,title,filter[0].value,filter1Press);                 
 
   }
   Widget _filterBuilder2(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'開始運輸',filter[1].value,filter2Press);                 
+    String title = '開始運輸';
+    if(Data.is_product){
+      title = '開始再製';
+    }
+
+    return filterContent(context,title,filter[1].value,filter2Press);                 
 
   }
   Widget _filterBuilder3(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'等待回覆',filter[2].value,filter3Press);                 
+    String title = '等待回覆';
+    if(Data.is_product){
+      title = '再製完成';
+    }
+
+    return filterContent(context,title,filter[2].value,filter3Press);                 
 
   }
   Widget _filterBuilder4(BuildContext context, bool selectedButton, Widget? child) {
@@ -142,6 +156,7 @@ class FilterWidget extends StatelessWidget {
 
   searchPress(BuildContext context)async{
     Data.filter = filter;
+    Data.resetPage();
     await Service.GetTransportOrders();
     Navigator.pop(context);
   }
@@ -249,7 +264,7 @@ Padding(
                           ],
                         ),
                       ),
-                      Padding(
+                      Data.is_product ? Container():Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
