@@ -1,15 +1,10 @@
 // TODO Implement this library.import '/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/data.dart';
-import 'package:bro_flutter_app/transport_order_brief/transport_order_brief_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -64,7 +59,9 @@ class _SettingPageState extends State<SettingPage> {
     sharedPreferences.setString("username",'');
     sharedPreferences.setString("password",'');
     sharedPreferences.setBool("autoLogin",false);
-
+    for(var i=0;i<Data.filter.length;i++){
+      Data.filter[i].value = false;
+    }
     Navigator.pushNamed(context,'/');
   }
   @override

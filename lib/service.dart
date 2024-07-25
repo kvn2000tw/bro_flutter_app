@@ -6,7 +6,6 @@ import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:dio/dio.dart';
 import 'dart:io' as io;
 
-import 'package:flutter/material.dart';
 class Service{
   //static final dio = Dio();
   static const BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
@@ -632,9 +631,20 @@ class Service{
     List<Map<String,dynamic>> value = [];
     for(var i=0;i<Data.filter.length;i++){
       if(Data.filter[i].value == true){
-        int index = i+1;
-        if(Data.is_product)    index = i;
-        value.add( {"field":"status","operator":"=","value":index});
+                                          
+        if(i==6){
+          value.add( {"field":"weight","operator":"<","value":100});
+        }else if(i==7){
+          value.add( {"field":"weight","operator":"between","value":[100,1000]});
+
+        }else if(i==8){
+          value.add( {"field":"weight","operator":">","value":1000});
+
+        }else {
+           int index = i+1;
+          if(Data.is_product)    index = i;
+          value.add( {"field":"status","operator":"=","value":index});
+        }
       }
     }
 

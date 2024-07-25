@@ -32,7 +32,8 @@ class Data {
   static int sort = 0;
   static String arttach = '';
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
-  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
+  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),
+  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
   static var search = '';
   static int page = 0;
   static bool read_more = true;

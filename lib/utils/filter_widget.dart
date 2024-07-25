@@ -18,6 +18,7 @@ class FilterWidget extends StatelessWidget {
   VoidCallback? onPressed;
 
   List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
+  ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
 
   filter1Press(){
@@ -54,6 +55,27 @@ class FilterWidget extends StatelessWidget {
   filter6Press(){
 
     filter[5].value = !filter[5].value;
+
+    
+  }
+
+  filter7Press(){
+
+    filter[6].value = !filter[6].value;
+
+    
+  }
+
+  filter8Press(){
+
+    filter[7].value = !filter[7].value;
+
+    
+  }
+
+  filter9Press(){
+
+    filter[8].value = !filter[8].value;
 
     
   }
@@ -109,6 +131,24 @@ class FilterWidget extends StatelessWidget {
 
   }
 
+  Widget _filterWeight1(BuildContext context, bool selectedButton, Widget? child) {
+
+    return filterContent(context,'< 100 kg',filter[6].value,filter7Press);                 
+
+  }
+
+  Widget _filterWeight2(BuildContext context, bool selectedButton, Widget? child) {
+
+    return filterContent(context,'100 ~ 1000 kg',filter[7].value,filter8Press);                 
+
+  }
+
+  Widget _filterWeight3(BuildContext context, bool selectedButton, Widget? child) {
+
+    return filterContent(context,'> 1000 kg',filter[8].value,filter9Press);                 
+
+  }
+
   filterContent(BuildContext context,String text,bool filter,VoidCallback onPressed){
     Color color  = disable_color;
     if(filter == true){
@@ -132,7 +172,7 @@ class FilterWidget extends StatelessWidget {
                                 options: FFButtonOptions(
                                   height: 40,
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      24, 0, 24, 0),
+                                      5, 0, 5, 0),
                                   iconPadding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 0, 0),
                                   color: bkColor,
@@ -187,13 +227,26 @@ class FilterWidget extends StatelessWidget {
         valueListenable: filter[5],
       );
 
+    ValueListenableBuilder<bool> filterWeight1 = ValueListenableBuilder<bool>(
+        builder: _filterWeight1,
+        valueListenable: filter[6],
+      );
+    ValueListenableBuilder<bool> filterWeight2 = ValueListenableBuilder<bool>(
+        builder: _filterWeight2,
+        valueListenable: filter[7],
+      );
+    ValueListenableBuilder<bool> filterWeight3 = ValueListenableBuilder<bool>(
+        builder: _filterWeight3,
+        valueListenable: filter[8],
+      );
+
     return 
     // Generated code for this Container Widget...
 Padding(
   padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
   child: Container(
     width: double.infinity,
-    height: 350,
+    height: Data.is_driver || Data.is_product ? 350 : 450,
     decoration: BoxDecoration(
       color: FlutterFlowTheme.of(context).primaryBackground,
       shape: BoxShape.rectangle,
@@ -273,6 +326,57 @@ Padding(
                             filterBuild4,
                             filterBuild5,
                             filterBuild6,
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Data.is_driver || Data.is_product ? Container() :Container(
+          width: double.infinity,
+          height: 170,
+          decoration: BoxDecoration(
+            color: FlutterFlowTheme.of(context).secondaryBackground,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Align(
+                alignment: AlignmentDirectional(-1, 0),
+                child: Text(
+                  '重量',
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Readex Pro',
+                        fontSize: 16,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                child: Container(
+                  width: double.infinity,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            filterWeight1,
+                            filterWeight2,
+                            filterWeight3,
                           ],
                         ),
                       ),
