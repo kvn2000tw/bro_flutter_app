@@ -1,5 +1,6 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
+import 'package:bro_flutter_app/transport_order/transport_order_model.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_header.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attachs_widget.dart';
@@ -34,6 +35,7 @@ class TransportOrderInfoWidget extends StatefulWidget {
 class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
     with TickerProviderStateMixin {
   late TransportOrderInfoModel _model;
+  late TransportOrderModel _transportOrderModel;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -56,13 +58,26 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
     )..addListener(() => setState(() {}));
 
     initButton();
+    _transportOrderModel = createModel(context, () => TransportOrderModel());
 
+    _transportOrderModel.textController1 ??= TextEditingController(text:widget.info.initial_odometer.toString());
+    _transportOrderModel.textFieldFocusNode1 ??= FocusNode();
+
+    _transportOrderModel.textController2 ??= TextEditingController( text:widget.info.final_odometer.toString());
+    _transportOrderModel.textFieldFocusNode2 ??= FocusNode();
+
+    _transportOrderModel.textController3 ??= TextEditingController(text:widget.info.note);
+    _transportOrderModel.textFieldFocusNode3 ??= FocusNode();
+
+    _transportOrderModel.textController4 ??= TextEditingController(text:widget.info.gmap.toString());
+    _transportOrderModel.textFieldFocusNode4 ??= FocusNode();
 
   }
 
   @override
   void dispose() {
     _model.dispose();
+    _transportOrderModel.dispose();
 
     super.dispose();
   }
@@ -105,33 +120,38 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
 
   _startOnPress()async{
     Data.runFunc = 'started';
-    await Navigator.pushNamed(context,'/camera');
-    if(Data.httpRet == true){
-        showNotification('開始運輸', '完成');
+    if(widget.info.isgmap == 0){
+      Data.tmp_value = _transportOrderModel.textController1.text;
+      Data.tmp_note = _transportOrderModel.textController3.text;
+    }else {
+      Data.tmp_value = '';
+      Data.tmp_note = '';
     }
+    await Navigator.pushNamed(context,'/camera');
 
     if (context.mounted){
       Navigator.pop(context);
     }
+
+    if(Data.httpRet == true){
+        showNotification('開始運輸', '完成');
+        
+    }else {
+      showAlert(context, '錯誤', Data.errorMessage);
+      
+    }
+
+    FocusManager.instance.primaryFocus?.unfocus();
+
   }
   _startButton(BuildContext context)async{
-    String title = '開始運輸?';
-    List<String> list = ['將紀錄起始里程數並開始運輸',
-    '起始里程數','要一張開始里程數的照片'];
-    String buttonText = '上傳開始里程數照片';
- 
-    await showTransportDialog(context,title,list,buttonText,_startOnPress);
-    
-    setState(
-      (){
-        widget.info = Data.transport_info;
-        initButton();
-      }
-    );
 
-  }
+    var start = double.parse(_transportOrderModel.textController1.text);
 
-  _saveButton(BuildContext context)async{
+    if(widget.info.isgmap == 0 && start == 0){
+      showAlert(context, '錯誤', "請輸入起始里程數");
+      return;
+    }
     String title = '開始運輸?';
     List<String> list = ['將紀錄起始里程數並開始運輸',
     '起始里程數','要一張開始里程數的照片'];
@@ -292,11 +312,12 @@ finishPress()async{
                       child: TabBarView(
                         controller: _model.tabBarController,
                         children: [
-                          TransportOrderWidget(info:widget.info,canStart:canStart,
+                          TransportOrderWidget(info:widget.info,
+                          model:_transportOrderModel,
+                          canStart:canStart,
                           canRequest:canRequest,
                           canReturn:canReturn,
                           canFinish:canFinish,
-                          savePressed: ()=>_saveButton(context),
                           startPressed: ()=>_startButton(context),
                           requestPressed: ()=>_requestButton(context),
                           returnPressed: ()=>_returnButton(context),

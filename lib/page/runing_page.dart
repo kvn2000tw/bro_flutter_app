@@ -4,6 +4,7 @@ import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info_widget.dart';
+import 'package:bro_flutter_app/utils/waiting_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,10 +25,11 @@ class _Page1WidgetState extends State<RuningPage>
     with TickerProviderStateMixin {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  bool isLoad = true;
   @override
   void initState() {
     super.initState();
+    isLoad = true;
 
   }
 
@@ -53,22 +55,7 @@ class _Page1WidgetState extends State<RuningPage>
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: SvgPicture.asset(
-                        'assets/images/exclamation-circle.svg',
-                        width: 300,
-                        height: 200,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+                
                   Container(
                     width: double.infinity,
                     height: 40,
@@ -78,7 +65,7 @@ class _Page1WidgetState extends State<RuningPage>
                     child: Align(
                       alignment: AlignmentDirectional(0, 0),
                       child: Text(
-                        '目前尚未有執行中運輸單',
+                        '請至運輸單列表確認',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 20,
@@ -97,7 +84,7 @@ class _Page1WidgetState extends State<RuningPage>
                     child: Align(
                       alignment: AlignmentDirectional(0, 0),
                       child: Text(
-                        '請至運輸單列表選擇並執行運輸單',
+                        '並填寫資料 【開始運輸】',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 16,
@@ -151,7 +138,7 @@ Future<bool> _getTransportCurrent()async{
 
   //   var response =  await http.get('https://getProjectList');    
    final ret = await Service.getTransportCurrent();
-
+    isLoad = false;
    return ret;
 }
 
@@ -162,6 +149,9 @@ Future<bool> _getTransportCurrent()async{
       future: _getTransportCurrent(),
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot){
         
+        if(isLoad){
+          return WaitingWidget();
+        }
         if(Data.current.id == '')
           return _empty(context);
 

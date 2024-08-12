@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
@@ -5,10 +7,10 @@ import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/show_button.dart';
 import 'package:bro_flutter_app/utils/show_order_status.dart';
+import 'package:bro_flutter_app/utils/show_save_button.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'transport_order_model.dart';
@@ -25,9 +27,10 @@ class TransportOrderWidget extends StatefulWidget {
   this.requestPressed,
   this.returnPressed,
   this.finishPressed,
-  this.savePressed,  
+  required this.model
   });
 
+  late TransportOrderModel model;
   late TransportOrdersInfo info;
   late bool canRequest;
   late bool canReturn;
@@ -37,30 +40,32 @@ class TransportOrderWidget extends StatefulWidget {
   final VoidCallback? requestPressed;
   final VoidCallback? returnPressed;
   final VoidCallback? finishPressed; 
-  final VoidCallback? savePressed;    
+  
   @override
   State<TransportOrderWidget> createState() => _TransportOrderWidgetState();
 }
 
 class _TransportOrderWidgetState extends State<TransportOrderWidget> {
-  late TransportOrderModel _model;
+  //late TransportOrderModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  _saveButton(BuildContext context)async {
+  _saveButton()async {
 
-    print( _model.textController1.text);
-    print( _model.textController2.text);
-    print( _model.textController3.text);
-    var start = double.parse(_model.textController1.text);
-    var end = double.parse(_model.textController2.text);
+    print( widget.model.textController1.text);
+    print( widget.model.textController2.text);
+    print( widget.model.textController3.text);
+    var start = double.parse(widget.model.textController1.text);
+    var end = double.parse(widget.model.textController2.text);
+
+    FocusManager.instance.primaryFocus?.unfocus();
 
     if(start >= end){
       showAlert(context,'結束里程','需大於起始里程數');
       return;
       
     }
-    await Service.updatEodometer(start, end, _model.textController3.text);
+    await Service.updatEodometer(start, end, widget.model.textController3.text);
   
     if(Data.httpRet == true){
       showNotification('儲存資料', '成功');
@@ -73,6 +78,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
   @override
   void initState() {
     super.initState();
+    /*
     _model = createModel(context, () => TransportOrderModel());
 
     _model.textController1 ??= TextEditingController(text:widget.info.initial_odometer.toString());
@@ -83,12 +89,12 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
 
     _model.textController3 ??= TextEditingController(text:widget.info.note);
     _model.textFieldFocusNode3 ??= FocusNode();
-
+*/
   }
 
   @override
   void dispose() {
-    _model.dispose();
+    //_model.dispose();
 
     super.dispose();
   }
@@ -306,232 +312,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                            child: Container(
-                              width: double.infinity,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                '起始果程',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                border: Border.all(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          8, 0, 8, 0),
-                                      child: TextFormField(
-                                        readOnly: false,
-                                        controller: _model.textController1,
-                                        focusNode: _model.textFieldFocusNode1,
-                                        autofocus: false,
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          labelStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    letterSpacing: 0,
-                                                  ),
-                                          hintStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    letterSpacing: 0,
-                                                  ),
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          focusedErrorBorder: InputBorder.none,
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0,
-                                            ),
-                                        keyboardType: TextInputType.number,    
-                                        validator: _model
-                                            .textController1Validator
-                                            .asValidator(context),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 10, 0),
-                                    child: Text(
-                                      '公里',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                            child: Container(
-                              width: double.infinity,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Text(
-                                '結束里程',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Readex Pro',
-                                      letterSpacing: 0,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                            child: Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                border: Border.all(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          8, 0, 8, 0),
-                                      child: TextFormField(
-                                         readOnly: false,
-                                        controller: _model.textController2,
-                                        focusNode: _model.textFieldFocusNode2,
-                                        autofocus: false,
-                                        obscureText: false,
-                                        decoration: InputDecoration(
-                                          labelStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    letterSpacing: 0,
-                                                  ),
-                                          hintStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    letterSpacing: 0,
-                                                  ),
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          focusedErrorBorder: InputBorder.none,
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Readex Pro',
-                                              letterSpacing: 0,
-                                            ),
-                                        keyboardType: TextInputType.number,    
-                                        validator: _model
-                                            .textController2Validator
-                                            .asValidator(context),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 10, 0),
-                                    child: Text(
-                                      '公里',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  distance(context),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                     child: Container(
@@ -587,8 +368,8 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                           8, 0, 8, 0),
                                       child: TextFormField(
                                          readOnly: false,
-                                        controller: _model.textController3,
-                                        focusNode: _model.textFieldFocusNode3,
+                                        controller: widget.model.textController3,
+                                        focusNode: widget.model.textFieldFocusNode3,
                                         autofocus: false,
                                         obscureText: false,
                                         decoration: InputDecoration(
@@ -656,7 +437,7 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                                             ),
                                         textAlign: TextAlign.start,
                                         maxLines: 8,
-                                        validator: _model
+                                        validator: widget.model
                                             .textController3Validator
                                             .asValidator(context),
                                       ),
@@ -674,46 +455,158 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
                   ShowButton(show:widget.canReturn,title:'開始回程',onPressed:widget.returnPressed),
                   ShowButton(show:widget.canRequest,title:'結算',onPressed:widget.requestPressed),
                   ShowButton(show:widget.canFinish,title:'結束運輸',onPressed:widget.finishPressed),
+                  ShowSaveButton(show:Data.isCurrent,title:'儲存資料',onPressed:_saveButton),
 
-                  Data.isCurrent == false ?  Container():Align(
-                    alignment: AlignmentDirectional(0, 0),
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 0),
-                      child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
-                          //widget.savePressed!();
-                          _saveButton(context);
-                        },
-                        text: '儲存資料',
-                        options: FFButtonOptions(
-                          width: double.infinity,
-                          height: 40,
-                          padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-                          iconPadding:
-                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
-                                    fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    letterSpacing: 0,
-                                  ),
-                          elevation: 3,
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
           );
         
+  }
+  Widget distance(BuildContext context){
+    List<Widget> list = [];
+
+    if(widget.info.isgmap == 1){
+      list.add(inputWrap(context,'google map 里程',
+                  widget.model.textController4,
+                  widget.model.textFieldFocusNode4,
+                  widget.model.textController4Validator,true));
+
+    }else {
+      list.add(inputWrap(context,'起始里程',
+                  widget.model.textController1,
+                  widget.model.textFieldFocusNode1,
+                  widget.model.textController1Validator,
+                  false));
+    list.add(
+                  inputWrap(context,'結束里程',
+                  widget.model.textController2,
+                  widget.model.textFieldFocusNode2,
+                  widget.model.textController2Validator,
+                  false));
+    }
+    return Column(
+      children:list
+    );
+  }
+  Padding inputWrap(BuildContext context,
+  String name,
+  TextEditingController? textController1,
+  FocusNode  textFieldFocusNode1,
+  String? Function(BuildContext, String?)? textController1Validator,
+  bool readyonly) {
+    return Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                          child: Container(
+                            width: double.infinity,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                            ),
+                            child: Text(
+                              name,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0,
+                                  ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              border: Border.all(
+                                color:
+                                    FlutterFlowTheme.of(context).primaryText,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        8, 0, 8, 0),
+                                    child: TextFormField(
+                                      readOnly: readyonly,
+                                      controller: textController1,
+                                      focusNode: textFieldFocusNode1,
+                                      autofocus: false,
+                                      obscureText: false,
+                                      decoration: InputDecoration(
+                                        labelStyle:
+                                            FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0,
+                                                ),
+                                        hintStyle:
+                                            FlutterFlowTheme.of(context)
+                                                .labelMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  letterSpacing: 0,
+                                                ),
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        focusedErrorBorder: InputBorder.none,
+                                      ),
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0,
+                                          ),
+                                      keyboardType: TextInputType.number,    
+                                      validator: textController1Validator
+                                          .asValidator(context),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 10, 0),
+                                  child: Text(
+                                    '公里',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily: 'Readex Pro',
+                                          letterSpacing: 0,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
   }
 }

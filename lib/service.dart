@@ -857,7 +857,7 @@ class Service{
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
-        Data.httpRet = true;
+        Data.httpRet = false;
        if(Data.runFunc == 'started'){
         await started(response.data[0]);
         }
@@ -874,7 +874,7 @@ class Service{
 
         }        
 
-        Data.httpRet = true;
+        //Data.httpRet = true;
         //Data.setUploadUrl(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -899,13 +899,23 @@ class Service{
            "Accept": "application/json",
             "Content-Type": "application/json",
             "Authorization": "Bearer ${Data.token.access_token}",
+             "Accept-Language":"zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"
           },
         );
         final dio = Dio(options);
      
       Response response;
-    
+
       Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
+
+      if(!Data.tmp_note.isEmpty){
+        data["note"] = Data.tmp_note;
+      }
+      if(!Data.tmp_value.isEmpty){
+        data["initial"] = Data.tmp_value;
+      }
+      
+      print(data);
       Data.httpRet = false;
       try{
       response = await dio.put(url,data:data);

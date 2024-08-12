@@ -60,7 +60,8 @@ class TransportOrdersInfo{
    String warehouse='';
   int background_emissions_percent = 0;
   Map<String,dynamic> production_line = {};
-
+  int isgmap=0;
+  int gmap=0;
   
 }
    

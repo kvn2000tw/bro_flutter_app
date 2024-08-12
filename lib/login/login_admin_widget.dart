@@ -25,13 +25,13 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAutoLogin = false;
   _restore()async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final text1 = sharedPreferences.getString("organization_vat") ?? "";
+    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final text1 = "";//sharedPreferences.getString("organization_vat") ?? "";
 
-    final text2 = sharedPreferences.getString("username") ?? "";
-    final text3 = sharedPreferences.getString("password") ?? "";
+    final text2 = "";//sharedPreferences.getString("username") ?? "";
+    final text3 = "";//sharedPreferences.getString("password") ?? "";
 
-    isAutoLogin = sharedPreferences.getBool("autoLogin") ?? false;
+    isAutoLogin = false;//sharedPreferences.getBool("autoLogin") ?? false;
 
     _model.textController1?.value = TextEditingValue(
       text:text1

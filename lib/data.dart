@@ -41,6 +41,8 @@ class Data {
   static bool is_product = false;
   static ManufactureInfo manufacture = ManufactureInfo();
   static int product_index = 0;
+  static String tmp_value='';
+  static String tmp_note='';
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
@@ -71,11 +73,14 @@ class Data {
     current.lots_meta = response['current']['lots_meta'];
     current.attachs = response['current']['attachments'];
 
+    current.isgmap = response['current']['isgmap'];
+    current.gmap = response['current']['gmap'];
+     
     transport_info = current;
     
   }
   static setTransportSelect(Map<String,dynamic> response){
-    debugPrint('setTransportCurrent ${response}');
+    debugPrint('setTransportSelect ${response}');
     transport.id = response['id'];
     transport.custom_id = response['custom_id'];
     transport.address_from = response['address_from'];
@@ -89,6 +94,9 @@ class Data {
     transport.lots = response['lots'];
     transport.lots_meta = response['lots_meta'];
     transport.attachs = response['attachments']??[];
+
+    transport.isgmap = response['isgmap'];
+    transport.gmap = response['gmap'];
      
     transport_info = transport;
     

@@ -305,7 +305,7 @@ ListView(
                   child: Align(
                     alignment: AlignmentDirectional(-1, 0),
                     child: Text(
-                      '預期單位',
+                      '產能單位',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 20,
@@ -401,7 +401,7 @@ ListView(
                   child: Align(
                     alignment: AlignmentDirectional(-1, 0),
                     child: Text(
-                      '預期重量',
+                      '預估產能',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 20,
