@@ -6,6 +6,7 @@ import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_lot_status/transport_order_model.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/waiting_widget.dart';
@@ -53,13 +54,15 @@ class _TransportLotStatusState
 
   Future<bool> _getTransportLot()async{
     isLoad = true;
-    
+    print('_getTransportLot');
    await Service.getTransportWarehouse();
     dropdownValue = Data.warehouse.first;
 
    final ret = await Service.getLotStatus(Data.lot_barcode);
+    print(Data.lotStatus.warehouse_id);
 
     for(var i=0;i<Data.warehouse.length;i++){
+      print(Data.warehouse[i].id);
       if(Data.lotStatus.warehouse_id == Data.warehouse[i].id){
         dropdownValue = Data.warehouse[i];
       }
@@ -91,15 +94,17 @@ late WarehouseModel dropdownValue;
       if(ret){
        showNotification('納入倉儲','完成');
       }
-      
       print('_takePicture');
     
       setState(() {
-        dropdownValue;
+        isLoad = true;
+        //dropdownValue;
         //initLotStatus();
       });
+    }else {
+         showAlert(context, '錯誤', Data.errorMessage);
     }
-
+      
 }
 _onSave(BuildContext context)async{
   if(dropdownValue.id != Data.lotStatus.warehouse_id){
@@ -109,11 +114,13 @@ _onSave(BuildContext context)async{
 
     showTransportDialog(context, title, contents, buttonText, _finishCheck);
   }else {
-
+    Data.arttach = '';
   bool ret = await Service.updateLotInfo(_model.textController3!.text,_model.textController1!.text,dropdownValue.id);
 
   if(ret){
     showNotification('修改','完成');
+  }else {
+    showAlert(context, '錯誤', Data.errorMessage);
   }
   }
 }

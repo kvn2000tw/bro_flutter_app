@@ -54,11 +54,16 @@ class _SettingPageState extends State<SettingPage> {
 
   _goLogout(BuildContext context)async{
     
+    Data.isLogout = true;
+
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("organization_vat",'');
-    sharedPreferences.setString("username",'');
-    sharedPreferences.setString("password",'');
-    sharedPreferences.setBool("autoLogin",false);
+    var isAotuLogin = sharedPreferences.getBool("autoLogin");
+    if(isAotuLogin == false){
+      sharedPreferences.setString("organization_vat",'');
+      sharedPreferences.setString("username",'');
+      sharedPreferences.setString("password",'');
+    }
+  
     for(var i=0;i<Data.filter.length;i++){
       Data.filter[i].value = false;
     }

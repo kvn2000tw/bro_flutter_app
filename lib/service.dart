@@ -86,8 +86,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -137,8 +137,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -153,9 +153,11 @@ class Service{
      response = await dio.get(url);
      if(response.statusCode == HttpStatus.ok){
       // if there is a key before array, use this : return (response.data['data'] as List).map((child)=> Children.fromJson(child)).toList();
+      
       Data.warehouse = (response.data as List)
           .map((x) => WarehouseModel.fromJson(x))
           .toList();
+      
       ret = true;
      }
     } catch (error, stacktrace) {
@@ -172,8 +174,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 3),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -185,15 +187,22 @@ class Service{
     Response response;
     bool ret = false;
     try {
-      Map<String,dynamic> data = {"note": note, "weight": weight};
+      Map<String,dynamic> data = {"weight": weight};
       if(Data.arttach != ''){
         data["attachments"] = [Data.arttach];
         data["warehouse_id"] = warehouse;
       }
+       
+      data["note"] = (note == '' ? null:note);
+      
+      print('data');
+      print(data);
      response = await dio.put(url,data:data);
      if(response.statusCode == HttpStatus.ok){
       // if there is a key before array, use this : return (response.data['data'] as List).map((child)=> Children.fromJson(child)).toList();
-   
+        Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print(fromJsonMap);
+
       ret = true;
      }
     } catch (error, stacktrace) {
@@ -210,8 +219,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -238,14 +247,14 @@ class Service{
   static getLotStatus(String barcode)async{
 
     String url = '$BaseUrl/admin/lots/barcode/${barcode}';
-    if(Data.is_product)
+    if(!Data.is_driver)
       url = '$BaseUrl/admin/warehouse/lots/barcode/${barcode}';
     print('getLotStatus $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -261,7 +270,7 @@ class Service{
       if(response.statusCode == HttpStatus.ok){
          Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
          print('getLotStatus');
-        //print(fromJsonMap);
+        print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
       }
       //print(response.statusCode.toString()); 
@@ -317,8 +326,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -355,8 +364,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -394,8 +403,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -478,8 +487,8 @@ class Service{
     
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -521,8 +530,8 @@ class Service{
     
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -565,8 +574,8 @@ class Service{
     
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -657,8 +666,8 @@ class Service{
     Map<String, List> data = {"filters": filters, "sorts": sorts};
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -699,8 +708,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -730,8 +739,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -835,12 +844,12 @@ class Service{
   }
   static upload(String fileName)async{
     String url = "$BaseUrl/media/upload";
-    print('profile $url');
+    print('upload $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -871,6 +880,7 @@ class Service{
         }        
         else if(Data.runFunc == 'storage'){
           Data.arttach = response.data[0];
+          Data.httpRet = true;
 
         }        
 
@@ -893,8 +903,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -1067,8 +1077,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -1108,8 +1118,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -1150,8 +1160,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",
@@ -1193,8 +1203,8 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
-      connectTimeout: Duration(seconds: 5),
-      receiveTimeout: Duration(seconds: 3),
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
       headers:{
            "Accept": "application/json",
             "Content-Type": "application/json",

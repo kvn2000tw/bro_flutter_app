@@ -52,7 +52,8 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
       text:text3
     );
 
-    if(isAutoLogin == true){
+    if(Data.isLogout == false && isAutoLogin == true){
+      Data.isLogout = false;
       await request();
     }else {
       _model.checkboxValue = isAutoLogin;
