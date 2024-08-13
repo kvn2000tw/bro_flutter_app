@@ -84,7 +84,7 @@ var radioItems = <RadioListTile>[];
   RadioListTile(
     value:2,
     groupValue: widget.checkSelect.value,
-    title:Text('不合格',style:const TextStyle(fontSize: 14)),
+    title:Text('瑕疵備註',style:const TextStyle(fontSize: 14)),
     onChanged:(value)=>widget.checkSelect.value = value
   )
  );

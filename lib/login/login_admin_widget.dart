@@ -25,13 +25,22 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAutoLogin = false;
   _restore()async{
-    //SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final text1 = "";//sharedPreferences.getString("organization_vat") ?? "";
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    isAutoLogin = sharedPreferences.getBool("autoLogin") ?? false;
 
-    final text2 = "";//sharedPreferences.getString("username") ?? "";
-    final text3 = "";//sharedPreferences.getString("password") ?? "";
+    _model.checkboxValue = isAutoLogin;
+    var text1 = "";//sharedPreferences.getString("organization_vat") ?? "";
 
-    isAutoLogin = false;//sharedPreferences.getBool("autoLogin") ?? false;
+    var text2 = "";//sharedPreferences.getString("username") ?? "";
+    var text3 = "";//sharedPreferences.getString("password") ?? "";
+
+    if(isAutoLogin){
+      text1 = sharedPreferences.getString("organization_vat") ?? "";
+
+      text2 = sharedPreferences.getString("username") ?? "";
+      text3 = sharedPreferences.getString("password") ?? "";
+
+    }
 
     _model.textController1?.value = TextEditingValue(
       text:text1
@@ -45,8 +54,14 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
 
     if(isAutoLogin == true){
       await request();
+    }else {
+      _model.checkboxValue = isAutoLogin;
     }
 
+  }
+  _runCheckBox(bool newValue)async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("autoLogin", newValue);
   }
   @override
   void initState() {
@@ -410,6 +425,55 @@ Column(
                           ),
                         ),
                       ),
+                      // Generated code for this Container Widget...
+Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+  child: Container(
+    width: double.infinity,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Theme(
+          data: ThemeData(
+            checkboxTheme: CheckboxThemeData(
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            unselectedWidgetColor: FlutterFlowTheme.of(context).secondaryText,
+          ),
+          child: Checkbox(
+            value: _model.checkboxValue ??= true,
+            onChanged: (newValue) async {
+              _runCheckBox(newValue!);
+              setState(() => _model.checkboxValue = newValue!);
+            },
+            side: BorderSide(
+              width: 2,
+              color: FlutterFlowTheme.of(context).secondaryText,
+            ),
+            activeColor: FlutterFlowTheme.of(context).primary,
+            checkColor: FlutterFlowTheme.of(context).info,
+          ),
+        ),
+        Text(
+          '記住我',
+          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                fontFamily: 'Readex Pro',
+                letterSpacing: 0,
+              ),
+        ),
+      ],
+    ),
+  ),
+)
+
                     ],
                   ),
                 ),
@@ -509,7 +573,7 @@ Future<void> _showMyDialog(String str) async {
         sharedPreferences.setString("organization_vat",_model.textController1.text);
         sharedPreferences.setString("username",_model.textController2.text);
         sharedPreferences.setString("password",_model.textController3.text);
-        sharedPreferences.setBool("autoLogin",true);
+        sharedPreferences.setBool("autoLogin",_model.checkboxValue!);
 
         Navigator.pushNamed(context,'/home');
       }else {

@@ -113,7 +113,7 @@ class _TransportOrderStatusState
       print(text_list[i].text);
       print(noteController.text);
       if(radio_list[i].value == null){
-        showAlert(context,'檢查錯誤','請點選合格或不合格');
+        showAlert(context,'檢查錯誤','請點選合格或瑕疵備註');
         return;
       }
         

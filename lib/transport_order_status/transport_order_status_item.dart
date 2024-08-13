@@ -57,7 +57,7 @@ class _TransportOrderStatusState
   Widget showCheck(BuildContext context){
     return RadioGroup(
   controller: widget.radio,
-  values: ['不合格', '合格'],
+  values: ['瑕疵備註', '合格'],
   indexOfDefault:widget.value == null ? -1:_convInt(widget.value!),
   orientation: RadioGroupOrientation.horizontal,
   decoration: RadioGroupDecoration(
@@ -74,7 +74,7 @@ class _TransportOrderStatusState
     String text = '未檢測';
     Color color = Color.fromRGBO(75, 85, 99,1);
     if(widget.info['value'] != null){
-      text = widget.info['value'] == true ? '合格' : '不合格';
+      text = widget.info['value'] == true ? '合格' : '瑕疵備註';
       color = widget.info['value'] == true ?Color.fromRGBO(22, 163, 74,1) : Color.fromRGBO(220 ,38, 38,1);
     }
 

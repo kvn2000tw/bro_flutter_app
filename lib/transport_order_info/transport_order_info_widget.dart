@@ -253,7 +253,7 @@ finishPress()async{
   }
   _finishButton(BuildContext context)async{
 
-    if(widget.info.final_odometer == 0){
+    if(widget.info.isgmap == 0 && widget.info.final_odometer == 0){
       showAlert(context,'結束里程','請填寫並儲存結束里程數');
       return;
     }

@@ -60,12 +60,12 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
 
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if(start >= end){
+    if(widget.info.isgmap == 0 &&  start >= end){
       showAlert(context,'結束里程','需大於起始里程數');
       return;
       
     }
-    await Service.updatEodometer(start, end, widget.model.textController3.text);
+    await Service.updatEodometer(widget.info.isgmap,start, end, widget.model.textController3.text);
   
     if(Data.httpRet == true){
       showNotification('儲存資料', '成功');

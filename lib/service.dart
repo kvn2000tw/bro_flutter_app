@@ -1017,7 +1017,7 @@ class Service{
       //return response;
   }  
 
-  static updatEodometer(double start,double end,String note)async{
+  static updatEodometer(int isgmap,double start,double end,String note)async{
     String url = "$BaseUrl/admin/transport-orders/${Data.current.id}";
     print('finished $url');
     // Or create `Dio` with a `BaseOptions` instance.
@@ -1037,8 +1037,11 @@ class Service{
       Response response;
     
       //Map<String,dynamic> data = {"final_odometer": end, "initial_odometer": start, "note": note};
-      Map<String,dynamic> data = {"final_odometer": end, "initial_odometer": start, "note": note};
-
+      Map<String,dynamic> data = {"note": note};
+      if(isgmap == 0){
+        data["final_odometer"] = end;
+        data["initial_odometer"] = start;
+      }
 
       try{
       response = await dio.put(url,data:data);

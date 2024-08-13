@@ -21,6 +21,7 @@ class LoginAdminModel extends FlutterFlowModel {
   String? Function(BuildContext, String?)? textController3Validator;
 
   /// Initialization and disposal methods.
+  bool? checkboxValue;
 
   void initState(BuildContext context) {}
 
