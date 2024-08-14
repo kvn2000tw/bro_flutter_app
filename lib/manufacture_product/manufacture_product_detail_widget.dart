@@ -276,7 +276,7 @@ Column(
             '附件',
             style: FlutterFlowTheme.of(context).bodyMedium.override(
                   fontFamily: 'Readex Pro',
-                  fontSize: 20,
+                  fontSize: Data.title_font,
                   letterSpacing: 0,
                   fontWeight: FontWeight.w500,
                 ),

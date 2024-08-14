@@ -44,6 +44,10 @@ class Data {
   static String tmp_value='';
   static String tmp_note='';
   static bool isLogout = false;
+  static double header_font = 18;
+  static double title_font = 16;
+  static double normal_font = 14;
+
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    

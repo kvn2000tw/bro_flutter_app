@@ -88,17 +88,24 @@ class FilterWidget extends StatelessWidget {
   
   Widget _filterBuilder1(BuildContext context, bool selectedButton, Widget? child) {
 
-    String title = '派車運輸';
-    if(Data.is_product){
+    String title = '運輸中';
+    if(Data.is_driver){
+      title = '派車運輸';
+    }
+    else if(Data.is_product){
       title = '尚未再製';
     }
+   
     return filterContent(context,title,filter[0].value,filter1Press);                 
 
   }
   Widget _filterBuilder2(BuildContext context, bool selectedButton, Widget? child) {
 
-    String title = '開始運輸';
-    if(Data.is_product){
+    String title = '完成運輸';
+    if(Data.is_driver){
+      title = '開始運輸';
+    }
+    else if(Data.is_product){
       title = '開始再製';
     }
 
@@ -107,8 +114,13 @@ class FilterWidget extends StatelessWidget {
   }
   Widget _filterBuilder3(BuildContext context, bool selectedButton, Widget? child) {
 
-    String title = '等待回覆';
-    if(Data.is_product){
+    String title = '納入倉儲';
+
+    if(Data.is_driver){
+      title = '等待回覆';
+    }
+
+    else if(Data.is_product){
       title = '再製完成';
     }
 
@@ -117,17 +129,35 @@ class FilterWidget extends StatelessWidget {
   }
   Widget _filterBuilder4(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'生產廠簽收',filter[3].value,filter4Press);                 
+    String title = '納入再製';
+
+    if(Data.is_driver){
+      title = '生產廠簽收';
+    }
+
+    return filterContent(context,title,filter[3].value,filter4Press);                 
 
   }
   Widget _filterBuilder5(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'生產廠拒絕',filter[4].value,filter5Press);                 
+    String title = '再製投入';
+
+    if(Data.is_driver){
+      title = '生產廠拒絕';
+    }
+
+    return filterContent(context,title,filter[4].value,filter5Press);                 
 
   }
   Widget _filterBuilder6(BuildContext context, bool selectedButton, Widget? child) {
 
-    return filterContent(context,'開始回程',filter[5].value,filter6Press);                 
+    String title = '再製完成';
+
+    if(Data.is_driver){
+      title = '開始回程';
+    }
+
+    return filterContent(context,title,filter[5].value,filter6Press);                 
 
   }
 

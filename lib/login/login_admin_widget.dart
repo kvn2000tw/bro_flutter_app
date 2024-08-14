@@ -450,7 +450,7 @@ Padding(
             unselectedWidgetColor: FlutterFlowTheme.of(context).secondaryText,
           ),
           child: Checkbox(
-            value: _model.checkboxValue ??= true,
+            value: _model.checkboxValue ??= false,
             onChanged: (newValue) async {
               _runCheckBox(newValue!);
               setState(() => _model.checkboxValue = newValue!);

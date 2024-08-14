@@ -69,7 +69,7 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
                       '附件',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 24,
+                            fontSize: Data.title_font,
                             letterSpacing: 0,
                             fontWeight: FontWeight.w600,
                           ),
@@ -92,7 +92,7 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
         '無附件檔案',
         style: FlutterFlowTheme.of(context).bodyMedium.override(
               fontFamily: 'Readex Pro',
-              fontSize: 20,
+              fontSize: Data.title_font,
               letterSpacing: 0,
               fontWeight: FontWeight.w500,
             ),

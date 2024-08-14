@@ -97,7 +97,7 @@ Align(
           '成品清單 總重量:${Data.products.meta['total_weight']} kg 總數量:${Data.products.meta['total_item']} ',
           style: FlutterFlowTheme.of(context).bodyMedium.override(
                 fontFamily: 'Readex Pro',
-                fontSize: 20,
+                fontSize: Data.header_font,
                 letterSpacing: 0,
               ),
         ),

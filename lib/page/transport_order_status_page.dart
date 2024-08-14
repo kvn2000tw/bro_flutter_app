@@ -296,7 +296,7 @@ Future<void> _takePicture() async {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
-                                    fontSize: 24,
+                                    fontSize: Data.header_font,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w600,
                                   ),

@@ -196,7 +196,7 @@ ListView(
           '詳細資訊',
           style: FlutterFlowTheme.of(context).bodyMedium.override(
                 fontFamily: 'Readex Pro',
-                fontSize: 20,
+                fontSize: Data.header_font,
                 letterSpacing: 0,
               ),
         ),
@@ -308,7 +308,7 @@ ListView(
                       '產能單位',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 20,
+                            fontSize: Data.title_font,
                             letterSpacing: 0,
                           ),
                     ),
@@ -404,7 +404,7 @@ ListView(
                       '預估產能',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 20,
+                            fontSize: Data.title_font,
                             letterSpacing: 0,
                           ),
                     ),
@@ -650,7 +650,7 @@ Container(
                       '背景能耗',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 20,
+                            fontSize: Data.title_font,
                             letterSpacing: 0,
                           ),
                     ),
@@ -746,7 +746,7 @@ Container(
                       '產線',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 20,
+                            fontSize: Data.title_font,
                             letterSpacing: 0,
                           ),
                     ),

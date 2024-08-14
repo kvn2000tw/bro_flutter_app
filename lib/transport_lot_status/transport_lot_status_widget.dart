@@ -136,7 +136,7 @@ _onSave(BuildContext context)async{
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 21,
+                                  fontSize: Data.normal_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -177,7 +177,7 @@ Widget Warehouse(BuildContext context){
                       '入庫資訊',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 24,
+                            fontSize: Data.header_font,
                             letterSpacing: 0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -206,7 +206,7 @@ Widget Warehouse(BuildContext context){
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.header_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -294,22 +294,12 @@ Column(
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 21,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
                         ),
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: SvgPicture.asset(
-                        'assets/images/camera.svg',
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                         colorFilter: ColorFilter.mode(Colors.blue, BlendMode.srcIn)
                       ),
                     ),
                   ],
@@ -330,7 +320,7 @@ Column(
                       '詳細資訊',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 24,
+                            fontSize: Data.header_font,
                             letterSpacing: 0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -359,7 +349,7 @@ Column(
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -422,6 +412,7 @@ Column(
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       letterSpacing: 0,
+                                      
                                     ),
                               ),
                             ),
@@ -549,7 +540,7 @@ Column(
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -657,7 +648,7 @@ Row(
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -755,7 +746,7 @@ Row(
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -784,7 +775,7 @@ Row(
         '無附件檔案',
         style: FlutterFlowTheme.of(context).bodyMedium.override(
               fontFamily: 'Readex Pro',
-              fontSize: 20,
+              fontSize: Data.title_font,
               letterSpacing: 0,
               fontWeight: FontWeight.w500,
             ),
@@ -822,7 +813,7 @@ Row(
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),

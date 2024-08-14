@@ -57,7 +57,7 @@ late WarehouseModel dropdownValue;
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 21,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -99,7 +99,7 @@ Widget Warehouse(BuildContext context){
                       '入庫資訊',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
-                            fontSize: 24,
+                            fontSize: Data.header_font,
                             letterSpacing: 0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -128,7 +128,7 @@ Widget Warehouse(BuildContext context){
                         style:
                             FlutterFlowTheme.of(context).bodyMedium.override(
                                   fontFamily: 'Readex Pro',
-                                  fontSize: 24,
+                                  fontSize: Data.title_font,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -192,7 +192,7 @@ Widget Warehouse(BuildContext context){
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
-                                    fontSize: 24,
+                                    fontSize: Data.header_font,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -223,7 +223,7 @@ Widget Warehouse(BuildContext context){
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
-                                      fontSize: 24,
+                                      fontSize: Data.title_font,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -405,7 +405,7 @@ Widget Warehouse(BuildContext context){
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
-                                      fontSize: 24,
+                                      fontSize: Data.title_font,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -508,7 +508,7 @@ Widget Warehouse(BuildContext context){
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
-                                      fontSize: 24,
+                                      fontSize: Data.title_font,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -623,7 +623,7 @@ Widget Warehouse(BuildContext context){
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Readex Pro',
-                                      fontSize: 24,
+                                      fontSize: Data.title_font,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
                                     ),

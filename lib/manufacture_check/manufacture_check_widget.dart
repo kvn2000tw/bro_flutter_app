@@ -120,7 +120,7 @@ Align(
           '檢查項目',
           style: FlutterFlowTheme.of(context).bodyMedium.override(
                 fontFamily: 'Readex Pro',
-                fontSize: 20,
+                fontSize: Data.header_font,
                 letterSpacing: 0,
               ),
         ),

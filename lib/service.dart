@@ -615,9 +615,9 @@ class Service{
   static GetTransportOrders()async{
 
     String url = '$BaseUrl/admin/warehouse/lots/index?page=${Data.page}';
-    if(Data.user.roles.contains('driver')){
+    if(Data.is_driver){
       url = '$BaseUrl/admin/transport-orders/index?page=${Data.page}';
-    }else if(Data.user.roles.contains('production_manager')){
+    }else if(Data.is_product){
       url = '$BaseUrl/admin/manufacturer-orders/index?page=${Data.page}';
     }
     print('GetTransportOrders $url');
@@ -650,8 +650,15 @@ class Service{
           value.add( {"field":"weight","operator":">","value":1000});
 
         }else {
-           int index = i+1;
-          if(Data.is_product)    index = i;
+           int index = i+7;
+           if(Data.is_driver)
+           {
+            index = i+1;
+           }
+          else if(Data.is_product)
+          { 
+            index = i;
+          }
           value.add( {"field":"status","operator":"=","value":index});
         }
       }
