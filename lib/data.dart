@@ -43,7 +43,7 @@ class Data {
   static int product_index = 0;
   static String tmp_value='';
   static String tmp_note='';
-  static bool isLogout = true;
+  static bool isLogout = false;
   static setToken(Map<String,dynamic> response){
     print('setToken ${response}');
    
