@@ -135,13 +135,21 @@ class _Page1WidgetState extends State<RuningPage>
   }
 
 Future<bool> _getTransportCurrent()async{
-
+    print('_getTransportCurrent1');
   //   var response =  await http.get('https://getProjectList');    
    final ret = await Service.getTransportCurrent();
+   print('_getTransportCurrent');
     isLoad = false;
    return ret;
 }
+void onFinish(){
+  print('onFinish');
+  setState(() {
+    isLoad = true;
+  });
+    
 
+}
   @override
   Widget build(BuildContext context) {
     
@@ -157,7 +165,8 @@ Future<bool> _getTransportCurrent()async{
 
         return TransportOrderInfoWidget(
           title:'執行中的運輸單',hasAction:true,
-          info:Data.current
+          info:Data.current,
+          onFinished:onFinish
 
         );
       }

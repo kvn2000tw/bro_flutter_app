@@ -77,7 +77,7 @@ class Data {
     current.status = response['current']['status'];
     current.lots = response['current']['lots'];
     current.lots_meta = response['current']['lots_meta'];
-    current.attachs = response['current']['attachments'];
+    current.attachs = response['current']['attachments'] ?? [];
 
     current.isgmap = response['current']['isgmap'];
     current.gmap = response['current']['gmap'];

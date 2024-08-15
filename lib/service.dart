@@ -103,6 +103,7 @@ class Service{
 
       if(response.statusCode == HttpStatus.ok){
          Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
+        print('getTransportCurrent');
         print(fromJsonMap);
         Data.setTransportCurrent(fromJsonMap);
         ret = true;
@@ -940,15 +941,20 @@ class Service{
         final dio = Dio(options);
      
       Response response;
+      
+      Map<String,dynamic> data = {"lat": 24.7791656, "lng": 121.0024267};
 
-      Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
-
+      if(!arttach.isEmpty){
+        data["attachment"] = arttach;
+      }
+      
       if(!Data.tmp_note.isEmpty){
         data["note"] = Data.tmp_note;
       }
       if(!Data.tmp_value.isEmpty){
         data["initial"] = Data.tmp_value;
       }
+      
       
       print(data);
       Data.httpRet = false;
@@ -1031,7 +1037,12 @@ class Service{
      Data.httpRet = false;
       Response response;
     
-      Map<String,dynamic> data = {"attachment": arttach, "lat": 24.7791656, "lng": 121.0024267};
+      Map<String,dynamic> data = {"lat": 24.7791656, "lng": 121.0024267};
+      if(!arttach.isEmpty){
+        data["attachment"] = arttach;
+      }
+      
+      data["final_odometer"] = double.parse(Data.tmp_value);
 
       try{
       response = await dio.put(url,data:data);

@@ -22,12 +22,14 @@ class TransportOrderInfoWidget extends StatefulWidget {
   required this.info,
   this.hasReturn,
   this.hasAction,
+  this.onFinished,
   
   });
   late TransportOrdersInfo info;
   late String title;
   bool? hasReturn;
   bool? hasAction;
+  VoidCallback? onFinished;
   @override
   State<TransportOrderInfoWidget> createState() => _TransportOrderInfoWidgetState();
 }
@@ -127,6 +129,7 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
       Data.tmp_value = '';
       Data.tmp_note = '';
     }
+    print('_startOnPress ${Data.tmp_value} ${Data.tmp_note}');
     await Navigator.pushNamed(context,'/camera');
 
     if (context.mounted){
@@ -147,6 +150,21 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
   _startButton(BuildContext context)async{
 
     var start = double.parse(_transportOrderModel.textController1.text);
+
+    if(widget.info.isgmap == 1){
+      Data.tmp_note = '';
+      Data.tmp_value = '';
+      await Service.started('');
+         if(Data.httpRet == true){
+        showNotification('開始運輸', '完成');
+        
+      }else {
+        showAlert(context, '錯誤', Data.errorMessage);
+      
+      }
+      FocusManager.instance.primaryFocus?.unfocus();
+      return;
+    }
 
     if(widget.info.isgmap == 0 && start == 0){
       showAlert(context, '錯誤', "請輸入起始里程數");
@@ -253,10 +271,23 @@ finishPress()async{
   }
   _finishButton(BuildContext context)async{
 
-    if(widget.info.isgmap == 0 && widget.info.final_odometer == 0){
-      showAlert(context,'結束里程','請填寫並儲存結束里程數');
+    if(widget.info.isgmap == 1){
+      await Service.finished('');
+      if(Data.httpRet == true){
+        showNotification('結束運輸','完成');
+      }
+      if(widget.onFinished != null) {
+        widget.onFinished!();
+      }
       return;
     }
+    if(widget.info.isgmap == 0){
+      if(_transportOrderModel.textController2.text == '0'){
+        showAlert(context,'結束里程','請填寫並儲存結束里程數');
+        return;
+      }
+    }
+    Data.tmp_value = _transportOrderModel.textController2.text;
     String title = '結束運輸？';
     List<String> contents = ['將紀錄里程數並結束運輸'];
     String buttonText = '上傳結束里程數照片';
