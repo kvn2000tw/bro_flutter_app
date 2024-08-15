@@ -31,6 +31,7 @@ class Data {
   static bool httpRet = false;
   static int sort = 0;
   static String arttach = '';
+  static String tmp_warehouse = '';
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];

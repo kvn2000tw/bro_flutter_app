@@ -293,7 +293,7 @@ Column(
         ),
         child: ListView(
           padding: EdgeInsets.zero,
-          scrollDirection: Axis.vertical,
+          scrollDirection: Axis.horizontal,
           children: list,
         ),
       ),

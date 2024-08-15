@@ -37,7 +37,7 @@ class _TransportOrderAttachtState extends State<TransportOrderAttachWidget> {
     return Padding(
   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
   child: Container(
-    width: double.infinity,
+    width: 100,//double.infinity,
     height: 200,
     decoration: BoxDecoration(
       color: FlutterFlowTheme.of(context).secondaryBackground,

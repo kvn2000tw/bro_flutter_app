@@ -624,11 +624,29 @@ class Service{
     // Or create `Dio` with a `BaseOptions` instance.
     
     List<Map<String,dynamic>> sorts = [];
+    if(Data.is_driver){
     if(Data.sort == 1){
       sorts = [{"field":"updated_at","order":"desc","label":"最新","selected":true}];
     }
     else if(Data.sort == 2){
       sorts = [{"field":"updated_at","order":"asc","label":"最舊","selected":true}];
+    }
+    }else if(Data.is_product){
+    if(Data.sort == 1){
+      sorts = [{"field":"expect_started_at","order":"desc","label":"最晚","selected":true}];
+    }
+    else if(Data.sort == 2){
+      sorts = [{"field":"expect_started_at","order":"asc","label":"最早","selected":true}];
+    }
+
+    }else {
+    if(Data.sort == 1){
+      sorts = [{"field":"weight","order":"desc","label":"最重","selected":true}];
+    }
+    else if(Data.sort == 2){
+      sorts = [{"field":"weight","order":"asc","label":"最輕","selected":true}];
+    }
+
     }
    
    List<Map<String,dynamic>> filters = [];
@@ -1080,7 +1098,7 @@ class Service{
   }  
   static updateLot(String barcode,Map<String,dynamic> data)async{
     String url = "$BaseUrl/admin/lots/barcode/$barcode";
-    print('profile $url');
+    print('updateLot $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -1103,8 +1121,8 @@ class Service{
       if(response.statusCode == HttpStatus.ok){
        Data.httpRet = true;
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
-        print('updateLot');
-        //print(fromJsonMap);
+        print('updateLot1');
+        print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
        
         //Data.setUploadUrl(fromJsonMap);
@@ -1121,7 +1139,7 @@ class Service{
   }  
   static updateLotWeight(String barcode,Map<String,dynamic> data)async{
     String url = "$BaseUrl/admin/lots/barcode/$barcode/update";
-    print('profile $url');
+    print('updateLotWeight $url');
     // Or create `Dio` with a `BaseOptions` instance.
     final options = BaseOptions(
       baseUrl: url,
@@ -1139,13 +1157,14 @@ class Service{
     
       Data.httpRet = false;
       try{
+        //print(data);
       response = await dio.put(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
        Data.httpRet = true;
         Map<String,dynamic> fromJsonMap = jsonDecode(response.toString());
-        print('updateLot');
-        //print(fromJsonMap);
+        print('updateLotWeight');
+        print(fromJsonMap);
         Data.setTransportLotStatus(fromJsonMap);
        
         //Data.setUploadUrl(fromJsonMap);

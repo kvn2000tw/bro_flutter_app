@@ -80,6 +80,13 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
 
     return text;
   }
+  sortOrderPress()async{
+    //Data.ordersList = [];
+    await Service.GetTransportOrders();
+    setState(() {
+      
+    });
+  }
   showSearch(){
     String text =  '搜尋物料編號';
 
@@ -228,7 +235,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                         ),
                       ),
                     ),
-                    const SortOrder(),
+                     SortOrder(onPressed:sortOrderPress),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                       child: 

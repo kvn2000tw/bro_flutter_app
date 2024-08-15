@@ -104,7 +104,7 @@ class _TransportOrderAttachsState extends State<TransportOrderAttachsWidget> {
                 child: ListView(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.horizontal,
                   children: list,
                 ),
               ),

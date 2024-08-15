@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SortOrder extends StatefulWidget {
-  const SortOrder({super.key});
+   SortOrder({super.key,
+    required this.onPressed});
 
+  VoidCallback onPressed;
   @override
   State<SortOrder> createState() => _SortOrderState();
 }
@@ -63,9 +65,9 @@ class _SortOrderState extends State<SortOrder> {
             ],
             onChanged: (value) {
               MenuItems.onChanged(context, value! as MenuItem);
+              widget.onPressed();
               setState(
                 ()=>{
-
                 }
               );
             },
@@ -108,18 +110,38 @@ class MenuItem {
 }
 
 class MenuItems {
-  static const List<MenuItem> firstItems = [like, share];
+  static  final List<MenuItem> firstItems = [like, share];
 
-  static const like = MenuItem(text: '最新', icon: Icons.favorite);
-  static const share = MenuItem(text: '最舊', icon: Icons.share);
- 
+  static final like = MenuItem(text: getFirst(), icon: Icons.favorite);
+  static final share = MenuItem(text: getSecond(), icon: Icons.share);
+  
+  static getFirst(){
+    if(Data.is_driver){
+      return '最新';
+    }else if(Data.is_product){
+      return '最晚';
+    }else {
+      return '最重';
+    }
+  }
+  static getSecond(){
+    if(Data.is_driver){
+      return '最舊';
+    }else if(Data.is_product){
+      return '最早';
+    }else {
+      return '最輕';
+    }
+  }
+
   static Widget buildItem(MenuItem item) {
     print('buildItem ${Data.sort}');
+
     var color = Colors.black;
     var bkColor = Colors.white;
 
     if(item == like){
-      
+     
       if(Data.sort == 1){
         color = Colors.white;
         bkColor = Colors.blue;
@@ -147,6 +169,24 @@ class MenuItems {
 
   static void onChanged(BuildContext context, MenuItem item) {
     print('onChanged ${Data.sort}');
+    if(item == MenuItems.like){
+        if(Data.sort == 1){
+          Data.sort = 0;
+        }
+        else{
+          Data.sort = 1;
+        }
+
+    }else if(item == MenuItems.share){
+        if(Data.sort == 2){
+          Data.sort = 0;
+        }
+        else{
+          Data.sort = 2;
+        }
+
+    }
+    /*
     switch (item) {
       case MenuItems.like:
         //Do something
@@ -168,7 +208,7 @@ class MenuItems {
 
         break;
     }
-
-    Service.GetTransportOrders();
+*/
+   
   }
 }

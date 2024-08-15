@@ -184,9 +184,15 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                               print('Button pressed ...');
                              
                               String path = getPath();
+                             
                               await Navigator.pushNamed(context,path);
                               setState(() {
-                                
+                                if(!(Data.is_driver || Data.is_product)){
+                                  widget.info.status = Data.lotStatus.status;
+                                  widget.info.warehouse = Data.tmp_warehouse ?? '';
+                                  widget.info.total_weight = Data.lotStatus.weight;
+                                  widget.info.note = Data.lotStatus.note ?? '';
+                              }
                               });
                               //  final picture = await Camera().takePicture();
                               //  Navigator.of(context).pop();

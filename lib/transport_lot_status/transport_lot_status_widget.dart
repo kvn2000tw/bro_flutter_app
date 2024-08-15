@@ -11,7 +11,6 @@ import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/waiting_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class TransportLotStatusWidget extends StatefulWidget {
   const TransportLotStatusWidget({super.key});
@@ -60,10 +59,11 @@ class _TransportLotStatusState
 
    final ret = await Service.getLotStatus(Data.lot_barcode);
     print(Data.lotStatus.warehouse_id);
-
+   Data.tmp_warehouse = '';
     for(var i=0;i<Data.warehouse.length;i++){
       print(Data.warehouse[i].id);
       if(Data.lotStatus.warehouse_id == Data.warehouse[i].id){
+        Data.tmp_warehouse = Data.warehouse[i].name;
         dropdownValue = Data.warehouse[i];
       }
     }
@@ -75,6 +75,7 @@ class _TransportLotStatusState
     if(Data.lotStatus.warehouse_id == '' || Data.lotStatus.status == 9){
       need_change = true;
     }
+    need_change = true;
    return ret;
 }
 
@@ -785,7 +786,7 @@ Row(
 ):
                       ListView(
                         padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
+                        scrollDirection: Axis.horizontal,
                         children: list,
                       ),
                     )),

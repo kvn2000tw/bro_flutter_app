@@ -102,7 +102,7 @@ class _HomePageState
             icon: SvgPicture.asset(
           ListIcon,
           colorFilter: ColorFilter.mode(_selectedIndex==0?Colors.blue:Colors.black, BlendMode.srcIn),),
-            label: '物料單列表',
+            label: Data.is_product ?  '再製單列表' : '物料單列表',
           )
     ); 
   _barItem.add(
