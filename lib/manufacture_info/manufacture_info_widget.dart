@@ -39,9 +39,6 @@ class _ManufactureInfoWidgetState extends State<ManufactureInfoWidget>
   late TransportOrderInfoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  final String CameraIcon = 'assets/images/camera.svg';
-  final String QrCodeIcon = 'assets/images/qr-code.svg';
   
   bool canRequest = false;
   bool canReturn = false;
@@ -183,7 +180,6 @@ _returnButton(BuildContext context){
                           finishPressed: ()=>_finishButton(context),),
 
                           ManufactureProductsWidget(
-                            
                           canFinish:canFinish,
                           finishPressed: ()=>_finishButton(context),),
 

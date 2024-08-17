@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/service.dart';
@@ -55,8 +54,8 @@ class _TransportOrderWidgetState extends State<TransportOrderWidget> {
     print( widget.model.textController1.text);
     print( widget.model.textController2.text);
     print( widget.model.textController3.text);
-    var start = double.parse(widget.model.textController1.text);
-    var end = double.parse(widget.model.textController2.text);
+    var start = double.tryParse(widget.model.textController1.text) ?? 0;
+    var end = double.tryParse(widget.model.textController2.text) ?? 0;
 
     FocusManager.instance.primaryFocus?.unfocus();
 

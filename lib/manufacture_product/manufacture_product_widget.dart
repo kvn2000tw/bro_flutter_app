@@ -10,8 +10,10 @@ class ManufactureProductWidget extends StatefulWidget {
   ManufactureProductWidget({super.key,
   required this.index,
   required this.info,
+  required this.onReturn,
   });
        
+  VoidCallback onReturn;
   late int index;
   late Map<String,dynamic> info;
   @override
@@ -40,8 +42,9 @@ class _ManufactureProductWidgetState extends State<ManufactureProductWidget> {
  _onPress()async{
   Data.product_index = widget.index;
   await Navigator.pushNamed(context,"/manufacture-product");
+  widget.onReturn();
   setState(() {
-    widget.info['weiget'] = Data.products.list[Data.product_index]['weiget'] ?? '';
+    //widget.info['weiget'] = Data.products.list[Data.product_index]['weiget'] ?? '';
    
   });
   

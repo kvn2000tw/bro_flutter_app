@@ -1042,7 +1042,7 @@ class Service{
         data["attachment"] = arttach;
       }
       
-      data["final_odometer"] = double.parse(Data.tmp_value);
+      data["final_odometer"] = double.tryParse(Data.tmp_value) ?? 0;
 
       try{
       response = await dio.put(url,data:data);

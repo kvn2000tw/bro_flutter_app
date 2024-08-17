@@ -88,7 +88,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
     return           
     InkWell(
         onTap: ()async{
-          print("alarm clicked");
+          print("/transport-order-status clicked");
           Data.lot_barcode = widget.lot['barcode'];
           await Navigator.pushNamed(context,'/transport-order-status');
           setState(() {

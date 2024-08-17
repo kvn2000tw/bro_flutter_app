@@ -1,7 +1,6 @@
 
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/manufacture_product/manufacture_product_detail_widget.dart';
-import 'package:bro_flutter_app/transport_lot_status/transport_lot_status_widget.dart';
 
 import 'package:flutter/material.dart';
 

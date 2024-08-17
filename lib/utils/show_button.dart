@@ -23,7 +23,7 @@ class ShowButton extends StatelessWidget {
     padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 10),
     child: FFButtonWidget(
       onPressed: () async{
-        print('Button pressed ...');
+        print('Button pressed $title');
          onPressed!();
        
       },

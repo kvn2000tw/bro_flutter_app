@@ -54,6 +54,7 @@ class _ManufactureProductWidgetState extends State<ManufactureProductDetailWidge
   }
   Navigator.of(context).pop();
   
+  FocusManager.instance.primaryFocus?.unfocus();
  }
  _onSave(){
   

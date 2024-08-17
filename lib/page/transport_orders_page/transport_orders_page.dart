@@ -31,9 +31,10 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   final String FilterIcon = 'assets/images/filter.svg';
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  
+  bool isDispose = false;
   @override
   void initState() {
+    isDispose = false;
     super.initState();
     _model = createModel(context, () => TransportOrdersPageModel());
     _model.textController ??= TextEditingController();
@@ -45,6 +46,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
 
   @override
   void dispose() {
+    isDispose = true;
     _model.dispose();
     super.dispose();
   }
@@ -82,7 +84,9 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   }
   sortOrderPress()async{
     //Data.ordersList = [];
+    Data.resetPage();
     await Service.GetTransportOrders();
+
     setState(() {
       
     });
@@ -204,6 +208,9 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
             ? InkWell(
                 onTap: () async {
                   _model.textController?.clear();
+                  Data.search = '';
+                  Data.resetPage();
+                  await Service.GetTransportOrders();
                   setState(() {});
                 },
                 child: Icon(
@@ -315,6 +322,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
     void _retrieveData() {
       
     Service.GetTransportOrders().then((e) {
+      if(isDispose)    return;
       setState(() {
         //重新构建列表
         Data.page = Data.page+1;

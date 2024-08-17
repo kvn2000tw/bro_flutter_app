@@ -176,7 +176,7 @@ class DisplayPictureScreen extends StatelessWidget {
                         ),
                         child: FFButtonWidget(
                           onPressed: () async{
-                            print('Button pressed ...');
+                            print('Button pressed TakePictureScreen');
                             print(imagePath);
                             await Service.upload_url(imagePath);
                             if (context.mounted){

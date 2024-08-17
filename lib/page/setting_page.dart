@@ -54,6 +54,7 @@ class _SettingPageState extends State<SettingPage> {
 
   _goLogout(BuildContext context)async{
     
+    print('_goLogout');
     Data.isLogout = true;
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

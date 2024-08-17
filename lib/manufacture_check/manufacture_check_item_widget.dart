@@ -120,12 +120,15 @@ Row(
   }
   Widget _dateButtonBuilder(BuildContext context,String selectedItem,Widget? child){
 
+    final minDate = DateTime(2020, 5, 5, 20, 50);
+    final maxDate = DateTime(2030, 5, 5, 20, 50);
+
     return TextButton(
     onPressed: () {
        DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(2020, 5, 5, 20, 50),
-                      maxTime: DateTime.now(), onChanged: (date) {
+                      minTime: minDate,
+                      maxTime: maxDate, onChanged: (date) {
                     print('change $date in time zone ' +
                         date.timeZoneOffset.inHours.toString());
                   }, onConfirm: (date) {

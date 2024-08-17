@@ -195,7 +195,7 @@ class FilterWidget extends StatelessWidget {
                               decoration: BoxDecoration(),
                               child: FFButtonWidget(
                                 onPressed: () {
-                                  print('Button pressed ...');
+                                  print('Button pressed $text');
                                   onPressed();
                                 },
                                 text: text,

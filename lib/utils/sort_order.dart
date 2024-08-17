@@ -1,6 +1,5 @@
 import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
-import 'package:bro_flutter_app/service.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -186,29 +185,6 @@ class MenuItems {
         }
 
     }
-    /*
-    switch (item) {
-      case MenuItems.like:
-        //Do something
-        if(Data.sort == 1){
-          Data.sort = 0;
-        }
-        else{
-          Data.sort = 1;
-        }
-        break;
-      case MenuItems.share:
-        //Do something
-        if(Data.sort == 2){
-          Data.sort = 0;
-        }
-        else{
-          Data.sort = 2;
-        }
-
-        break;
-    }
-*/
    
   }
 }

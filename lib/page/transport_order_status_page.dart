@@ -180,6 +180,7 @@ _finishCheck()async{
        
       });
     }
+  FocusManager.instance.primaryFocus?.unfocus();
 
 }
 
@@ -309,18 +310,22 @@ Future<void> _takePicture() async {
                 ),
               ),
               Expanded(
-                child: ListView(
+                child: SingleChildScrollView(
                   padding: EdgeInsets.zero,
-                  shrinkWrap: true,
+                  //shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children: list,
+                  //children: list,
+                  child:Column(
+                    children:list
+                  )
                 ),
               ),
               ShowButton(show:Data.lotStatus.status == lot_status.SCHEDULED.value,title:'拿取物料',onPressed:picked),
               ShowButton(show:Data.lotStatus.status == lot_status.PICKED.value,title:'退回物料',onPressed:cancelPicked),
               ShowButton(show:canFinish,title:'完成檢查',onPressed:_takePicture),
               ShowButton(show:canCheck,title:'儲存檢查結果',onPressed:saveCheck),
-              ShowButton(show:Data.isCurrent,title:'修改重量',onPressed:updateWeight),
+              //ShowButton(show:Data.isCurrent,title:'修改重量',onPressed:updateWeight),
+              ShowButton(show:false,title:'修改重量',onPressed:updateWeight),
 
             ],
           );

@@ -41,8 +41,6 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final String CameraIcon = 'assets/images/camera.svg';
-  final String QrCodeIcon = 'assets/images/qr-code.svg';
   bool canStart = false;
   bool canRequest = false;
   bool canReturn = false;
@@ -119,7 +117,22 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
       }
     }
   }
+  _startResult(){
+    if(Data.httpRet == true){
+      setState(() {
+        canStart = false;
+      });
 
+      showNotification('開始運輸', '完成');
+        
+      }else {
+        showAlert(context, '錯誤', Data.errorMessage);
+      
+      }
+
+      FocusManager.instance.primaryFocus?.unfocus();
+
+  }
   _startOnPress()async{
     Data.runFunc = 'started';
     if(widget.info.isgmap == 0){
@@ -136,34 +149,19 @@ class _TransportOrderInfoWidgetState extends State<TransportOrderInfoWidget>
       Navigator.pop(context);
     }
 
-    if(Data.httpRet == true){
-        showNotification('開始運輸', '完成');
-        
-    }else {
-      showAlert(context, '錯誤', Data.errorMessage);
-      
-    }
-
-    FocusManager.instance.primaryFocus?.unfocus();
+    _startResult();
 
   }
   _startButton(BuildContext context)async{
 
-    var start = double.parse(_transportOrderModel.textController1.text);
+    var start = double.tryParse(_transportOrderModel.textController1.text) ?? 0;
 
     if(widget.info.isgmap == 1){
       Data.tmp_note = '';
       Data.tmp_value = '';
       await Service.started('');
-         if(Data.httpRet == true){
-        showNotification('開始運輸', '完成');
-        
-      }else {
-        showAlert(context, '錯誤', Data.errorMessage);
-      
-      }
-      FocusManager.instance.primaryFocus?.unfocus();
-      return;
+       _startResult();
+        return;
     }
 
     if(widget.info.isgmap == 0 && start == 0){

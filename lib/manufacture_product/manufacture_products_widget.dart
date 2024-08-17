@@ -52,7 +52,11 @@ class _ManufactureProductsWidgetState extends State<ManufactureProductsWidget> {
 
   return ret;
  }
- 
+ onReturn(){
+  setState(() {
+    isLoad = true;
+  });
+ }
   @override
   Widget build(BuildContext context) {
         return FutureBuilder<bool>(
@@ -71,7 +75,7 @@ class _ManufactureProductsWidgetState extends State<ManufactureProductsWidget> {
   List<Widget> list = [];
   
   for(var i=0;i<Data.products.list.length;i++){
-    list.add(ManufactureProductWidget(index:i,info:Data.products.list[i]));
+    list.add(ManufactureProductWidget(index:i,info:Data.products.list[i],onReturn:onReturn));
   }
 
     // Generated code for this Container Widget...

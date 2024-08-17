@@ -2,6 +2,7 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/manufacture_info/manufacture_detail_model.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/show_button.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -79,8 +80,26 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
 
   }
 
+  bool needShow = true;
+ finishPressed()async{
+  
+  needShow = false;
+  bool ret = await savePressed();
+  if(ret) widget.onPressed!();
+
+  needShow = true;
+}
+
  savePressed()async{
   
+    bool ret = false;
+
+    if(datetimeStart.value.compareTo(datetimeEnd.value) == 1){
+      showAlert(context,"錯誤","起始時間不能超過結束時間");
+
+      return false;
+    }
+
     Map<String,dynamic> map = 
     {"background_emissions_percent": _model.textController6.text, 
     "description": _model.textController8.text, 
@@ -96,9 +115,13 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
     await Service.updateManufacture(widget.info.id,map);
 
     if(Data.httpRet){
-      showNotification('修改再製單資訊', '完成');
+      ret = true;
+      if(needShow) {
+        showNotification('修改再製單資訊', '完成');
+      }
     }
     
+    return ret;
   }
   
   @override
@@ -126,11 +149,14 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
           ),
         ),
       ),
-    ShowButton(show:widget.canFinish,title:'完成再製',onPressed:widget.onPressed),
+    ShowButton(show:widget.canFinish,title:'完成再製',onPressed:finishPressed),
     ShowButton(show:canSave,title:'儲存資料',onPressed:savePressed),
    
   ]);
   }
+
+  final minDate = DateTime(2020, 5, 5, 20, 50);
+  final maxDate = DateTime(2030, 5, 5, 20, 50);
   
     Widget _datetimeStartButtonBuilder(BuildContext context,String selectedItem,Widget? child){
 
@@ -138,8 +164,9 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
     onPressed: () {
        DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(2020, 5, 5, 20, 50),
-                      maxTime: DateTime.now(), onChanged: (date) {
+                      minTime: minDate,
+                      maxTime: maxDate, 
+                      onChanged: (date) {
                     print('change $date in time zone ' +
                         date.timeZoneOffset.inHours.toString());
                   }, onConfirm: (date) {
@@ -159,8 +186,9 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
     onPressed: () {
        DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(2020, 5, 5, 20, 50),
-                      maxTime: DateTime.now(), onChanged: (date) {
+                     minTime: minDate,
+                      maxTime: maxDate, 
+                      onChanged: (date) {
                     print('change $date in time zone ' +
                         date.timeZoneOffset.inHours.toString());
                   }, onConfirm: (date) {
