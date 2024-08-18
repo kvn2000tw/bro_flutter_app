@@ -132,7 +132,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
-                                        fontSize: Data.header_font,
+                                        fontSize: Data.normal_font,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -174,6 +174,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
+                                        fontSize: Data.normal_font,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -203,8 +204,9 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
-                                        fontSize: 20,
+                                        fontSize: Data.normal_font,
                                         letterSpacing: 0,
+                                        
                                         fontWeight: FontWeight.w500,
                                       ),
                                 ),
@@ -233,7 +235,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
-                                        fontSize: 20,
+                                        fontSize: Data.normal_font,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -263,7 +265,7 @@ class _TransportOrderItemWidgetState extends State<TransportOrderItemWidget> {
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Readex Pro',
-                                        fontSize: 18,
+                                        fontSize: Data.normal_font,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
                                       ),
