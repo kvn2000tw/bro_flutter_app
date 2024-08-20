@@ -102,6 +102,14 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
       return false;
     }
 
+    var expect = double.tryParse(_model.textController3.text) ?? 0;
+    var total_weight = Data.manufacture.lots_meta['total_weight'];
+    if(expect > total_weight){
+      showAlert(context,"錯誤","預估產能不能大於 $total_weight");
+
+      return false;
+
+    }
     DateTime start = dateFormat1.parse(datetimeStart.value);
     start = start.subtract(Duration(hours: 8));
 

@@ -618,6 +618,7 @@ class Service{
   static GetTransportOrders()async{
 
     String url = '$BaseUrl/admin/warehouse/lots/index?page=${Data.page}';
+    print("${Data.is_driver} ${Data.is_product}");
     if(Data.is_driver){
       url = '$BaseUrl/admin/transport-orders/index?page=${Data.page}';
     }else if(Data.is_product){
@@ -712,6 +713,7 @@ class Service{
       response = await dio.post(url,data:data);
 
       if(response.statusCode == HttpStatus.ok){
+        print(response.toString());
         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print('GetTransportOrders');
         print(fromJsonMap);

@@ -108,7 +108,7 @@ class _SettingPageState extends State<SettingPage> {
                   child: Align(
                     alignment: AlignmentDirectional(-1, 0),
                     child: Text(
-                      '系統䛇定',
+                      '系統設定',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 24,

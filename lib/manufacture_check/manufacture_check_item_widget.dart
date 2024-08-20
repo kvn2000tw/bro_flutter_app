@@ -58,6 +58,7 @@ class _ManufactureCheckItemWidgetState extends State<ManufactureCheckItemWidget>
 */
 
     DateTime dateTime = dateFormat.parse(widget.checkable['recorded_at'] ?? '2024-07-24T00:00:00.000000Z');
+    dateTime = dateTime.add(Duration(hours: 8));
     widget.datetimeSelect.value = dateFormat1.format(dateTime);
 
   }

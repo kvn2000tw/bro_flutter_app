@@ -1,4 +1,5 @@
 import 'package:bro_flutter_app/data.dart';
+import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:bro_flutter_app/manufacture_check/manufacture_check_item_widget.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
@@ -40,7 +41,7 @@ class _ManufactureCheckWidgetState extends State<ManufactureCheckWidget> {
   List<TextEditingController> list_note = [];
   List<ValueNotifier<int>> list_check = [];
   List<ValueNotifier<String>> list_datetime = [];
-  
+  final  DateFormat dateFormat1 = DateFormat("yyyy-MM-dd HH:mm");
   @override
   void initState() {
     super.initState();
@@ -74,6 +75,9 @@ class _ManufactureCheckWidgetState extends State<ManufactureCheckWidget> {
 
     for(var i=0;i<widget.checkables.length;i++){
   
+      DateTime start = dateFormat1.parse(list_datetime[i].value);
+      start = start.subtract(Duration(hours: 8));
+
       Map<String,dynamic>  map = {
         "id":widget.checkables[i]['id'],
         "name":widget.checkables[i]['name'],
@@ -81,7 +85,7 @@ class _ManufactureCheckWidgetState extends State<ManufactureCheckWidget> {
         "check_station":widget.checkables[i]['metadata']['check_station'],
         'note':list_note[i].text ,
         //"note":'111' ,
-        'recorded_at':list_datetime[i].value
+        'recorded_at':dateFormat1.format(start)
       //"recorded_at":"2024-07-23T04:17:00.000Z"
       };
     
