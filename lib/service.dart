@@ -379,12 +379,13 @@ class Service{
       Response response;
     
       Data.httpRet = false;
-     
+     print(map);
       try{
       response = await dio.put(url,data:map);
 
       if(response.statusCode == HttpStatus.ok){
-       
+        Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
+        print(fromJsonMap);
        Data.httpRet = true;
       }
       //print(response.statusCode.toString()); 
@@ -509,6 +510,7 @@ class Service{
       if(response.statusCode == HttpStatus.ok){
         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print('manufacturerProducts');
+         print(fromJsonMap);
         Data.setManufacturerProducts(fromJsonMap);
         ret = true;
       }

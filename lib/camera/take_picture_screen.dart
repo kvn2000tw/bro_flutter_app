@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_widgets.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
+import 'package:draw_on_image_plugin/draw_on_image_plugin.dart';
+import 'package:flutter/services.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class TakePictureScreen extends StatefulWidget {
 class TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  DrawOnImage _plugin = DrawOnImage(); 
 
   @override
   void initState() {
@@ -86,17 +90,37 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Attempt to take a picture and get the file `image`
             // where it was saved.
             final image = await _controller.takePicture();
+        
+            print(image.path);
+            File file = File(image.path);
+            Uint8List bytes = file.readAsBytesSync();
+            ByteData imageBytes = ByteData.view(bytes.buffer);
+
+            DateFormat dateFormat = DateFormat("yyyy-MM-dd_HH-mm-ss");
+            String string = dateFormat.format(DateTime.now());
+            String fileName = await _plugin.writeTextOnImage(
+            WriteImageData(
+            string,
+            imageBytes,
+            left: 0,
+            right: 50,
+            top: 0,
+            bottom: 50,
+            //color: Colors.red,
+            fontSize: 20
+          ));
 
             if (!context.mounted) return;
 
-            print(image.path);
+            print(fileName);
             // If the picture was taken, display it on a new screen.
             await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => DisplayPictureScreen(
                   // Pass the automatically generated path to
                   // the DisplayPictureScreen widget.
-                  imagePath: image.path,
+                  imagePath: fileName,//image.path,
+                  //imagePath: image.path,
                 ),
               ),
             );

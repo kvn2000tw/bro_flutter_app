@@ -56,12 +56,14 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
     _model.textFieldFocusNode3 ??= FocusNode();
 
     DateTime dateTime = dateFormat.parse(widget.info.expect_started_at);
-
+    dateTime = dateTime.add(Duration(hours: 8));
     datetimeStart.value = dateFormat1.format(dateTime);
+    print('datetimeStart ${datetimeStart.value }');
     _model.textController4 ??= TextEditingController( text:dateFormat1.format(dateTime));
     _model.textFieldFocusNode4 ??= FocusNode();
 
     dateTime = dateFormat.parse(widget.info.expect_ended_at);
+    dateTime = dateTime.add(Duration(hours: 8));
     datetimeEnd.value = dateFormat1.format(dateTime);
     _model.textController5 ??= TextEditingController( text:dateFormat1.format(dateTime));
     _model.textFieldFocusNode5 ??= FocusNode();
@@ -100,11 +102,17 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
       return false;
     }
 
+    DateTime start = dateFormat1.parse(datetimeStart.value);
+    start = start.subtract(Duration(hours: 8));
+
+    DateTime end = dateFormat1.parse(datetimeEnd.value);
+    end = end.subtract(Duration(hours: 8));
+
     Map<String,dynamic> map = 
     {"background_emissions_percent": _model.textController6.text, 
     "description": _model.textController8.text, 
-    "expect_ended_at": datetimeEnd.value, 
-    "expect_started_at": datetimeStart.value, 
+    "expect_ended_at": dateFormat1.format(end), 
+    "expect_started_at": dateFormat1.format(start), 
     "expect_weight": _model.textController3.text, 
     "name": _model.textController1.text, 
     "note": _model.textController9.text, 

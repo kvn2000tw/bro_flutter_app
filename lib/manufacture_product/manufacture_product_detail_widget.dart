@@ -3,6 +3,7 @@ import 'package:bro_flutter_app/flutter_flow/flutter_flow_model.dart';
 import 'package:bro_flutter_app/manufacture_product/manufacture_product_detail_model.dart';
 import 'package:bro_flutter_app/service.dart';
 import 'package:bro_flutter_app/transport_order/transport_order_attach_widget.dart';
+import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/dialog.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/show_button.dart';
@@ -58,6 +59,16 @@ class _ManufactureProductWidgetState extends State<ManufactureProductDetailWidge
  }
  _onSave(){
   
+  double old_weight = double.tryParse(widget.info['weight']??'') ?? 0;
+  double new_weight = double.tryParse(_model.textController!.text) ?? 0;
+  double avaliable = Data.products.meta['total_weight'] - old_weight;
+  double total =  double.tryParse(Data.manufacture.expect_weight) ?? 0;
+  double max_weight = total-avaliable;
+  if(new_weight > max_weight){
+    print('$old_weight $new_weight $avaliable $total $max_weight ');
+    showAlert(context, "錯誤", "不能大於 $max_weight kg");
+    return;
+  }
   String title = '更新成品資訊？';
   List<String> contents = [];
   String buttonText = '確認';
