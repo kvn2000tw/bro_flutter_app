@@ -7,12 +7,14 @@ class ShowButton extends StatelessWidget {
   
   ShowButton({this.show = false,
   this.title = '',
-  this.onPressed,})
+  this.onPressed,
+  this.background})
   {
     
   }
   String title = '';
   bool show = false;
+  Color? background;
   VoidCallback? onPressed;
 
   @override
@@ -33,7 +35,7 @@ class ShowButton extends StatelessWidget {
         height: 40,
         padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
         iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        color: FlutterFlowTheme.of(context).primary,
+        color: background  ?? FlutterFlowTheme.of(context).primary,
         textStyle: FlutterFlowTheme.of(context).titleSmall.override(
               fontFamily: 'Readex Pro',
               color: FlutterFlowTheme.of(context).primaryBackground,

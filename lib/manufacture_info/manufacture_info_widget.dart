@@ -72,6 +72,7 @@ _finishOnPress()async{
     showAlert(context,'錯誤',Data.errorMessage);
     
   }else {
+    await Service.getManufactureInfo();
     showNotification('結束再製','完成');
     setState(() {
       widget.info.status = 2;

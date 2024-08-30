@@ -49,13 +49,24 @@ class _ManufactureProductWidgetState extends State<ManufactureProductDetailWidge
   }
  
  _onOK()async{
-  await Service.updateManufactureProduct(widget.info['barcode'],_model.textController!.text);
-  if(Data.httpRet){
-    showNotification('更改成品資訊','完成');
-  }
-  Navigator.of(context).pop();
   
-  FocusManager.instance.primaryFocus?.unfocus();
+  Data.runFunc = 'product';
+    await Navigator.pushNamed(context,'/camera');
+    
+    if (context.mounted){
+      Navigator.of(context).pop();
+    }
+
+    if(Data.httpRet == true){
+      await Service.updateManufactureProduct(widget.info['barcode'],_model.textController!.text);
+
+      if(Data.httpRet == true){
+        showNotification('更改成品資訊','完成');
+      }
+    }
+    Navigator.of(context).pop();
+  
+    FocusManager.instance.primaryFocus?.unfocus();
  }
  _onSave(){
   

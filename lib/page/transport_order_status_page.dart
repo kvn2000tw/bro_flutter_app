@@ -321,7 +321,7 @@ Future<void> _takePicture() async {
                 ),
               ),
               ShowButton(show:Data.lotStatus.status == lot_status.SCHEDULED.value,title:'拿取物料',onPressed:picked),
-              ShowButton(show:Data.lotStatus.status == lot_status.PICKED.value,title:'退回物料',onPressed:cancelPicked),
+              ShowButton(show:Data.lotStatus.status == lot_status.PICKED.value,title:'退回物料',onPressed:cancelPicked,background:Colors.red),
               ShowButton(show:canFinish,title:'完成檢查',onPressed:_takePicture),
               ShowButton(show:canCheck,title:'儲存檢查結果',onPressed:saveCheck),
               //ShowButton(show:Data.isCurrent,title:'修改重量',onPressed:updateWeight),

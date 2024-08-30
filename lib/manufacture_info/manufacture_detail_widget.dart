@@ -132,6 +132,7 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
 
     if(Data.httpRet){
       ret = true;
+      
       if(needShow) {
         showNotification('修改再製單資訊', '完成');
       }

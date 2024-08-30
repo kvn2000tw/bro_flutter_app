@@ -9,7 +9,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TransportOrderBriefWidget extends StatefulWidget {
    TransportOrderBriefWidget({super.key,
@@ -187,7 +186,10 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                              
                               await Navigator.pushNamed(context,path);
                               setState(() {
-                                if(!(Data.is_driver || Data.is_product)){
+                                if(Data.is_product){
+                                  widget.info.status = Data.manufacture.status;
+                                }
+                                else if(!(Data.is_driver || Data.is_product)){
                                   widget.info.status = Data.lotStatus.status;
                                   widget.info.warehouse = Data.tmp_warehouse ?? '';
                                   widget.info.total_weight = Data.lotStatus.weight;

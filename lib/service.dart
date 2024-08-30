@@ -341,7 +341,7 @@ class Service{
     
       Data.httpRet = false;
       try{
-      response = await dio.put(url,data: {"weight": weight});
+      response = await dio.put(url,data: {"weight": weight,"attachments":[Data.arttach]});
 
       if(response.statusCode == HttpStatus.ok){
         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
@@ -912,8 +912,12 @@ class Service{
           Data.arttach = response.data[0];
           Data.httpRet = true;
 
-        }        
+        }   
+        else if(Data.runFunc == 'product'){
+          Data.arttach = response.data[0];
+          Data.httpRet = true;
 
+        }   
         //Data.httpRet = true;
         //Data.setUploadUrl(fromJsonMap);
       }
