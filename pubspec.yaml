@@ -67,6 +67,7 @@ dependencies:
   overlay_support: ^2.1.0
   dropdown_button2: ^2.3.9
   flutter_datetime_picker_plus: ^2.2.0
+  draw_on_image_plugin: ^1.0.0
 
 
 flutter_icons:

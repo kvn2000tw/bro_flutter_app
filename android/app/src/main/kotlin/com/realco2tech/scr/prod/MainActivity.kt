@@ -1,4 +1,4 @@
-package com.example.bro_flutter_app
+package com.realco2tech.scr.prod
 
 import io.flutter.embedding.android.FlutterActivity
 
