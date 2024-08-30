@@ -121,7 +121,8 @@ Row(
   }
   Widget _dateButtonBuilder(BuildContext context,String selectedItem,Widget? child){
 
-    final minDate = DateTime(2020, 5, 5, 20, 50);
+    final now = DateTime.now();
+    final minDate = DateTime(now.year, now.month, now.day, 0, 0);
     final maxDate = DateTime(2030, 5, 5, 20, 50);
 
     return TextButton(

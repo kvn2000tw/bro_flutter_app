@@ -170,12 +170,13 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
    
   ]);
   }
-
-  final minDate = DateTime(2020, 5, 5, 20, 50);
-  final maxDate = DateTime(2030, 5, 5, 20, 50);
-  
+    final maxDate = DateTime(2030, 5, 5, 20, 50);
+ 
     Widget _datetimeStartButtonBuilder(BuildContext context,String selectedItem,Widget? child){
-
+    final now = DateTime.now();
+  
+    final minDate = DateTime(now.year, now.month, now.day, 0, 0);
+  
     return TextButton(
     onPressed: () {
        DatePicker.showDateTimePicker(context,
@@ -197,6 +198,9 @@ class _ManufactureDetailWidgetState extends State<ManufactureDetailWidget> {
     ));
   }
     Widget _datetimeEndButtonBuilder(BuildContext context,String selectedItem,Widget? child){
+    final now = DateTime.now();
+  
+    final minDate = DateTime(now.year, now.month, now.day, 0, 0);
 
     return TextButton(
     onPressed: () {

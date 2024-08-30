@@ -51,6 +51,9 @@ class _TransportOrderAttachtState extends State<TransportOrderAttachWidget> {
           width: 100,
           height: 100,
           fit: BoxFit.cover,
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return const Text('image error');
+          },
         ),
       ),
     ),

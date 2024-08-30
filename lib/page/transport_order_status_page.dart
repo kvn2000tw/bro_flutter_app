@@ -45,7 +45,7 @@ class _TransportOrderStatusState
   }
   initLotStatus(){
 
-    canCheck = Data.isCurrent && (Data.lotStatus.status == lot_status.DISPATCHED.value);
+    canCheck = Data.isCurrent && (Data.lotStatus.status >= lot_status.CREATED.value && Data.lotStatus.status <= lot_status.DISPATCHED.value);
     isLoad = false;
 
     canFinish = false;
