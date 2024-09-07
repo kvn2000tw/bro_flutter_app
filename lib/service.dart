@@ -8,7 +8,15 @@ import 'dart:io' as io;
 
 class Service{
   //static final dio = Dio();
-  static const BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
+  static String BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
+  static setSite(String site){
+    if(site == "1"){
+      BaseUrl = 'https://recycle-server.realco2tech.com/api/app';
+    }
+    else if(site == "2"){
+      BaseUrl = 'https://dev-recycle-server.realco2tech.com/api/app';
+    }
+  }
   static login(String code,String user,String passwd) async {
         String url = "$BaseUrl/admin/account/login";
         print('login $url');

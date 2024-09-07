@@ -32,6 +32,7 @@ class Data {
   static int sort = 0;
   static String arttach = '';
   static String tmp_warehouse = '';
+  static String site = '1';
   static List<ValueNotifier<bool>> filter = [ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),ValueNotifier(false),
   ValueNotifier(false),ValueNotifier(false),ValueNotifier(false)];
@@ -145,7 +146,8 @@ class Data {
     manufacture.status = response['status'];
     manufacture.unit = response['unit'];
     manufacture.expect_weight = response['expect_weight'];
-    manufacture.background_emissions_percent = response['background_emissions_percent'];
+
+    manufacture.background_emissions_percent = double.tryParse(response['background_emissions_percent']) ?? 0;
     manufacture.production_line = response['production_line'];
     manufacture.description = response['description'] ?? '';
     manufacture.note = response['note'] ?? '';
@@ -183,7 +185,7 @@ class Data {
         item.total_weight = response['items'][i]['lots_meta']['total_weight'].toString();
       }else if(is_product){
         item.total_weight = response['items'][i]['expect_weight'];
-        item.background_emissions_percent = response['items'][i]['background_emissions_percent'];
+        item.background_emissions_percent = double.tryParse(response['items'][i]['background_emissions_percent']) ?? 0;
         item.production_line = response['items'][i]['production_line'];
       }else {
         item.total_weight = response['items'][i]['weight'].toString();

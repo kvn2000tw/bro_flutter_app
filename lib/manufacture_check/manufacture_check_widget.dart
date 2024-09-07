@@ -50,6 +50,7 @@ class _ManufactureCheckWidgetState extends State<ManufactureCheckWidget> {
     list_note.add(TextEditingController(text:widget.checkables[i]['note']??''));
     list_check.add(ValueNotifier(0));
     list_datetime.add(ValueNotifier(''));
+
     list.add(ManufactureCheckItemWidget(checkable:widget.checkables[i],
     datetimeSelect:list_datetime[i],
     checkSelect:list_check[i],

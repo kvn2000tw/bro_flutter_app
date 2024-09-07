@@ -57,8 +57,11 @@ class _ManufactureCheckItemWidgetState extends State<ManufactureCheckItemWidget>
     _model.textFieldFocusNode3 ??= FocusNode();
 */
 
-    DateTime dateTime = dateFormat.parse(widget.checkable['recorded_at'] ?? '2024-07-24T00:00:00.000000Z');
-    dateTime = dateTime.add(Duration(hours: 8));
+    String nowTime = dateFormat.format(DateTime.now());
+    DateTime dateTime = dateFormat.parse(widget.checkable['recorded_at'] ?? nowTime);
+    if( widget.checkable['recorded_at'] != null)
+      dateTime = dateTime.add(Duration(hours: 8));
+  
     widget.datetimeSelect.value = dateFormat1.format(dateTime);
 
   }
@@ -124,7 +127,7 @@ Row(
     final now = DateTime.now();
     final minDate = DateTime(now.year, now.month, now.day, 0, 0);
     final maxDate = DateTime(2030, 5, 5, 20, 50);
-
+    print('date builder ${widget.datetimeSelect.value}');
     return TextButton(
     onPressed: () {
        DatePicker.showDateTimePicker(context,

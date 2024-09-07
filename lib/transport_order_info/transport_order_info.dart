@@ -28,7 +28,7 @@ class ManufactureInfo{
    String name='';
    String barcode='';
    String warehouse='';
-  int background_emissions_percent = 0;
+  double background_emissions_percent = 0;
   Map<String,dynamic> production_line = {};
   String unit = '1';
   String expect_weight = '30.0';
@@ -58,7 +58,7 @@ class TransportOrdersInfo{
    String name='';
    String barcode='';
    String warehouse='';
-  int background_emissions_percent = 0;
+  double background_emissions_percent = 0;
   Map<String,dynamic> production_line = {};
   int isgmap=0;
   int gmap=0;
@@ -101,6 +101,7 @@ class WarehouseModel {
   
   };
 }
+
 class User{
   String id='';
   String full_name='';

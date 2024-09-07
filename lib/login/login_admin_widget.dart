@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-
 import 'login_admin_model.dart';
 
 class LoginAdminWidget extends StatefulWidget {
@@ -20,14 +19,14 @@ class LoginAdminWidget extends StatefulWidget {
 class _LoginAdminWidgetState extends State<LoginAdminWidget> {
 
   late LoginAdminModel _model;
-  bool _loading = false;
-  String _text = "";
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isAutoLogin = false;
   _restore()async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     isAutoLogin = sharedPreferences.getBool("autoLogin") ?? false;
 
+    Data.site = sharedPreferences.getString("site") ?? "1";
+    Service.setSite(Data.site);
     _model.checkboxValue = isAutoLogin;
     var text1 = "";//sharedPreferences.getString("organization_vat") ?? "";
 
@@ -63,6 +62,58 @@ class _LoginAdminWidgetState extends State<LoginAdminWidget> {
   _runCheckBox(bool newValue)async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setBool("autoLogin", newValue);
+  }
+  
+  List<String> site=["1","2"];
+  Map<String,String> site_name = {
+    "1":"正式站",
+    "2":"測試站",
+  };
+ 
+  Widget SelectOption(){
+    // Generated code for this Container Widget...
+
+  return Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(20, 10, 0, 0),
+  child: Container(
+    width: 100,
+    height: 50,
+    decoration: BoxDecoration(
+      color: FlutterFlowTheme.of(context).secondaryBackground,
+    ),
+    child: DropdownButton<String>(
+      
+      isExpanded: true,
+      hint: const Text('選擇'),
+      value: Data.site,
+      elevation: 16,
+      style:FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  fontSize: Data.header_font,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+      onChanged:  (String? value) {
+        // This is called when the user selects an item.
+       setState(() {
+          Data.site = value!; 
+          Service.setSite(Data.site);
+       });
+
+        //dropdownValue = value!;
+      },
+      items: site.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(site_name[value]!),
+        );
+      }).toList(),
+    )
+    ),
+  );
+
   }
   @override
   void initState() {
@@ -473,8 +524,8 @@ Padding(
       ],
     ),
   ),
-)
-
+),
+SelectOption()
                     ],
                   ),
                 ),
@@ -559,8 +610,6 @@ Future<void> _showMyDialog(String str) async {
      //Navigator.pushNamed(context,'/camera');
      //return;
     setState(() {
-      _loading = true;
-      _text = "正在请求...";
     });
     final companyCode = _model.textController1.text;
     final username = _model.textController2.text;
@@ -575,6 +624,7 @@ Future<void> _showMyDialog(String str) async {
         sharedPreferences.setString("username",_model.textController2.text);
         sharedPreferences.setString("password",_model.textController3.text);
         sharedPreferences.setBool("autoLogin",_model.checkboxValue!);
+        sharedPreferences.setString("site",Data.site);
 
         Navigator.pushNamed(context,'/home');
       }else {
@@ -583,10 +633,8 @@ Future<void> _showMyDialog(String str) async {
       }
     
     } catch (e) {
-      _text = "请求失败：$e";
     } finally {
       setState(() {
-        _loading = false;
       });
     }
   }
