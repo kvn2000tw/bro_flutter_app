@@ -7,7 +7,6 @@ import 'package:bro_flutter_app/transport_order_info/transport_order_info_widget
 import 'package:bro_flutter_app/utils/waiting_widget.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 
 class RuningPage extends StatefulWidget {

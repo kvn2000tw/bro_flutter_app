@@ -40,6 +40,7 @@ class _TransportOrderInfoState
       loaded = false;
     }
 
+    print('select $loaded');
     return true;
   }
   @override
@@ -69,7 +70,7 @@ class _TransportOrderInfoState
       Center(
         child: TransportOrderInfoWidget(
           title:'運輸單資訊',
-          hasAction:true,
+          hasAction:false,
           hasReturn:true,
           info:Data.transport),
       ),
