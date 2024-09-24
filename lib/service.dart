@@ -645,10 +645,10 @@ class Service{
     }
     }else if(Data.is_product){
     if(Data.sort == 1){
-      sorts = [{"field":"expect_started_at","order":"desc","label":"最晚","selected":true}];
+      sorts = [{"field":"custom_id","order":"desc","label":"最晚","selected":true}];
     }
     else if(Data.sort == 2){
-      sorts = [{"field":"expect_started_at","order":"asc","label":"最早","selected":true}];
+      sorts = [{"field":"custom_id","order":"asc","label":"最早","selected":true}];
     }
 
     }else {

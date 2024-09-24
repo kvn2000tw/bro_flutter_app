@@ -148,7 +148,7 @@ class Data {
     manufacture.expect_weight = response['expect_weight'];
 
     manufacture.background_emissions_percent = double.tryParse(response['background_emissions_percent']) ?? 0;
-    manufacture.production_line = response['production_line'];
+    manufacture.production_line = response['production_line'] ?? {};
     manufacture.description = response['description'] ?? '';
     manufacture.note = response['note'] ?? '';
 
@@ -186,7 +186,7 @@ class Data {
       }else if(is_product){
         item.total_weight = response['items'][i]['expect_weight'];
         item.background_emissions_percent = double.tryParse(response['items'][i]['background_emissions_percent']) ?? 0;
-        item.production_line = response['items'][i]['production_line'];
+        item.production_line = response['items'][i]['production_line'] ?? {};
       }else {
         item.total_weight = response['items'][i]['weight'].toString();
       }

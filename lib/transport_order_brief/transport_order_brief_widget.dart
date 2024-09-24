@@ -167,7 +167,7 @@ class _TransportOrderBriefWidgetState extends State<TransportOrderBriefWidget> {
                       TransportOrderBriefOne(icon:CalculatorIcon,title:'${widget.info.total_weight} kg'),
                       Data.is_driver == false? Container():TransportOrderBriefOne(icon:ListIcon,title:'${widget.info.total_item} 件物料'),
                       TransportOrderBriefOne(icon:DocumentIcon,title:showDesc()),
-                      Data.is_driver ? Container(): Data.is_product ? TransportOrderBriefOne(icon:LocationIcon,title:widget.info.production_line['name']) :TransportOrderBriefOne(icon:LocationIcon,title:widget.info.warehouse),
+                      Data.is_driver ? Container(): Data.is_product ? TransportOrderBriefOne(icon:LocationIcon,title:widget.info.production_line['name']??"") :TransportOrderBriefOne(icon:LocationIcon,title:widget.info.warehouse),
                    
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),

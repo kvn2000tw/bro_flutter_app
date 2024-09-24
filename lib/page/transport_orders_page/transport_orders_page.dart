@@ -85,11 +85,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
   sortOrderPress()async{
     //Data.ordersList = [];
     Data.resetPage();
-    await Service.GetTransportOrders();
-
-    setState(() {
-      
-    });
+   _retrieveData();
   }
   showSearch(){
     String text =  '搜尋物料編號';
@@ -192,11 +188,9 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                             ),
                             prefixIcon:IconButton(
                             onPressed: ()async{
+                              Data.search = _model.textController.text;
                               Data.resetPage();
-                              await Service.GetTransportOrders();
-                              setState(() {
-                                
-                              });
+                              _retrieveData();
                             },
                             icon: SvgPicture.asset(
                             SearchIcon,
@@ -210,9 +204,8 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                   _model.textController?.clear();
                   Data.search = '';
                   Data.resetPage();
-                  await Service.GetTransportOrders();
-                  setState(() {});
-                },
+                    _retrieveData();
+                    },
                 child: Icon(
                   Icons.clear,
                   size: 20,
@@ -234,10 +227,7 @@ class _TransportOrdersPageState extends State<TransportOrdersPage> {
                             Data.search = _model.textController.text;
                             FocusScope.of(context).unfocus();
                             Data.resetPage();
-                            await Service.GetTransportOrders();
-                            setState(() {
-                              
-                            });
+                             _retrieveData();
                           },  
                         ),
                       ),

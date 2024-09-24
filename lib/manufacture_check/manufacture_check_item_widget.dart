@@ -1,4 +1,5 @@
 
+import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:bro_flutter_app/manufacture_check/manufacture_check_item_model.dart';
@@ -57,12 +58,14 @@ class _ManufactureCheckItemWidgetState extends State<ManufactureCheckItemWidget>
     _model.textFieldFocusNode3 ??= FocusNode();
 */
 
-    String nowTime = dateFormat.format(DateTime.now());
-    DateTime dateTime = dateFormat.parse(widget.checkable['recorded_at'] ?? nowTime);
-    if( widget.checkable['recorded_at'] != null)
-      dateTime = dateTime.add(Duration(hours: 8));
+    //String nowTime = dateFormat.parse(Data.manufacture.expect_started_at);
+    DateTime dateTime = dateFormat.parse(widget.checkable['recorded_at'] ?? Data.manufacture.expect_started_at);
+   
+    dateTime = dateTime.add(Duration(hours: 8));
   
     widget.datetimeSelect.value = dateFormat1.format(dateTime);
+
+    print('_ManufactureCheckItemWidgetState ${widget.datetimeSelect.value}');
 
   }
 
@@ -124,9 +127,19 @@ Row(
   }
   Widget _dateButtonBuilder(BuildContext context,String selectedItem,Widget? child){
 
-    final now = DateTime.now();
-    final minDate = DateTime(now.year, now.month, now.day, 0, 0);
-    final maxDate = DateTime(2030, 5, 5, 20, 50);
+    DateFormat dateFormat = DateFormat("yyyy-MM-ddTHH:mm:ss.000000Z");
+    DateTime dateTime_start = dateFormat.parse(Data.manufacture.expect_started_at);
+    dateTime_start = dateTime_start.add(Duration(hours: 8));
+    DateTime dateTime_end = dateFormat.parse(Data.manufacture.expect_ended_at);
+    dateTime_end = dateTime_end.add(Duration(hours: 8));
+
+    print('_dateButtonBuilder $dateTime_start');
+    print('_dateButtonBuilder $dateTime_end');
+    final minDate = DateTime(dateTime_start.year, dateTime_start.month, dateTime_start.day, dateTime_start.hour, dateTime_start.minute);
+    final maxDate = DateTime(dateTime_end.year, dateTime_end.month, dateTime_end.day, dateTime_end.hour, dateTime_end.minute);
+    print('_dateButtonBuilder $minDate');
+    print('_dateButtonBuilder $maxDate');
+    
     print('date builder ${widget.datetimeSelect.value}');
     return TextButton(
     onPressed: () {
@@ -138,10 +151,13 @@ Row(
                         date.timeZoneOffset.inHours.toString());
                   }, onConfirm: (date) {
                     print('confirm $date');
-                    widget.datetimeSelect.value = dateFormat1.format(date);
-                   
+                    if(date > maxDate){
+                      widget.datetimeSelect.value = dateFormat1.format(maxDate);
+                    }else {
+                      widget.datetimeSelect.value = dateFormat1.format(date);
+                    }
                   }, locale: LocaleType.zh,
-                  currentTime:DateTime.now()) ;
+                  currentTime:minDate) ;
                 },
     child: Text(
         widget.datetimeSelect.value,
