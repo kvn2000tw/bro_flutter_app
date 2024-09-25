@@ -394,7 +394,10 @@ class Service{
       if(response.statusCode == HttpStatus.ok){
         Map<String,dynamic> fromJsonMap = await jsonDecode(response.toString());
         print(fromJsonMap);
-       Data.httpRet = true;
+        Data.manufacture.expect_started_at = fromJsonMap['expect_started_at'] ?? '';
+        Data.manufacture.expect_ended_at = fromJsonMap['expect_ended_at'] ?? '';    
+
+        Data.httpRet = true;
       }
       //print(response.statusCode.toString()); 
       //print(response.data.toString());
@@ -645,18 +648,18 @@ class Service{
     }
     }else if(Data.is_product){
     if(Data.sort == 1){
-      sorts = [{"field":"custom_id","order":"desc","label":"最晚","selected":true}];
+      sorts = [{"field":"custom_id","order":"desc","label":"最新","selected":true}];
     }
     else if(Data.sort == 2){
-      sorts = [{"field":"custom_id","order":"asc","label":"最早","selected":true}];
+      sorts = [{"field":"custom_id","order":"asc","label":"最舊","selected":true}];
     }
 
     }else {
     if(Data.sort == 1){
-      sorts = [{"field":"weight","order":"desc","label":"最重","selected":true}];
+      sorts = [{"field":"created_at","order":"desc","label":"最新","selected":true}];
     }
     else if(Data.sort == 2){
-      sorts = [{"field":"weight","order":"asc","label":"最輕","selected":true}];
+      sorts = [{"field":"created_at","order":"asc","label":"最舊","selected":true}];
     }
 
     }

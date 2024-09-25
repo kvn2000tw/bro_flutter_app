@@ -2,7 +2,6 @@ import 'package:bro_flutter_app/data.dart';
 import 'package:bro_flutter_app/flutter_flow/flutter_flow_util.dart';
 import 'package:bro_flutter_app/manufacture_check/manufacture_check_item_widget.dart';
 import 'package:bro_flutter_app/service.dart';
-import 'package:bro_flutter_app/transport_order_info/transport_order_info.dart';
 import 'package:bro_flutter_app/utils/alert.dart';
 import 'package:bro_flutter_app/utils/notify.dart';
 import 'package:bro_flutter_app/utils/show_button.dart';
@@ -89,7 +88,7 @@ class _ManufactureCheckWidgetState extends State<ManufactureCheckWidget> {
         'recorded_at':dateFormat1.format(start)
       //"recorded_at":"2024-07-23T04:17:00.000Z"
       };
-    
+      print('_save $map');
       list.add(map);
     }
 
